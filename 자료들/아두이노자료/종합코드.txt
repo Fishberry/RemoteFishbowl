@@ -34,11 +34,12 @@ void loop() {
   getMoter();
 
   delay(1000); // 서보모터 동작 전 잠깐 대기
-  for(int i=0; i<9; i++) {
-    myServo.write(10); // 서보모터 이동
-    delay(1000); // 서보모터 이동이 끝날 때까지 잠깐 대기
+  for(int i=0; i<180; i++) {
+    myServo.write(i); // 서보모터 이동
+    delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
   }
-
+  myServo.write(0);
+  delay(15);
 }
 
 float getTemp(){
