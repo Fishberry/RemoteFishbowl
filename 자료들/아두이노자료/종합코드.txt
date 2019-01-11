@@ -1,0 +1,125 @@
+#include <OneWire.h>
+ 
+int DS18S20_Pin = 2; //DS18S20 Signal pin on digital 2
+ 
+//Temperature chip i/o
+OneWire ds(DS18S20_Pin);  // on digital pin 2
+
+void setup() {
+  
+  Serial.begin(9600);
+  pinMode(6, OUTPUT);       // Motor A 방향설정1
+  pinMode(7, OUTPUT);       // Motor A 방향설정2
+  pinMode(4, OUTPUT);       // Motor B 방향설정1
+  pinMode(5, OUTPUT);       // Motor B 방향설정2
+
+}
+
+
+
+void loop() {
+
+  float temperature = getTemp();
+  Serial.println(temperature);
+   
+  delay(2000);
+
+  getMoter();
+
+}
+
+float getTemp(){
+  //returns the temperature from one DS18S20 in DEG Celsius
+ 
+  byte data[12];
+  byte addr[8];
+ 
+  if ( !ds.search(addr)) {
+      //no more sensors on chain, reset search
+      Serial.println("no more sensors on chain, reset search!");
+      ds.reset_search();
+      return -1000;
+  }
+ 
+  if ( OneWire::crc8( addr, 7) != addr[7]) {
+      Serial.println("CRC is not valid!");
+      return -1000;
+  }
+ 
+  if ( addr[0] != 0x10 && addr[0] != 0x28) {
+      Serial.print("Device is not recognized");
+      return -1000;
+  }
+ 
+  ds.reset();
+  ds.select(addr);
+  ds.write(0x44,1); // start conversion, with parasite power on at the end
+ 
+  byte present = ds.reset();
+  ds.select(addr);    
+  ds.write(0xBE); // Read Scratchpad
+ 
+   
+  for (int i = 0; i < 9; i++) { // we need 9 bytes
+    data[i] = ds.read();
+  }
+   
+  ds.reset_search();
+   
+  byte MSB = data[1];
+  byte LSB = data[0];
+ 
+  float tempRead = ((MSB << 8) | LSB); //using two's compliment
+  float TemperatureSum = tempRead / 16;
+   
+  return TemperatureSum;
+   
+}
+
+void getMoter() {
+  /*모터A설정*/
+
+  digitalWrite(7, HIGH);     // Motor A 방향설정1
+  digitalWrite(8, LOW);      // Motor A 방향설정2
+  analogWrite(9, 100);       // Motor A 속도조절 (0~255)
+  /*모터B설정*/
+  digitalWrite(4, LOW);      // Motor B 방향설정1
+  digitalWrite(5, HIGH);     // Motor B 방향설정2
+  analogWrite(3, 50);        // Motor B 속도조절 (0~255)
+  delay(1000);                   // 3초 유지
+
+
+  
+
+  digitalWrite(7, LOW);     // Motor A 방향설정1
+  digitalWrite(8, LOW);      // Motor A 방향설정2
+  analogWrite(9, 100);       // Motor A 속도조절 (0~255)
+  /*모터B설정*/
+  digitalWrite(4, LOW);      // Motor B 방향설정1
+  digitalWrite(5, LOW);     // Motor B 방향설정2
+  analogWrite(3, 50);        // Motor B 속도조절 (0~255)
+  delay(3000);                   // 3초 유지
+
+
+
+  /*모터A설정*/
+  digitalWrite(7, LOW);      // Motor A 방향설정1
+  digitalWrite(8, HIGH);     // Motor A 방향설정2
+  analogWrite(9, 200);      // Motor A 속도조절 (0~255)
+  /*모터B설정*/
+  digitalWrite(4, HIGH);    // Motor B 방향설정1
+  digitalWrite(5, LOW);     // Motor B 방향설정2
+  analogWrite(3, 150);      // Motor B 속도조절 (0~255)
+  delay(1000);                    // 3초 유지
+
+
+
+  digitalWrite(7, LOW);     // Motor A 방향설정1
+  digitalWrite(8, LOW);      // Motor A 방향설정2
+  analogWrite(9, 100);       // Motor A 속도조절 (0~255)
+  /*모터B설정*/
+  digitalWrite(4, LOW);      // Motor B 방향설정1
+  digitalWrite(5, LOW);     // Motor B 방향설정2
+  analogWrite(3, 50);        // Motor B 속도조절 (0~255)
+  delay(3000); 
+}
