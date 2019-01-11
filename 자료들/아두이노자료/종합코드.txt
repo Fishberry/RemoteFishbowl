@@ -31,28 +31,13 @@ void loop() {
   float temperature = getTemp();
   Serial.println(temperature);
 
-  /*모터A 동작*/
-  analogWrite(WaterPumpA1, 255);     // Motor A 방향설정1
-  analogWrite(WaterPumpA2, 0);      // Motor A 방향설정2
-  delay(1000);                   // 3초 유지
+  getMoter();
 
-  /*모터A 멈춤*/
-  analogWrite(WaterPumpA1, 0);     // Motor A 정지
-  analogWrite(WaterPumpA2, 0);
-  delay(3000);                   // 3초 유지
-
-  /*모터B 동작*/
-  analogWrite(WaterPumpB1, 255);     // Motor A 방향설정1
-  analogWrite(WaterPumpB2, 0);      // Motor A 방향설정2
-  delay(1000);                   // 3초 유지
-
-   /*모터B 멈춤*/
-  analogWrite(WaterPumpB1, 0);     // Motor A 정지
-  analogWrite(WaterPumpB2, 0);
-  delay(3000);
-
-  myServo.write(90); // 서보모터 이동
-  delay(1000); // 서보모터 이동이 끝날 때까지 잠깐 대기
+  delay(1000); // 서보모터 동작 전 잠깐 대기
+  for(int i=0; i<9; i++) {
+    myServo.write(10); // 서보모터 이동
+    delay(1000); // 서보모터 이동이 끝날 때까지 잠깐 대기
+  }
 
 }
 
@@ -107,22 +92,22 @@ float getTemp(){
 void getMoter() {
   
   /*모터A 동작*/
-  analogWrite(WaterPumpA1, HIGH);     // Motor A 방향설정1
-  analogWrite(WaterPumpA2, LOW);      // Motor A 방향설정2
+  analogWrite(WaterPumpA1, 255);     // Motor A 방향설정1
+  analogWrite(WaterPumpA2, 0);      // Motor A 방향설정2
   delay(1000);                   // 3초 유지
 
   /*모터A 멈춤*/
-  analogWrite(WaterPumpA1, LOW);     // Motor A 정지
-  analogWrite(WaterPumpA2, LOW);
+  analogWrite(WaterPumpA1, 0);     // Motor A 정지
+  analogWrite(WaterPumpA2, 0);
   delay(3000);                   // 3초 유지
 
   /*모터B 동작*/
-  analogWrite(WaterPumpB1, HIGH);     // Motor A 방향설정1
-  analogWrite(WaterPumpB2, LOW);      // Motor A 방향설정2
+  analogWrite(WaterPumpB1, 255);     // Motor A 방향설정1
+  analogWrite(WaterPumpB2, 0);      // Motor A 방향설정2
   delay(1000);                   // 3초 유지
 
    /*모터B 멈춤*/
-  analogWrite(WaterPumpB1, LOW);     // Motor A 정지
-  analogWrite(WaterPumpB2, LOW);
+  analogWrite(WaterPumpB1, 0);     // Motor A 정지
+  analogWrite(WaterPumpB2, 0);
   delay(3000);                   // 3초 유지
 }
