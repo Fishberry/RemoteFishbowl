@@ -1,3 +1,5 @@
+// 현재 방수온도가 온도 재고나서, 워터펌프A와 워터펌프B가 동작한 후, 서보모터가 180도 돌아가는 
+
 #include <OneWire.h>
 #include <Servo.h>
  
