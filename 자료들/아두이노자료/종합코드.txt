@@ -1,17 +1,26 @@
 #include <OneWire.h>
+#include <Servo.h>
  
-int DS18S20_Pin = 2; //DS18S20 Signal pin on digital 2
- 
+const int DS18S20_Pin = 2; // DS18S20 방수온도센서 2번핀
+const int WaterPumpA1 = 6; // 워터펌프 A의 첫번째핀
+const int WaterPumpA2 = 7; // 워터펌프 A의 두번째핀
+const int WaterPumpB1 = 4; // 워터펌프 B의 첫번째핀
+const int WaterPumpB2 = 5; // 워터펌프 B의 두번째핀
+const int SERVO = 8;       // 서보모터 9번핀
+
+Servo myServo;
+
 //Temperature chip i/o
-OneWire ds(DS18S20_Pin);  // on digital pin 2
+OneWire ds(DS18S20_Pin);            // on digital pin 2
 
 void setup() {
-  
+
+  myServo.attach(SERVO);              // 서보모터 연결
   Serial.begin(9600);
-  pinMode(6, OUTPUT);       // Motor A 방향설정1
-  pinMode(7, OUTPUT);       // Motor A 방향설정2
-  pinMode(4, OUTPUT);       // Motor B 방향설정1
-  pinMode(5, OUTPUT);       // Motor B 방향설정2
+  pinMode(WaterPumpA1, OUTPUT);       // Motor A 방향설정1
+  pinMode(WaterPumpA2, OUTPUT);       // Motor A 방향설정2
+  pinMode(WaterPumpB1, OUTPUT);       // Motor B 방향설정1
+  pinMode(WaterPumpB2, OUTPUT);       // Motor B 방향설정2
 
 }
 
@@ -21,10 +30,29 @@ void loop() {
 
   float temperature = getTemp();
   Serial.println(temperature);
-   
-  delay(2000);
 
-  getMoter();
+  /*모터A 동작*/
+  analogWrite(WaterPumpA1, 255);     // Motor A 방향설정1
+  analogWrite(WaterPumpA2, 0);      // Motor A 방향설정2
+  delay(1000);                   // 3초 유지
+
+  /*모터A 멈춤*/
+  analogWrite(WaterPumpA1, 0);     // Motor A 정지
+  analogWrite(WaterPumpA2, 0);
+  delay(3000);                   // 3초 유지
+
+  /*모터B 동작*/
+  analogWrite(WaterPumpB1, 255);     // Motor A 방향설정1
+  analogWrite(WaterPumpB2, 0);      // Motor A 방향설정2
+  delay(1000);                   // 3초 유지
+
+   /*모터B 멈춤*/
+  analogWrite(WaterPumpB1, 0);     // Motor A 정지
+  analogWrite(WaterPumpB2, 0);
+  delay(3000);
+
+  myServo.write(90); // 서보모터 이동
+  delay(1000); // 서보모터 이동이 끝날 때까지 잠깐 대기
 
 }
 
@@ -77,49 +105,24 @@ float getTemp(){
 }
 
 void getMoter() {
-  /*모터A설정*/
-
-  digitalWrite(7, HIGH);     // Motor A 방향설정1
-  digitalWrite(8, LOW);      // Motor A 방향설정2
-  analogWrite(9, 100);       // Motor A 속도조절 (0~255)
-  /*모터B설정*/
-  digitalWrite(4, LOW);      // Motor B 방향설정1
-  digitalWrite(5, HIGH);     // Motor B 방향설정2
-  analogWrite(3, 50);        // Motor B 속도조절 (0~255)
+  
+  /*모터A 동작*/
+  analogWrite(WaterPumpA1, HIGH);     // Motor A 방향설정1
+  analogWrite(WaterPumpA2, LOW);      // Motor A 방향설정2
   delay(1000);                   // 3초 유지
 
-
-  
-
-  digitalWrite(7, LOW);     // Motor A 방향설정1
-  digitalWrite(8, LOW);      // Motor A 방향설정2
-  analogWrite(9, 100);       // Motor A 속도조절 (0~255)
-  /*모터B설정*/
-  digitalWrite(4, LOW);      // Motor B 방향설정1
-  digitalWrite(5, LOW);     // Motor B 방향설정2
-  analogWrite(3, 50);        // Motor B 속도조절 (0~255)
+  /*모터A 멈춤*/
+  analogWrite(WaterPumpA1, LOW);     // Motor A 정지
+  analogWrite(WaterPumpA2, LOW);
   delay(3000);                   // 3초 유지
 
+  /*모터B 동작*/
+  analogWrite(WaterPumpB1, HIGH);     // Motor A 방향설정1
+  analogWrite(WaterPumpB2, LOW);      // Motor A 방향설정2
+  delay(1000);                   // 3초 유지
 
-
-  /*모터A설정*/
-  digitalWrite(7, LOW);      // Motor A 방향설정1
-  digitalWrite(8, HIGH);     // Motor A 방향설정2
-  analogWrite(9, 200);      // Motor A 속도조절 (0~255)
-  /*모터B설정*/
-  digitalWrite(4, HIGH);    // Motor B 방향설정1
-  digitalWrite(5, LOW);     // Motor B 방향설정2
-  analogWrite(3, 150);      // Motor B 속도조절 (0~255)
-  delay(1000);                    // 3초 유지
-
-
-
-  digitalWrite(7, LOW);     // Motor A 방향설정1
-  digitalWrite(8, LOW);      // Motor A 방향설정2
-  analogWrite(9, 100);       // Motor A 속도조절 (0~255)
-  /*모터B설정*/
-  digitalWrite(4, LOW);      // Motor B 방향설정1
-  digitalWrite(5, LOW);     // Motor B 방향설정2
-  analogWrite(3, 50);        // Motor B 속도조절 (0~255)
-  delay(3000); 
+   /*모터B 멈춤*/
+  analogWrite(WaterPumpB1, LOW);     // Motor A 정지
+  analogWrite(WaterPumpB2, LOW);
+  delay(3000);                   // 3초 유지
 }
