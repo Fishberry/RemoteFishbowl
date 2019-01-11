@@ -1,0 +1,128 @@
+#include <OneWire.h>
+#include <Servo.h>
+ 
+const int DS18S20_Pin = 2; // DS18S20 방수온도센서 2번핀
+const int WaterPumpA1 = 6; // 워터펌프 A의 첫번째핀
+const int WaterPumpA2 = 7; // 워터펌프 A의 두번째핀
+const int WaterPumpB1 = 4; // 워터펌프 B의 첫번째핀
+const int WaterPumpB2 = 5; // 워터펌프 B의 두번째핀
+const int SERVO = 8;       // 서보모터 9번핀
+
+Servo myServo;
+
+//Temperature chip i/o
+OneWire ds(DS18S20_Pin);            // on digital pin 2
+
+void setup() {
+
+  myServo.attach(SERVO);              // 서보모터 연결
+  Serial.begin(9600);
+  pinMode(WaterPumpA1, OUTPUT);       // Motor A 방향설정1
+  pinMode(WaterPumpA2, OUTPUT);       // Motor A 방향설정2
+  pinMode(WaterPumpB1, OUTPUT);       // Motor B 방향설정1
+  pinMode(WaterPumpB2, OUTPUT);       // Motor B 방향설정2
+
+}
+
+
+
+void loop() {
+
+  float temperature = getTemp();
+  Serial.println(temperature);
+
+  /*모터A 동작*/
+  analogWrite(WaterPumpA1, 255);     // Motor A 방향설정1
+  analogWrite(WaterPumpA2, 0);      // Motor A 방향설정2
+  delay(1000);                   // 3초 유지
+
+  /*모터A 멈춤*/
+  analogWrite(WaterPumpA1, 0);     // Motor A 정지
+  analogWrite(WaterPumpA2, 0);
+  delay(3000);                   // 3초 유지
+
+  /*모터B 동작*/
+  analogWrite(WaterPumpB1, 255);     // Motor A 방향설정1
+  analogWrite(WaterPumpB2, 0);      // Motor A 방향설정2
+  delay(1000);                   // 3초 유지
+
+   /*모터B 멈춤*/
+  analogWrite(WaterPumpB1, 0);     // Motor A 정지
+  analogWrite(WaterPumpB2, 0);
+  delay(3000);
+
+  myServo.write(90); // 서보모터 이동
+  delay(1000); // 서보모터 이동이 끝날 때까지 잠깐 대기
+
+}
+
+float getTemp(){
+  //returns the temperature from one DS18S20 in DEG Celsius
+ 
+  byte data[12];
+  byte addr[8];
+ 
+  if ( !ds.search(addr)) {
+      //no more sensors on chain, reset search
+      Serial.println("no more sensors on chain, reset search!");
+      ds.reset_search();
+      return -1000;
+  }
+ 
+  if ( OneWire::crc8( addr, 7) != addr[7]) {
+      Serial.println("CRC is not valid!");
+      return -1000;
+  }
+ 
+  if ( addr[0] != 0x10 && addr[0] != 0x28) {
+      Serial.print("Device is not recognized");
+      return -1000;
+  }
+ 
+  ds.reset();
+  ds.select(addr);
+  ds.write(0x44,1); // start conversion, with parasite power on at the end
+ 
+  byte present = ds.reset();
+  ds.select(addr);    
+  ds.write(0xBE); // Read Scratchpad
+ 
+   
+  for (int i = 0; i < 9; i++) { // we need 9 bytes
+    data[i] = ds.read();
+  }
+   
+  ds.reset_search();
+   
+  byte MSB = data[1];
+  byte LSB = data[0];
+ 
+  float tempRead = ((MSB << 8) | LSB); //using two's compliment
+  float TemperatureSum = tempRead / 16;
+   
+  return TemperatureSum;
+   
+}
+
+void getMoter() {
+  
+  /*모터A 동작*/
+  analogWrite(WaterPumpA1, HIGH);     // Motor A 방향설정1
+  analogWrite(WaterPumpA2, LOW);      // Motor A 방향설정2
+  delay(1000);                   // 3초 유지
+
+  /*모터A 멈춤*/
+  analogWrite(WaterPumpA1, LOW);     // Motor A 정지
+  analogWrite(WaterPumpA2, LOW);
+  delay(3000);                   // 3초 유지
+
+  /*모터B 동작*/
+  analogWrite(WaterPumpB1, HIGH);     // Motor A 방향설정1
+  analogWrite(WaterPumpB2, LOW);      // Motor A 방향설정2
+  delay(1000);                   // 3초 유지
+
+   /*모터B 멈춤*/
+  analogWrite(WaterPumpB1, LOW);     // Motor A 정지
+  analogWrite(WaterPumpB2, LOW);
+  delay(3000);                   // 3초 유지
+}
