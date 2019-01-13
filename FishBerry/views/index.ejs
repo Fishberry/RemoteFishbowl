@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <%- include('header') %>
+    <div class="body">
+      <h1><%= title %></h1>
+      <p>안녕하세요. <%= title %> 홈페이지 입니다 </p>
+    </div>
+    <%- include('footer') %>
   </body>
 </html>
