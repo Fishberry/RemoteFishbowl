@@ -1,3 +1,3 @@
-# RemoteFishbowl
+# FishBerry Node.js 웹 사이트
 
-Remote Fishbowl Management System(using Aduino and Raspberry Pi)
+파일을 내려받은 후 모듈설치를 위해 폴더 내에 콘솔을 위치시킨 후 npm i 명령어로 모듈을 다운받아 주세요.  
