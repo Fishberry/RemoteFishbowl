@@ -20,7 +20,7 @@ var com55 = new serialPort('COM55',{
   stopBits: 1,
   flowControl: false
 });
-com55.on('open', function () {
+com55.on('open', () => {
   console.log('open serial communication');
 });
 
