@@ -1,5 +1,7 @@
 # 아두이노 관련 자료들 모음
 
+* 아두이노에 사용할 센서 및 부품 : 방수온도센서(DS18B20), pH수질측정센서(Analog pH Meter), 워터펌프(샤플로펌프(DC모터)), 서보모터(SG5010)
+
 각 라이브러리 설치방법 : 아두이노 설치폴더 내 libraries 폴더에 zip파일 풀어서 저장.  
 
 Adafruit-Motor-Shield-library-master : L293D 모터드라이터에서 사용되는 라이브러리  
