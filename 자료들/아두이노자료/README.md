@@ -12,6 +12,7 @@ OneWire-master : 방수온도센서에 사용되는 라이브러리
 
 방수온도센서는 노란색은 D2\~D13중 D2에 꽂아보았다. 빨간색은 5V, 검정색은 GND이다.  
 ph센서는 파란색은 A0\~A6 아날로그입력, 빨간색은 5V, 검정색은 GND이다.  
+ph센서에 대해 받아놓은 물을 처음 측정했을 때 9.8이었는데 일주일 후 받아놓은 물을 측정해도 결과는 같았다. 결국 물 자체의  떨어지지 않는다.
 
 방수온도센서 관련 자료페이지 : https://www.dfrobot.com/wiki/index.php/Terminal_sensor_adapter_V2.0_(SKU:DFR0055)
 pH센서 관련 자료페이지 : https://blog.naver.com/roboholic84/220550642030
