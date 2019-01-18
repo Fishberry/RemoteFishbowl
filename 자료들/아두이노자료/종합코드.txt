@@ -12,6 +12,7 @@ const int SERVO = 8;       // 서보모터 8번핀
 
 Servo myServo;  // 서보모터 인스턴스 변수
 RTC_DS1307 RTC; // RTC 인스턴스 변수
+String year, month, day, hour, minute, second, time, date;
 OneWire ds(DS18S20_Pin);  // getTemperature함수에 사용할 방수온도센서관련 인스턴스
 
 void setup() {
@@ -29,22 +30,25 @@ void setup() {
     RTC.adjust(DateTime(__DATE__, __TIME__));
   }
 
-  /* 워터펌프 */
+  /* 워터펌ㄴ프 */
   pinMode(WaterPumpA1, OUTPUT);       // Motor A 방향설정1
   pinMode(WaterPumpA2, OUTPUT);       // Motor A 방향설정2
   pinMode(WaterPumpB1, OUTPUT);       // Motor B 방향설정1
   pinMode(WaterPumpB2, OUTPUT);       // Motor B 방향설정2
-  
+
 }
 
 void loop() {
 
-  /* 온도 */
+  String userHour = "14"; // 사용자 시간입력 예시변수
+  String userMinute = "8";  // 사용자 시간입력 예시변수
+
+  /* RTC 시간 구하기 */
+  if( getTime(userHour, userMinute )) operateMotor();
+  /* 온도 구하기 */
   float temperature = getTemp();
   Serial.print("현재온도: ");
   Serial.println(temperature);
-
-  getMoter();
 
   /* 서보모터 180도 회전 */
   for(int i=0; i<180; i++) {
@@ -53,10 +57,34 @@ void loop() {
   }
   myServo.write(0);
   delay(1000);
-
-  /* RTC 1초마다 시간 출력 */
-  getTime();
   
+}
+
+boolean getTime(String userHour, String userMinute) {
+  
+  DateTime now = RTC.now();
+  Serial.print(now.year(), DEC);  // 년
+  year = String(now.year(), DEC);
+  Serial.print('/');
+  Serial.print(now.month(), DEC);  // 월
+  month = String(now.month(), DEC);
+  Serial.print('/');
+  Serial.print(now.day(), DEC);   // 일
+  day = String(now.day(), DEC);
+  Serial.print(' ');
+  Serial.print(now.hour(), DEC);    // 시간
+  hour = String(now.hour(), DEC);
+  Serial.print(':');
+  Serial.print(now.minute(), DEC);   // 분
+  minute = String(now.minute(), DEC);
+  Serial.print(':');
+  Serial.print(now.second(), DEC);   // 초
+  second = String(now.second(), DEC);
+  Serial.print(' ');
+  Serial.println();
+  delay(1000);
+  if( hour == userHour && minute == userMinute ) return true;
+  else return false;
 }
 
 float getTemp(){
@@ -106,7 +134,7 @@ float getTemp(){
    
 }
 
-void getMoter() {
+void operateMotor() {
   
   /*모터A 동작*/
   analogWrite(WaterPumpA1, 255);     // Motor A 방향설정1
@@ -127,23 +155,4 @@ void getMoter() {
   analogWrite(WaterPumpB1, 0);     // Motor A 정지
   analogWrite(WaterPumpB2, 0);
   delay(3000);                   // 3초 대기
-}
-
-void getTime() {
-  
-  DateTime now = RTC.now();
-  Serial.print(now.year(), DEC);  // 년
-  Serial.print('/');
-  Serial.print(now.month(), DEC);  // 월
-  Serial.print('/');
-  Serial.print(now.day(), DEC);   // 일
-  Serial.print(' ');
-  Serial.print(now.hour(), DEC);    // 시간
-  Serial.print(':');
-  Serial.print(now.minute(), DEC);   // 분
-  Serial.print(':');
-  Serial.print(now.second(), DEC);   // 초
-  Serial.print(' ');
-  Serial.println();
-  delay(1000);
 }
