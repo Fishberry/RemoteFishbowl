@@ -1,34 +1,120 @@
 ﻿#include <mthread.h>
+#include <OneWire.h>
+#include <Servo.h>
+#include <Wire.h>
+#include "RTClib.h"
 
-class FooThread : public Thread
+const int DS18S20_Pin = 2; // DS18S20 방수온도센서 2번핀
+const int WaterPumpA1 = 6; // 워터펌프 A의 첫번째핀
+const int WaterPumpA2 = 7; // 워터펌프 A의 두번째핀
+const int WaterPumpB1 = 4; // 워터펌프 B의 첫번째핀
+const int WaterPumpB2 = 5; // 워터펌프 B의 두번째핀
+const int SERVO = 8;       // 서보모터 8번핀
+
+Servo myServo;  // 서보모터 인스턴스 변수
+RTC_DS1307 RTC; // RTC 인스턴스 변수
+String year, month, day, hour, minute, second, time, date;
+OneWire ds(DS18S20_Pin);  // getTemperature함수에 사용할 방수온도센서관련 인스턴스
+
+class TempThread : public Thread
 {
 public:
-    FooThread(int id);
+  bool isTemp;
+  TempThread();
 protected:
     bool loop();
-private:
-    int id;
 };
- 
-FooThread::FooThread(int id)
+TempThread::TempThread()
 {
-    this->id = id;
+  isTemp = false;
 }
- 
-bool FooThread::loop()
+boolean TempThread::loop()
 {
- 
+
     // Die if requested:
     if(kill_flag)
         return false;
+    // Task
+    // Serial.println("Hello TempThread ");
+    byte data[12];
+    byte addr[8];
  
-    // Print the status message:
-    Serial.print("FooThread ");
-    Serial.print(id);
-    Serial.println(" called.");
+  if ( !ds.search(addr)) {
+      //no more sensors on chain, reset search
+      Serial.println("no more sensors on chain, reset search!");
+      ds.reset_search();
+      return -1000;
+  }
  
+  if ( OneWire::crc8( addr, 7) != addr[7]) {
+      Serial.println("CRC is not valid!");
+      return -1000;
+  }
+ 
+  if ( addr[0] != 0x10 && addr[0] != 0x28) {
+      Serial.print("Device is not recognized");
+      return -1000;
+  }
+ 
+  ds.reset();
+  ds.select(addr);
+  ds.write(0x44,1); // start conversion, with parasite power on at the end
+ 
+  byte present = ds.reset();
+  ds.select(addr);    
+  ds.write(0xBE); // Read Scratchpad
+ 
+   
+  for (int i = 0; i < 9; i++) { // we need 9 bytes
+    data[i] = ds.read();
+  }
+   
+  ds.reset_search();
+   
+  byte MSB = data[1];
+  byte LSB = data[0];
+ 
+  float tempRead = ((MSB << 8) | LSB); //using two's compliment
+  float TemperatureSum = tempRead / 16;
+   Serial.print("현재온도: ");
+  Serial.println(TemperatureSum);
     // Sleep for one second:
     sleep(1);
+    return true;
+
+    if( TemperatureSum > 27 ) isTemp = true;
+ 
+}
+
+class ServoThread : public Thread
+{
+public:
+    ServoThread();
+protected:
+    bool loop();
+private:
+    Servo myServo;
+    int degree;
+};
+ServoThread::ServoThread()
+{
+  myServo.attach(SERVO);
+  degree = 0;
+}
+boolean ServoThread::loop()
+{
+    // Die if requested:
+    if(kill_flag) return false;
+    // Task
+    // Serial.println("Hello ServoThread ");
+    myServo.write(++degree); // 서보모터 이동
+    sleep_milli(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
+    if( degree == 180 ){
+      myServo.write(0);
+      degree = 0;
+      sleep_milli(1000);
+      kill_flag = true;
+    }
     return true;
  
 }
@@ -37,11 +123,9 @@ void setup()
 {
  
     // Create five threads and add them to the main ThreadList:
-    for(int i = 1; i <= 5; i++)
-        main_thread_list->add_thread(new FooThread(i));
- 
+    main_thread_list->add_thread(new TempThread());
+    main_thread_list->add_thread(new ServoThread());
     // Initialize the serial connection:
     Serial.begin(9600);
-    delay(1000);
  
 }
