@@ -1,6 +1,4 @@
-// 현재 방수온도가 온도 재고나서, 워터펌프A와 워터펌프B가 동작한 후, 서보모터가 180도 돌아가는 
-
-#include <OneWire.h>
+﻿#include <OneWire.h>
 #include <Servo.h>
  
 const int DS18S20_Pin = 2; // DS18S20 방수온도센서 2번핀
@@ -8,7 +6,7 @@ const int WaterPumpA1 = 6; // 워터펌프 A의 첫번째핀
 const int WaterPumpA2 = 7; // 워터펌프 A의 두번째핀
 const int WaterPumpB1 = 4; // 워터펌프 B의 첫번째핀
 const int WaterPumpB2 = 5; // 워터펌프 B의 두번째핀
-const int SERVO = 8;       // 서보모터 9번핀
+const int SERVO = 8;       // 서보모터 8번핀
 
 Servo myServo;
 
@@ -29,19 +27,20 @@ void setup() {
 
 
 void loop() {
-
+  
   float temperature = getTemp();
+  Serial.print("현재온도: ");
   Serial.println(temperature);
 
   getMoter();
 
-  delay(1000); // 서보모터 동작 전 잠깐 대기
+  // 서보모터 180도 회전
   for(int i=0; i<180; i++) {
     myServo.write(i); // 서보모터 이동
     delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
   }
   myServo.write(0);
-  delay(15);
+  delay(1000);
 }
 
 float getTemp(){
@@ -97,20 +96,20 @@ void getMoter() {
   /*모터A 동작*/
   analogWrite(WaterPumpA1, 255);     // Motor A 방향설정1
   analogWrite(WaterPumpA2, 0);      // Motor A 방향설정2
-  delay(1000);                   // 3초 유지
+  delay(1000);                   // 1초 동작
 
   /*모터A 멈춤*/
   analogWrite(WaterPumpA1, 0);     // Motor A 정지
   analogWrite(WaterPumpA2, 0);
-  delay(3000);                   // 3초 유지
+  delay(3000);                   // 3초 대기
 
   /*모터B 동작*/
   analogWrite(WaterPumpB1, 255);     // Motor A 방향설정1
   analogWrite(WaterPumpB2, 0);      // Motor A 방향설정2
-  delay(1000);                   // 3초 유지
+  delay(1000);                   // 1초 동작
 
    /*모터B 멈춤*/
   analogWrite(WaterPumpB1, 0);     // Motor A 정지
   analogWrite(WaterPumpB2, 0);
-  delay(3000);                   // 3초 유지
+  delay(3000);                   // 3초 대기
 }
