@@ -1,5 +1,7 @@
 ﻿#include <OneWire.h>
 #include <Servo.h>
+#include <Wire.h>
+#include "RTClib.h"
  
 const int DS18S20_Pin = 2; // DS18S20 방수온도센서 2번핀
 const int WaterPumpA1 = 6; // 워터펌프 A의 첫번째핀
@@ -8,43 +10,56 @@ const int WaterPumpB1 = 4; // 워터펌프 B의 첫번째핀
 const int WaterPumpB2 = 5; // 워터펌프 B의 두번째핀
 const int SERVO = 8;       // 서보모터 8번핀
 
-Servo myServo;
-
-//Temperature chip i/o
-OneWire ds(DS18S20_Pin);            // on digital pin 2
+Servo myServo;  // 서보모터 인스턴스 변수
+RTC_DS1307 RTC; // RTC 인스턴스 변수
+OneWire ds(DS18S20_Pin);  // getTemperature함수에 사용할 방수온도센서관련 인스턴스
 
 void setup() {
-
-  myServo.attach(SERVO);              // 서보모터 연결
+  
   Serial.begin(9600);
+  /* 서보모터 */
+  myServo.attach(SERVO);
+  
+  /* RTC */
+  // I^2C버스와 RTC 모두 시작
+  Wire.begin();
+  RTC.begin();
+  // RTC에 시간이 설정되지 않았으면 컴퓨터 시간으로 설정
+  if(!RTC.isrunning()) {
+    RTC.adjust(DateTime(__DATE__, __TIME__));
+  }
+
+  /* 워터펌프 */
   pinMode(WaterPumpA1, OUTPUT);       // Motor A 방향설정1
   pinMode(WaterPumpA2, OUTPUT);       // Motor A 방향설정2
   pinMode(WaterPumpB1, OUTPUT);       // Motor B 방향설정1
   pinMode(WaterPumpB2, OUTPUT);       // Motor B 방향설정2
-
+  
 }
 
-
-
 void loop() {
-  
+
+  /* 온도 */
   float temperature = getTemp();
   Serial.print("현재온도: ");
   Serial.println(temperature);
 
   getMoter();
 
-  // 서보모터 180도 회전
+  /* 서보모터 180도 회전 */
   for(int i=0; i<180; i++) {
     myServo.write(i); // 서보모터 이동
     delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
   }
   myServo.write(0);
   delay(1000);
+
+  /* RTC 1초마다 시간 출력 */
+  getTime();
+  
 }
 
 float getTemp(){
-  //returns the temperature from one DS18S20 in DEG Celsius
  
   byte data[12];
   byte addr[8];
@@ -112,4 +127,23 @@ void getMoter() {
   analogWrite(WaterPumpB1, 0);     // Motor A 정지
   analogWrite(WaterPumpB2, 0);
   delay(3000);                   // 3초 대기
+}
+
+void getTime() {
+  
+  DateTime now = RTC.now();
+  Serial.print(now.year(), DEC);  // 년
+  Serial.print('/');
+  Serial.print(now.month(), DEC);  // 월
+  Serial.print('/');
+  Serial.print(now.day(), DEC);   // 일
+  Serial.print(' ');
+  Serial.print(now.hour(), DEC);    // 시간
+  Serial.print(':');
+  Serial.print(now.minute(), DEC);   // 분
+  Serial.print(':');
+  Serial.print(now.second(), DEC);   // 초
+  Serial.print(' ');
+  Serial.println();
+  delay(1000);
 }
