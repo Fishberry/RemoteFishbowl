@@ -1,0 +1,130 @@
+#include <OneWire.h>
+#include <Servo.h>
+#include <mthread.h>
+
+const int DS18S20_Pin = 2; // DS18S20 방수온도센서 2번핀
+const int SERVO = 8;       // 서보모터 8번핀
+static int tt = 1;
+static int started = 0;
+
+Servo myServo;  // 서보모터 인스턴스 변수
+OneWire ds(DS18S20_Pin);  // getTemperature함수에 사용할 방수온도센서관련 인스턴스
+
+class TempThread : public Thread
+{
+public:
+    bool isTemp;
+    TempThread();
+protected:
+    bool loop();
+};
+TempThread::TempThread()
+{
+    isTemp = false;
+}
+boolean TempThread::loop()
+{
+
+    // Die if requested:
+    if(kill_flag)
+        return false;
+    // Task
+    // Serial.println("Hello TempThread ");
+    byte data[12];
+    byte addr[8];
+ 
+  if ( !ds.search(addr)) {
+      //no more sensors on chain, reset search
+      Serial.println("no more sensors on chain, reset search!");
+      ds.reset_search();
+      return -1000;
+  }
+ 
+  if ( OneWire::crc8( addr, 7) != addr[7]) {
+      Serial.println("CRC is not valid!");
+      return -1000;
+  }
+ 
+  if ( addr[0] != 0x10 && addr[0] != 0x28) {
+      Serial.print("Device is not recognized");
+      return -1000;
+  }
+ 
+  ds.reset();
+  ds.select(addr);
+  ds.write(0x44,1); // start conversion, with parasite power on at the end
+ 
+  byte present = ds.reset();
+  ds.select(addr);    
+  ds.write(0xBE); // Read Scratchpad
+ 
+   
+  for (int i = 0; i < 9; i++) { // we need 9 bytes
+    data[i] = ds.read();
+  }
+   
+  ds.reset_search();
+   
+  byte MSB = data[1];
+  byte LSB = data[0];
+ 
+  float tempRead = ((MSB << 8) | LSB); //using two's compliment
+  float TemperatureSum = tempRead / 16;
+  Serial.print("현재온도: ");
+  Serial.println(TemperatureSum);
+  // Sleep for one second:
+  if( TemperatureSum > 25 ) {
+    isTemp = true;
+    tt = 0;
+  }
+  else tt = 1;
+  sleep(1);
+  return true;
+ 
+}
+
+class ServoThread : public Thread
+{
+public:
+    ServoThread();
+protected:
+    bool loop();
+private:
+    Servo myServo;
+};
+ServoThread::ServoThread()
+{
+  myServo.attach(SERVO);
+}
+boolean ServoThread::loop()
+{
+    // Die if requested:
+    if(kill_flag) return false;
+    // Task
+    // Serial.println("Hello ServoThread ");
+
+    if( tt == 0 && started == 0 ) {
+      started = 1;
+      for(int i; i < 180; i++) {
+        myServo.write(i); // 서보모터 이동
+        delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
+      }
+      myServo.write(0);
+      delay(1000);
+      tt = 1;
+      started = 0;
+      //kill_flag = true;
+    }
+    return true;
+}
+ 
+void setup()
+{
+ 
+    // Create five threads and add them to the main ThreadList:
+    main_thread_list->add_thread(new TempThread());
+    main_thread_list->add_thread(new ServoThread());
+    // Initialize the serial connection:
+    Serial.begin(9600);
+ 
+}
