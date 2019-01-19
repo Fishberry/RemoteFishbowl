@@ -4,8 +4,8 @@
 
 const int DS18S20_Pin = 2; // DS18S20 방수온도센서 2번핀
 const int SERVO = 8;       // 서보모터 8번핀
-static int tt = 1;
-static int started = 0;
+static int tt = 0;         // 온도 27도일 때 1로 변경댐
+static int started = 0;    // 시작 중이거나 아니거나를 
 
 Servo myServo;  // 서보모터 인스턴스 변수
 OneWire ds(DS18S20_Pin);  // getTemperature함수에 사용할 방수온도센서관련 인스턴스
@@ -75,9 +75,9 @@ boolean TempThread::loop()
   // Sleep for one second:
   if( TemperatureSum > 25 ) {
     isTemp = true;
-    tt = 0;
+    tt = 1;
   }
-  else tt = 1;
+  else tt = 0;
   sleep(1);
   return true;
  
@@ -98,21 +98,22 @@ ServoThread::ServoThread()
 }
 boolean ServoThread::loop()
 {
+    if ( tt == 0 ) myServo.write(0);    // 온도가 27도가 안넘으면 서보각도는 0도로 고정
     // Die if requested:
     if(kill_flag) return false;
     // Task
     // Serial.println("Hello ServoThread ");
 
-    if( tt == 0 && started == 0 ) {
-      started = 1;
+    if( tt == 1 && started == 0 ) {     // 온도가 27도가 넘었거나 시작중이 아니라면 진행
+      started = 1;                      // 시작중으로 변경
       for(int i; i < 180; i++) {
-        myServo.write(i); // 서보모터 이동
-        delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
+        myServo.write(i);               // 0도부터 180도까지 서보모터 이동
+        delay(15);                      // 서보모터 이동이 끝날 때까지 잠깐 대기
       }
-      myServo.write(0);
-      delay(1000);
-      tt = 1;
-      started = 0;
+      myServo.write(0);                 // 완료 후 0도로 다시 지정
+      delay(1000);                      // 잠시 1초 대기
+      tt = 0;                           // tt를 0으로 초기화
+      started = 0;                      // 시작 중을 0으로 초기화
       //kill_flag = true;
     }
     return true;
