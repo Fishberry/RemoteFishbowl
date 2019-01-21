@@ -1,3 +1,11 @@
+/*
+[코드 간략설명]
+아두이노에 워터펌프, 서보모터, RTC모듈만 연결되어있다.
+사용자로부터 2를 입력받으면 서보모터가 함수코딩대로 동작.
+사용자로부터 3을 입력받으면 워터펌프가 함수코딩대로 동작.
+시리얼모니터에 RTC 실시간 시간이 출력
+*/
+
 #include <Servo.h>
 #include <Wire.h>
 #include "RTClib.h"
@@ -40,16 +48,28 @@ void loop() {
   String userHour = "18"; // 사용자 시간입력 예시변수
   String userMinute = "48";  // 사용자 시간입력 예시변수
 
+  if(Serial.available())    // 시리얼 통신 활성화
+  {
+    char c = Serial.read(); // 시리얼통신 사용자 입력
+    
+    if(c == '1')  // 1을 입력받았으면 다음을 실행
+    {
+      //getTemp();
+    }
+    if(c == '2')
+    {
+      operateServo();
+    }
+    if(c == '3')
+    {
+      operateMotor();
+    }
+    
+    c = '4';
+  }
+
   /* RTC 시간 구하기 */
   if( getTime(userHour, userMinute )) operateMotor();
-
-  /* 서보모터 180도 회전 */
-  for(int i=0; i<180; i++) {
-    myServo.write(i); // 서보모터 이동
-    delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
-  }
-  myServo.write(0);
-  delay(1000);
   
 }
 
@@ -101,4 +121,15 @@ void operateMotor() {
   analogWrite(WaterPumpB1, 0);     // Motor A 정지
   analogWrite(WaterPumpB2, 0);
   delay(3000);                   // 3초 대기
+}
+
+void operateServo()
+{
+  /* 서보모터 180도 회전 */
+  for(int i=0; i<180; i++) {
+    myServo.write(i); // 서보모터 이동
+    delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
+  }
+  myServo.write(0);
+  delay(1000);
 }
