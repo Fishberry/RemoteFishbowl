@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
 
 router.get('/main/:id', (req, res) => {
 	console.log(req.params.id);
-	com6.write(req.params.id);
+	//com6.write(req.params.id);
 	res.status(200).send('Serial Controll OK!!');
 });
 

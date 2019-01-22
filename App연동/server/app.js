@@ -10,14 +10,14 @@ const morgan = require('morgan');
 const mainpageRouter = require('./routes/mainpage');
 
 const serialPort = require('serialport');
-const com6 = new serialPort('COM6', {
+const arduinoPort = new serialPort('COM6', {
 	baudRate: 9600,
 	dataBits: 8,
 	parity: 'none',
 	stopBits: 1,
 	flowControl: false
 });
-com6.on('open', () => {
+arduinoPort.on('open', () => {
 	console.log('open serial communication');
 });
 
@@ -67,7 +67,7 @@ io.sockets.on('connection', function (socket){
     console.log('Socket ID : ' + socket.id + ', Connect');
     socket.on('reqMsg', function(data){
         console.log('Client Message : ' + data);
-        com6.write(data);
+        arduinoPort.write(data);
         socket.emit('serverMessage', temperature);
     });
  });
