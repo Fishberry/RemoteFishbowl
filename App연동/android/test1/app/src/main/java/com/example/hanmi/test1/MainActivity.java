@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         try {
-            socket = IO.socket("http://192.168.0.104:3000");
+            socket = IO.socket("http://59.27.250.254:3000");
             socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
-            }).on("serverMessage", (Object... objects) -> {
+            }).on("serverMsg", (Object... objects) -> {
                 runOnUiThread(()->{
                     tvMain.setText(objects[0].toString());
                 });

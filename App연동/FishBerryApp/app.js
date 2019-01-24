@@ -1,13 +1,12 @@
 const express = require('express');
 const http = require('http');
-const fs = require('fs');
 const app = express();
 const path = require('path');
-const socketio = require('socket.io');
 const server = http.createServer(app);
 const morgan = require('morgan');
 
 const mainpageRouter = require('./routes/mainpage');
+const webSocket = require('./socket');
 
 const serialPort = require('serialport');
 const arduinoPort = new serialPort('COM6', {
@@ -21,22 +20,10 @@ arduinoPort.on('open', () => {
 	console.log('open serial communication');
 });
 
-let temperature = 0.0;
-fs.readFile('/sys/bus/w1/devices/28-020d9246133d/w1_slave', 'utf8', (err, data) => {
-	console.log(data);
-
-	var text = data;
-	//var first = text.substring(69,71);
-	//var second = text.substring(71,74);
-	var first = 24;
-	var second = 512;
-	temperature = `${first}.${second}`;
-	console.log("Temperature : " + temperature);
-});
-
+// 템플릿 엔진 및 views 폴더 지정
 app.set('views', path.join(__dirname, 'views'));
 app.set('view-engine', 'ejs');
-app.set('port', 3000);
+app.set('port', 3000);		// 포트번호를 3000으로 지정
 
 // 미들웨어 구성
 app.use(morgan('dev'));		// 요청에 대한 정보를 콘솔에 기록
@@ -62,16 +49,9 @@ app.use((err, req, res) => {
 	res.render('error');
 });
 
-const io = socketio.listen(server);
-io.sockets.on('connection', function (socket){ 
-    console.log('Socket ID : ' + socket.id + ', Connect');
-    socket.on('reqMsg', function(data){
-        console.log('Client Message : ' + data);
-        arduinoPort.write(data);
-        socket.emit('serverMessage', temperature);
-    });
- });
-
 server.listen(app.get('port'), () => {
 	console.log('Server Start...!! Port : ', app.get('port'));
 });
+
+// 웹 소켓 js파일에 데이터 전달
+webSocket(server);
