@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MenuActivity"
+    android:background="@color/skyblue">
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/webViewLine">
+
+    </WebView>
+    <View
+        android:id="@+id/webViewLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="180dp"/>
+    <TextView
+        android:id="@+id/TemeratureTitle"
+        android:text="온도"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/pHTitle"
+        app:layout_constraintTop_toBottomOf="@id/webViewLine"
+        android:layout_marginTop="20dp"
+        app:layout_constraintHorizontal_chainStyle="spread"/>
+    <TextView
+        android:id="@+id/pHTitle"
+        android:text="수질"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/TemeratureTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/TemeratureTitle"
+        app:layout_constraintBottom_toBottomOf="@id/TemeratureTitle"/>
+
+    <!-- 이 아래는 네모칸 디자인 생기면 만들 다시 만들 예정 -->
+
+</android.support.constraint.ConstraintLayout>
