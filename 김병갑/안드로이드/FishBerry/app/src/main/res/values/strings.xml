@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">피쉬베리</string>
+    <string name="app_name">Fish Berry</string>
     <string name="version">v1.0.0</string>
     <color name="skyblue">#1E90FF</color>
     <color name="white">#FFFFFF</color>
