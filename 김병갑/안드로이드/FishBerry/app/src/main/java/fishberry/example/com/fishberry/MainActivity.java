@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("로그인화면으로")
-                .setMessage("로그인 화면으로 돌아가시겠습니까?")
+        builder.setTitle("종료")
+                .setMessage("종료 하시겠습니까?")
                 .setPositiveButton("예", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

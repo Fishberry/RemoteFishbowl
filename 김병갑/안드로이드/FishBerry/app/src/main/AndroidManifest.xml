@@ -26,7 +26,8 @@
         <activity android:name=".RegisterActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".MenuActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TemperActivity" android:label="TemperActivity"/>
     </application>
 
 </manifest>

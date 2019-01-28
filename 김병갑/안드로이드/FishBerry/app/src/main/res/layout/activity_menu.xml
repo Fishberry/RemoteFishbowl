@@ -94,7 +94,7 @@
         android:id="@+id/MainButton01"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="수온 및 오염도 확인"
+        android:text="수온 및 오염도 설정"
         app:layout_constraintTop_toBottomOf="@id/TempValue"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
