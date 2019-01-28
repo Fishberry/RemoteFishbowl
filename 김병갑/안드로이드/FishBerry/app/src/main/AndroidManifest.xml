@@ -11,10 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".TemperActivity" />
+        <activity android:name=".SettingActivity" />
         <activity android:name=".ManualActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,12 +31,6 @@
         <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".MenuActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TemperActivity"
-            android:label="TemperActivity" />
     </application>
 
 </manifest>

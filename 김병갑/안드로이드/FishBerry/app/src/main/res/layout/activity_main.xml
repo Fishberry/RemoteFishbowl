@@ -1,90 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:background="@color/skyblue">
 
     <TextView
-        android:id="@+id/loginText"
-        android:text="로그인"
-        android:textSize="30sp"
-        android:textStyle="bold"
+        android:id="@+id/StreamingTitle"
+        android:text="FishBerry Streaming"
+        android:textSize="15sp"
         android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="5dp" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/StreamingTitle"
+        app:layout_constraintBottom_toTopOf="@id/webViewLine"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+    </WebView>
+
+    <View
+        android:id="@+id/webViewLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="70dp"/>
-    <TextView
-        android:id="@+id/idText"
-        android:text="아이디 : "
-        android:textSize="25sp"
-        android:textColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/idEdit"
-        app:layout_constraintTop_toBottomOf="@id/loginText"
-        android:layout_marginTop="25dp"
-        app:layout_constraintHorizontal_chainStyle="packed"/>
-    <EditText
-        android:id="@+id/idEdit"
-        android:hint="                                   "
-        android:textSize="25sp"
-        android:textColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/idText"
-        app:layout_constraintTop_toTopOf="@id/idText"
-        app:layout_constraintBottom_toBottomOf="@id/idText"
-        app:layout_constraintEnd_toEndOf="parent"/>
-    <TextView
-        android:id="@+id/pwText"
-        android:text="비밀번호 : "
-        android:textSize="25sp"
-        android:textColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/pwEdit"
-        app:layout_constraintTop_toBottomOf="@id/idText"
-        android:layout_marginTop="25dp"
-        app:layout_constraintHorizontal_chainStyle="packed"/>
-    <EditText
-        android:id="@+id/pwEdit"
-        android:hint="                                   "
-        android:textSize="25sp"
-        android:textColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/pwText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/pwText"
-        app:layout_constraintBottom_toBottomOf="@id/pwText"/>
-    <Button
-        android:id="@+id/loginButton"
-        android:text="로그인"
-        android:textSize="25sp"
-        android:padding="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="100dp"
-        android:onClick="pushLoginButton"/>
+        android:layout_marginTop="180dp"/>
 
     <TextView
-        android:text="@string/version"
+        android:id="@+id/TempTitle"
+        android:text="온도"
+        android:textSize="20sp"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/pHTitle"
+        app:layout_constraintTop_toBottomOf="@id/webViewLine"
+        android:layout_marginTop="20dp"
+        app:layout_constraintHorizontal_chainStyle="spread"/>
+
+    <TextView
+        android:id="@+id/TempValue"
+        android:text="23.241"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/TempTitle"
+        app:layout_constraintEnd_toEndOf="@id/TempTitle"
+        app:layout_constraintTop_toBottomOf="@id/TempTitle"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/pHTitle"
+        android:text="pH"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/TempTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="15dp"/>
+        app:layout_constraintBottom_toBottomOf="@id/TempTitle"/>
+
+    <TextView
+        android:id="@+id/pHValue"
+        android:text="8.3"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/pHTitle"
+        app:layout_constraintEnd_toEndOf="@id/pHTitle"
+        app:layout_constraintBottom_toBottomOf="@id/TempValue" />
+
+    <!-- 이 아래는 네모칸 디자인 생기면 만들 다시 만들 예정 -->
+
+    <Button
+        android:id="@+id/MainButton01"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="수온 및 오염도 설정"
+        app:layout_constraintTop_toBottomOf="@id/TempValue"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/MainButton02"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="먹이급여 설정"
+        app:layout_constraintTop_toBottomOf="@id/MainButton01"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/MainButton03"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="부분환수 설정"
+        app:layout_constraintTop_toBottomOf="@id/MainButton02"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/MainButton04"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="실시간 어항 스트리밍"
+        app:layout_constraintTop_toBottomOf="@id/MainButton03"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"/>
 
 </android.support.constraint.ConstraintLayout>
