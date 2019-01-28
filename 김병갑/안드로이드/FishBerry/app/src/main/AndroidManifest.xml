@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ManualActivity"></activity>
+        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".ManualActivity" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

@@ -54,14 +54,16 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
 
         switch (item.getItemId()) {
             case R.id.usingGuide:
-                Intent intent = new Intent(MenuActivity.this, ManualActivity.class);
+                intent = new Intent(MenuActivity.this, ManualActivity.class);
                 startActivity(intent);
                 break;
             case R.id.userSetting:
-                Toast.makeText(this, "사용자 설정 클릭함", Toast.LENGTH_SHORT).show();
+                intent = new Intent(MenuActivity.this, SettingActivity.class);
+                startActivity(intent);
                 break;
             case R.id.Inquire:
                 Toast.makeText(this, "문의 클릭함.", Toast.LENGTH_SHORT).show();
