@@ -57,7 +57,8 @@ public class MenuActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.usingGuide:
-                Toast.makeText(this, "사용법 클릭함", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MenuActivity.this, ManualActivity.class);
+                startActivity(intent);
                 break;
             case R.id.userSetting:
                 Toast.makeText(this, "사용자 설정 클릭함", Toast.LENGTH_SHORT).show();
