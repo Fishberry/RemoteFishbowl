@@ -4,16 +4,38 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.*;
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
 public class FoodActivity extends AppCompatActivity {
 
     public static final int QUANTITY_OK = 1000;
+    private Button foodSettingDone;
+    private Socket socket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food);
+        try {
+            socket = IO.socket("http://192.168.0.114:3000");
+            socket.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        foodSettingDone = (Button) findViewById(R.id.foodSettingDone);
+    }
+
+    public void buttonClick(View v) {
+
+        //버튼의 아이디로 버튼 구분
+        switch (v.getId()) {
+            case R.id.foodSettingDone:
+                socket.emit("reqMsg", "2");
+                break;
+        }
     }
 
     public void userSettingFoodQuantity(View v) {
@@ -39,6 +61,13 @@ public class FoodActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
+        socket.disconnect();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        socket.disconnect();
     }
 }

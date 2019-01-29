@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     WebSettings webSettings;    //웹뷰 세팅 객체
     private Socket socket;
     private TextView tempValue;
-    private Button btnSubmit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +28,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tempValue = (TextView) findViewById(R.id.TempValue);
-        btnSubmit = (Button) findViewById(R.id.MainButton04);
+
+        try {
+            socket = IO.socket("http://192.168.0.114:3000");
+            socket.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Thread t = new Thread(new Runnable() {
 
@@ -39,7 +44,13 @@ public class MainActivity extends AppCompatActivity {
                 while (true) {
                     try {
                         socket.emit("reqMsg", "어플에서 온도값 받아갑니다");
-                        Thread.sleep(1000);
+                        socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
+                        }).on("serverMsg", (Object... objects) -> {
+                            runOnUiThread(()->{
+                                tempValue.setText(objects[0].toString());
+                            });
+                        });
+                        Thread.sleep(5000);
                     } catch (Exception e) {
 
                     }
@@ -47,19 +58,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         t.start();
-
-        try {
-            socket = IO.socket("http://192.168.0.114:3000");
-            socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
-            }).on("serverMsg", (Object... objects) -> {
-                runOnUiThread(()->{
-                    tempValue.setText(objects[0].toString());
-                });
-            });
-            socket.connect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         //웹뷰 객체 레이아웃 아이디와 매칭 및 설정
         webView = (WebView) findViewById(R.id.webView);
@@ -129,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("예", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        socket.disconnect();
                         finish();
                     }
                 })
@@ -138,5 +137,11 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        socket.connect();
     }
 }
