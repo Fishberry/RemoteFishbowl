@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FoodQuantityUserSettingActivity"
+    android:background="@color/skyblue">
+
+    <TextView
+        android:id="@+id/userFoodSettingTitle"
+        android:text="수동 먹이급여"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="50dp"/>
+    <TextView
+        android:id="@+id/userFoodTimerText"
+        android:text="[설정 시간] : "
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userFoodSettingTitle"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="30sp"/>
+    <Spinner
+        android:id="@+id/foodTimerSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/userFoodTimerText"
+        app:layout_constraintEnd_toStartOf="@id/foodSpinnerHourText"
+        app:layout_constraintTop_toTopOf="@id/userFoodTimerText"
+        app:layout_constraintBottom_toBottomOf="@id/userFoodTimerText"
+        app:layout_constraintHorizontal_chainStyle="packed">
+    </Spinner>
+    <TextView
+        android:id="@+id/foodSpinnerHourText"
+        android:text="시간"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/foodTimerSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/userFoodTimerText"
+        app:layout_constraintBottom_toBottomOf="@id/userFoodTimerText"/>
+
+    <Button
+        android:id="@+id/userFoodSettingDone"
+        android:text="설정"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/userFoodSettingCancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="75sp"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        android:onClick="saveQuantityButton"/>
+    <Button
+        android:id="@+id/userFoodSettingCancel"
+        android:text="취소"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/userFoodSettingDone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/userFoodSettingDone"
+        app:layout_constraintBottom_toBottomOf="@id/userFoodSettingDone"
+        android:onClick="cancelQuantityButton"/>
+
+    <TextView
+        android:text="@string/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="15dp"/>
+
+</android.support.constraint.ConstraintLayout>

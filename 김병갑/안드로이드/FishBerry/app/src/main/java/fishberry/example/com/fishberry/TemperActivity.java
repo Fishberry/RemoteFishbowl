@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -93,5 +94,19 @@ public class TemperActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void saveTemperButton(View v) {
+        Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    public void cancelTemperButton(View v) {
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }
