@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/skyblue">
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/skyblue">
+
+        <TextView
+            android:id="@+id/StreamingTitle"
+            android:text="FishBerry Streaming"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="5dp" />
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/StreamingTitle"
+            app:layout_constraintBottom_toTopOf="@id/webViewLine"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+        </WebView>
+
+        <View
+            android:id="@+id/webViewLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="180dp"/>
+
+        <TextView
+            android:id="@+id/TempTitle"
+            android:text="온도"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/pHTitle"
+            app:layout_constraintTop_toBottomOf="@id/webViewLine"
+            android:layout_marginTop="20dp"
+            app:layout_constraintHorizontal_chainStyle="spread"/>
+
+        <TextView
+            android:id="@+id/TempValue"
+            android:text="23.241"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/TempTitle"
+            app:layout_constraintEnd_toEndOf="@id/TempTitle"
+            app:layout_constraintTop_toBottomOf="@id/TempTitle"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:id="@+id/pHTitle"
+            android:text="pH"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/TempTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/TempTitle"/>
+
+        <TextView
+            android:id="@+id/pHValue"
+            android:text="8.3"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/pHTitle"
+            app:layout_constraintEnd_toEndOf="@id/pHTitle"
+            app:layout_constraintBottom_toBottomOf="@id/TempValue" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

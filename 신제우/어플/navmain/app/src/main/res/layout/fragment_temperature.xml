@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/skyblue">
+
+    <TextView
+        android:id="@+id/TemperLayoutTitle"
+        android:text="수온 및 오염도 설정"
+        android:textSize="30dp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="15dp" />
+
+    <TextView
+        android:id="@+id/TemperRangeText1"
+        android:text="[수온 경고범위]"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/TemperLayoutTitle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="30dp"/>
+
+    <Spinner
+        android:id="@+id/tempRange1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/TemperRangeText1"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="50dp" />
+
+    <TextView
+        android:id="@+id/TemperRangeText2"
+        android:text="℃ ~"
+        android:textSize="15dp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/TemperRangeText1"
+        app:layout_constraintLeft_toRightOf="@id/tempRange1"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"/>
+
+    <Spinner
+        android:id="@+id/tempRange2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/TemperRangeText2"
+        app:layout_constraintTop_toBottomOf="@id/TemperRangeText1"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp" />
+
+    <TextView
+        android:id="@+id/pHRangeText1"
+        android:text="[pH 경고범위]"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tempRange1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="30dp"/>
+
+    <Spinner
+        android:id="@+id/pHRange1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pHRangeText1"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="50dp" />
+
+    <TextView
+        android:id="@+id/pHRangeText2"
+        android:text=" ~ "
+        android:textSize="15dp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/pHRangeText1"
+        app:layout_constraintLeft_toRightOf="@id/pHRange1"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"/>
+
+    <Spinner
+        android:id="@+id/pHRange2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/pHRangeText2"
+        app:layout_constraintTop_toBottomOf="@id/pHRangeText1"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp" />
+
+    <Button
+        android:id="@+id/temperSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="저장"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/temperCancelButton"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_weight="1" />
+
+    <Button
+        android:id="@+id/temperCancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="취소"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/temperSaveButton"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintHorizontal_weight="1"
+        android:onClick="cancelTemperButton"/>
+
+    <TextView
+        android:text="@string/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="15dp"/>
+
+</android.support.constraint.ConstraintLayout>
