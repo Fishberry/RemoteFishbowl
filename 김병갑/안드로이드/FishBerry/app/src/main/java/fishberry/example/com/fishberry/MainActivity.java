@@ -2,6 +2,8 @@ package fishberry.example.com.fishberry;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,14 +31,27 @@ public class MainActivity extends AppCompatActivity {
         tempValue = (TextView) findViewById(R.id.TempValue);
         btnSubmit = (Button) findViewById(R.id.MainButton04);
 
-        btnSubmit.setOnClickListener((view)->{
-            socket.emit("reqMsg", "메세지");
+        Thread t = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                while (true) {
+                    try {
+                        socket.emit("reqMsg", "어플에서 온도값 받아갑니다");
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
         });
+        t.start();
 
         try {
             socket = IO.socket("http://192.168.0.114:3000");
             socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
-            }).on("serverMessage", (Object... objects) -> {
+            }).on("serverMsg", (Object... objects) -> {
                 runOnUiThread(()->{
                     tempValue.setText(objects[0].toString());
                 });
