@@ -26,11 +26,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String RaspIP = String.valueOf(R.string.RaspIP);
 
         tempValue = (TextView) findViewById(R.id.TempValue);
 
         try {
-            socket = IO.socket("http://192.168.0.114:3000");
+            socket = IO.socket("http://175.204.79.66:3000");
             socket.connect();
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);     //자바스크립트 사용 가능
 
         //원하는 URL 됨.
-        //webView.loadUrl("URL");
+        webView.loadUrl("http://175.204.79.66:8080/?action=stream");
     }
 
     //버튼 클릭 시

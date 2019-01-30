@@ -1,5 +1,6 @@
 package fishberry.example.com.fishberry;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,14 +19,15 @@ public class FoodActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food);
+        foodSettingDone = (Button) findViewById(R.id.foodSettingDone);
+        String RaspIP = String.valueOf(R.string.RaspIP);
+
         try {
-            socket = IO.socket("http://192.168.0.114:3000");
+            socket = IO.socket("http://175.204.79.66:3000");
             socket.connect();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        foodSettingDone = (Button) findViewById(R.id.foodSettingDone);
     }
 
     public void buttonClick(View v) {
@@ -33,7 +35,7 @@ public class FoodActivity extends AppCompatActivity {
         //버튼의 아이디로 버튼 구분
         switch (v.getId()) {
             case R.id.foodSettingDone:
-                socket.emit("reqMsg", "2");
+                socket.emit("reqData", "2");
                 break;
         }
     }
@@ -56,6 +58,7 @@ public class FoodActivity extends AppCompatActivity {
     }
 
     public void cancelFoodButton(View v) {
+        socket.disconnect();
         finish();
     }
 
