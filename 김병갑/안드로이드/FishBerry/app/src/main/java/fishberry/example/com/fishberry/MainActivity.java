@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String RaspIP = String.valueOf(R.string.RaspIP);
 
         tempValue = (TextView) findViewById(R.id.TempValue);
 
@@ -144,5 +143,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         socket.connect();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        socket.disconnect();
     }
 }

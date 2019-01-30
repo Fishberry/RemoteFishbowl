@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
+
+import java.net.URISyntaxException;
+
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
@@ -20,7 +23,6 @@ public class FoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food);
         foodSettingDone = (Button) findViewById(R.id.foodSettingDone);
-        String RaspIP = String.valueOf(R.string.RaspIP);
 
         try {
             socket = IO.socket("http://175.204.79.66:3000");
@@ -31,7 +33,6 @@ public class FoodActivity extends AppCompatActivity {
     }
 
     public void buttonClick(View v) {
-
         //버튼의 아이디로 버튼 구분
         switch (v.getId()) {
             case R.id.foodSettingDone:
@@ -71,6 +72,12 @@ public class FoodActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        socket.disconnect();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         socket.disconnect();
     }
 }
