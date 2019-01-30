@@ -12,24 +12,24 @@ import java.util.ArrayList;
 
 public class FeedQuantityUserSettingActivity extends AppCompatActivity {
 
-    private Spinner foodQuantitySpinner;
+    private Spinner feedQuantitySpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_quantity_user_setting);
 
-        foodQuantitySpinner = (Spinner) findViewById(R.id.foodTimerSpinner);
+        feedQuantitySpinner = (Spinner) findViewById(R.id.feedTimerSpinner);
 
         final ArrayList<String> timeArrayList = new ArrayList<>();
 
         for(int i = 1; i <= 24; i++)
             timeArrayList.add(String.format("%d", i));
 
-        ArrayAdapter foodAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, timeArrayList);
-        foodQuantitySpinner.setAdapter(foodAdapter);
+        ArrayAdapter feedAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, timeArrayList);
+        feedQuantitySpinner.setAdapter(feedAdapter);
 
-        foodQuantitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        feedQuantitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.shinj.navmain">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ManualActivity"/>
+        <activity android:name=".SettingActivity"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".FragActivity" />
         <activity android:name=".StreamingActivity"/>
@@ -29,7 +33,6 @@
         <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".StreamingActivity"></activity>
     </application>
 
 </manifest>

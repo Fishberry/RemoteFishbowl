@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Intent intent;
 
         switch (id) {
             case android.R.id.home:
@@ -101,6 +102,19 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_settings:
                 return true;
+
+            /* 우측 상단위 옵션메뉴 */
+            case R.id.usingGuide:
+                intent = new Intent(this, ManualActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.userSetting:
+                intent = new Intent(this, SettingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.Inquire:
+                Toast.makeText(this, "문의 : https://github.com/Fishberry/RemoteFishbowl", Toast.LENGTH_LONG).show();
+                break;
         }
 
         return super.onOptionsItemSelected(item);

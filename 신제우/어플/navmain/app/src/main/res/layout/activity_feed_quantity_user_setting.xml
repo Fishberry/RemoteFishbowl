@@ -8,7 +8,7 @@
     android:background="@color/skyblue">
 
     <TextView
-        android:id="@+id/userFoodSettingTitle"
+        android:id="@+id/userfeedSettingTitle"
         android:text="수동 먹이급여"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -20,58 +20,58 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="50dp"/>
     <TextView
-        android:id="@+id/userFoodTimerText"
+        android:id="@+id/userfeedTimerText"
         android:text="[설정 시간] : "
         android:textSize="25sp"
         android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userFoodSettingTitle"
+        app:layout_constraintTop_toBottomOf="@id/userfeedSettingTitle"
         android:layout_marginTop="50dp"
         android:layout_marginStart="30sp"/>
     <Spinner
-        android:id="@+id/foodTimerSpinner"
+        android:id="@+id/feedTimerSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/userFoodTimerText"
-        app:layout_constraintEnd_toStartOf="@id/foodSpinnerHourText"
-        app:layout_constraintTop_toTopOf="@id/userFoodTimerText"
-        app:layout_constraintBottom_toBottomOf="@id/userFoodTimerText"
+        app:layout_constraintStart_toEndOf="@id/userfeedTimerText"
+        app:layout_constraintEnd_toStartOf="@id/feedSpinnerHourText"
+        app:layout_constraintTop_toTopOf="@id/userfeedTimerText"
+        app:layout_constraintBottom_toBottomOf="@id/userfeedTimerText"
         app:layout_constraintHorizontal_chainStyle="packed">
     </Spinner>
     <TextView
-        android:id="@+id/foodSpinnerHourText"
+        android:id="@+id/feedSpinnerHourText"
         android:text="시간"
         android:textSize="25sp"
         android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/foodTimerSpinner"
+        app:layout_constraintStart_toEndOf="@id/feedTimerSpinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/userFoodTimerText"
-        app:layout_constraintBottom_toBottomOf="@id/userFoodTimerText"/>
+        app:layout_constraintTop_toTopOf="@id/userfeedTimerText"
+        app:layout_constraintBottom_toBottomOf="@id/userfeedTimerText"/>
 
     <Button
-        android:id="@+id/userFoodSettingDone"
+        android:id="@+id/userfeedSettingDone"
         android:text="설정"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/userFoodSettingCancel"
+        app:layout_constraintEnd_toStartOf="@id/userfeedSettingCancel"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="75sp"
         app:layout_constraintHorizontal_chainStyle="spread"
         android:onClick="saveQuantityButton"/>
     <Button
-        android:id="@+id/userFoodSettingCancel"
+        android:id="@+id/userfeedSettingCancel"
         android:text="취소"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/userFoodSettingDone"
+        app:layout_constraintStart_toEndOf="@id/userfeedSettingDone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/userFoodSettingDone"
-        app:layout_constraintBottom_toBottomOf="@id/userFoodSettingDone"
+        app:layout_constraintTop_toTopOf="@id/userfeedSettingDone"
+        app:layout_constraintBottom_toBottomOf="@id/userfeedSettingDone"
         android:onClick="cancelQuantityButton"/>
 
     <TextView

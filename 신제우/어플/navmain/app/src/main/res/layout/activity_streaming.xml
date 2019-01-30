@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -60,10 +59,9 @@
             app:layout_constraintTop_toBottomOf="@id/webViewLine"
             android:layout_marginTop="20dp"
             app:layout_constraintHorizontal_chainStyle="spread"/>
-
         <TextView
             android:id="@+id/TempValue"
-            android:text="23.241"
+            android:text="0.0"
             android:textSize="25sp"
             android:textColor="@color/white"
             android:layout_width="wrap_content"
@@ -72,7 +70,6 @@
             app:layout_constraintEnd_toEndOf="@id/TempTitle"
             app:layout_constraintTop_toBottomOf="@id/TempTitle"
             android:layout_marginTop="5dp"/>
-
         <TextView
             android:id="@+id/pHTitle"
             android:text="pH"
@@ -94,7 +91,6 @@
             app:layout_constraintStart_toStartOf="@id/pHTitle"
             app:layout_constraintEnd_toEndOf="@id/pHTitle"
             app:layout_constraintBottom_toBottomOf="@id/TempValue" />
-
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

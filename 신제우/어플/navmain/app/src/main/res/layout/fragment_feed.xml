@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FeedFrag"
+    tools:context=".feedActivity"
     android:background="@color/skyblue">
 
     <TextView
@@ -63,14 +63,14 @@
         android:id="@+id/userTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="userSettingFoodQuantity"
+        android:onClick="userSettingfeedQuantity"
         android:text="사용자 설정"
         app:layout_constraintBottom_toBottomOf="@id/timer1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/timer3"
         app:layout_constraintTop_toTopOf="@id/timer1" />
     <TextView
-        android:id="@+id/foodTitle"
+        android:id="@+id/feedTitle"
         android:text="먹이 급여량 설정"
         android:textSize="25sp"
         android:textStyle="bold"
@@ -82,63 +82,64 @@
         app:layout_constraintTop_toBottomOf="@id/timer1"
         android:layout_marginTop="50dp"/>
     <Button
-        android:id="@+id/food1"
+        android:id="@+id/feed1"
         android:text="1회전"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/food2"
-        app:layout_constraintTop_toBottomOf="@id/foodTitle"
+        app:layout_constraintEnd_toStartOf="@id/feed2"
+        app:layout_constraintTop_toBottomOf="@id/feedTitle"
         android:layout_marginTop="20dp"
         app:layout_constraintHorizontal_chainStyle="packed"/>
     <Button
-        android:id="@+id/food2"
+        android:id="@+id/feed2"
         android:text="2회전"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/food1"
-        app:layout_constraintEnd_toStartOf="@id/food3"
-        app:layout_constraintTop_toTopOf="@id/food1"
-        app:layout_constraintBottom_toBottomOf="@id/food1"/>
+        app:layout_constraintStart_toEndOf="@id/feed1"
+        app:layout_constraintEnd_toStartOf="@id/feed3"
+        app:layout_constraintTop_toTopOf="@id/feed1"
+        app:layout_constraintBottom_toBottomOf="@id/feed1"/>
     <Button
-        android:id="@+id/food3"
+        android:id="@+id/feed3"
         android:text="3회전"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/food2"
+        app:layout_constraintStart_toEndOf="@id/feed2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/food1"
-        app:layout_constraintBottom_toBottomOf="@id/food1"/>
+        app:layout_constraintTop_toTopOf="@id/feed1"
+        app:layout_constraintBottom_toBottomOf="@id/feed1"/>
     <Button
-        android:id="@+id/foodSettingDone"
+        android:id="@+id/feedSettingDone"
         android:text="수동 먹이급여 설정"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="150dp"/>
+        android:layout_marginBottom="150dp"
+        android:onClick="buttonClick"/>
     <Button
-        android:id="@+id/foodSaveButton"
+        android:id="@+id/feedSaveButton"
         android:text="저장"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/foodCancelButton"
+        app:layout_constraintEnd_toStartOf="@id/feedCancelButton"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="75dp"
         app:layout_constraintHorizontal_chainStyle="spread"
-        android:onClick="saveFoodButton"/>
+        android:onClick="savefeedButton"/>
     <Button
-        android:id="@+id/foodCancelButton"
+        android:id="@+id/feedCancelButton"
         android:text="취소"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/foodSaveButton"
+        app:layout_constraintStart_toEndOf="@id/feedSaveButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/foodSaveButton"
-        app:layout_constraintBottom_toBottomOf="@id/foodSaveButton"
-        android:onClick="cancelFoodButton"/>
+        app:layout_constraintTop_toTopOf="@id/feedSaveButton"
+        app:layout_constraintBottom_toBottomOf="@id/feedSaveButton"
+        android:onClick="cancelfeedButton"/>
 
     <TextView
         android:text="@string/version"
