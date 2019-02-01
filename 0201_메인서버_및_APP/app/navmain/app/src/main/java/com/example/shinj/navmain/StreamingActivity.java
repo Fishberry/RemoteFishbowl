@@ -69,6 +69,12 @@ public class StreamingActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        socket.connect();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         socket.connect();

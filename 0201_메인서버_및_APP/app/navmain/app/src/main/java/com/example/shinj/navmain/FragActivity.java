@@ -118,7 +118,7 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
 //        });
 
         try {
-            socket = IO.socket("http://fishberry.duckdns.org:3000/");
+            socket = IO.socket("http://fishberry.duckdns.org:3000");
             socket.connect();
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,6 +181,7 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
 
     public void savefeedButton(View v) {
         Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
+        socket.disconnect();
         finish();
     }
 

@@ -117,25 +117,4 @@ abstract public class BaseActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    /* 하단 백버튼 누르면 로그인화면으로 돌아가기 */
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("로그인화면으로")
-                .setMessage("로그인 화면으로 돌아가시겠습니까?")
-                .setPositiveButton("예", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                })
-                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                }).show();
-    }
-
 }
