@@ -223,7 +223,7 @@ public class FragActivity extends AppCompatActivity implements View.OnClickListe
         //버튼의 아이디로 버튼 구분
         switch (v.getId()) {
             case R.id.feedSettingDone:
-                socket.emit("reqData", "3");
+                socket.emit("reqData", "StartServo");
                 break;
         }
     }

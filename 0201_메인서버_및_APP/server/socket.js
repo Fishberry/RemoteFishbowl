@@ -38,14 +38,16 @@ module.exports = (server, app) => {
             console.error(error);
         });
 
+	//App으로 온도 출력    
         socket.on('reqMsg', (data) => {
             console.log('app에서 받은 메세지 : ', data);
             socket.emit('serverMsg', temperature);
         });
 
+	//App에서 아두이노를 동작시키기 위한 코드    
         socket.on('reqData', (data) => {
             console.log('app에서 받은 입력 : ', data);
-	    fs.open('/dev/ttyACM0', 'a', 666, (e, fd) => {
+	    fs.open('/dev/ttyACM1', 'a', 666, (e, fd) => {
 		fs.write(fd, data, null, null, null, () => {
 		    console.log('ok!');	
 		    fs.close(fd, function(){
