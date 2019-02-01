@@ -118,7 +118,7 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
 //        });
 
         try {
-            socket = IO.socket("http://175.204.79.66:3000");
+            socket = IO.socket("http://fishberry.duckdns.org:3000/");
             socket.connect();
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,7 +162,7 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
         //버튼의 아이디로 버튼 구분
         switch (v.getId()) {
             case R.id.feedSettingDone:
-                socket.emit("reqData", "2");
+                socket.emit("reqData", "StartServo");
                 break;
         }
     }

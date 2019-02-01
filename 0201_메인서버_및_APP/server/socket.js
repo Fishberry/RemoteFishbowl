@@ -3,6 +3,7 @@ const path = require('path');
 const socketio = require('socket.io');
 const fs = require('fs');
 const router = express.Router();
+/*
 const serialPort = require('serialport');
 const port = new serialPort('/dev/ttyACM0', {
 	baudRate: 9600,
@@ -11,7 +12,7 @@ const port = new serialPort('/dev/ttyACM0', {
 	stopBits: 1,
 	flowControl: false
 });
-
+*/
 module.exports = (server, app) => {
     let temperature = 0.0;
     setInterval(() => {
@@ -47,13 +48,14 @@ module.exports = (server, app) => {
 	//App에서 아두이노를 동작시키기 위한 코드    
         socket.on('reqData', (data) => {
             console.log('app에서 받은 입력 : ', data);
-	    fs.open('/dev/ttyACM1', 'a', 666, (e, fd) => {
-		fs.write(fd, data, null, null, null, () => {
+	    fs.open('/dev/ttyACM0', 'a', 666, (e, fd) => {
+		fs.write(fd, data, null, null, null, (err) => {
+		    if(err) throw err;
 		    console.log('ok!');	
-		    fs.close(fd, function(){
-		        console.log('bye');
-		    });
 		});
+		fs.close(fd, function(){
+	    	    console.log('bye');
+	        });
 	    });
         });
 	   
