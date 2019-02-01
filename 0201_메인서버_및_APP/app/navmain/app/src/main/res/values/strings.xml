@@ -1,0 +1,29 @@
+<resources>
+    <!-- 제우네-->
+    <string name="app_name">FishBerry</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="nav_item_attachment">스트리밍</string>
+    <string name="nav_item_images">설정</string>
+    <string name="nav_item_location">알리미</string>
+    <string name="nav_sub_menu">Sub Menu</string>
+    <string name="nav_sub_menu_item01">Sub Menu Item 1</string>
+    <string name="nav_sub_menu_item02">Sub Menu Item 2</string>
+    <string name="drawer_header_text">피쉬베리 메뉴</string>
+    <string name="second_activity_text">Lorem</string>
+    <string name="title_activity_second">SecondActivity</string>
+
+    <!-- 해운, 병갑네 -->
+    <string name="RaspIP">http://fishberry.duckdns.org:3000/</string>
+    <string name="version">v1.0.0</string>
+    <color name="skyblue">#1E90FF</color>
+    <color name="white">#FFFFFF</color>
+    <string name="manualText">
+        [수온 및 오염도]\n
+        수온은 수온의 경고값 범위로\n
+        최저온도와 최고온도를 설정한다.\n
+        오염도는 pH값의 경고값 범위를 설정한다.\n\n
+        [먹이급여 설정]\n
+        ......\n
+    </string>
+</resources>
