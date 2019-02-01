@@ -8,17 +8,6 @@ const morgan = require('morgan');
 const mainpageRouter = require('./routes/mainpage');
 const webSocket = require('./socket');
 
-const serialPort = require('serialport');
-const arduinoPort = new serialPort('/dev/ttyACM0', {
-	baudRate: 9600,
-	dataBits: 8,
-	parity: 'none',
-	stopBits: 1,
-	flowControl: false
-});
-arduinoPort.on('open', () => {
-	console.log('open serial communication');
-});
 // 템플릿 엔진 및 views 폴더 지정
 app.set('views', path.join(__dirname, 'views'));
 app.set('view-engine', 'ejs');

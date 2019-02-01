@@ -1,4 +1,4 @@
-#include <Servo.h>
+﻿#include <Servo.h>
 #include <Wire.h>
 #include "RTClib.h"
  
@@ -17,7 +17,6 @@ void setup() {
   Serial.begin(9600);
   /* 서보모터 */
   myServo.attach(SERVO);
-  myServo.write(0); // 처음에 0도로 초기화
   
   /* RTC */
   // I^2C버스와 RTC 모두 시작
@@ -116,12 +115,14 @@ void operateMotor() {
 
 void operateServo()
 {
+  myServo.write(0); // 처음에 0도로 초기화
+  delay(500);
   /* 서보모터 180도 회전 */
   for(int i=0; i<180; i++) {
     myServo.write(i); // 서보모터 이동
     delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
   }
-  delay(500);
+  delay(1000);
   myServo.write(0);
   delay(1000);
 }

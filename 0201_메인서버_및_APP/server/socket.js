@@ -3,16 +3,18 @@ const path = require('path');
 const socketio = require('socket.io');
 const fs = require('fs');
 const router = express.Router();
-/*
-const serialPort = require('serialport');
-const port = new serialPort('/dev/ttyACM0', {
-	baudRate: 9600,
-	dataBits: 8,
-	parity: 'none',
-	stopBits: 1,
-	flowControl: false
+
+let tty = '';
+fs.readdir('/dev', (err, data) => {
+    if(err) { return done(err); }
+    data.forEach((file) => {
+	if(file === 'ttyACM0' || file === 'ttyACM1') {
+	    tty = '/dev/'+file;
+	    console.log('connect tty : ', tty);
+	}
+    });
 });
-*/
+
 module.exports = (server, app) => {
     let temperature = 0.0;
     setInterval(() => {
@@ -26,7 +28,7 @@ module.exports = (server, app) => {
         //var second = 512;
         temperature = `${first}.${second}`;
         console.log("Temperature : " + temperature);
-    })}, 3000);
+    })}, 5000);
 
     const io = socketio.listen(server);
     
@@ -48,13 +50,13 @@ module.exports = (server, app) => {
 	//App에서 아두이노를 동작시키기 위한 코드    
         socket.on('reqData', (data) => {
             console.log('app에서 받은 입력 : ', data);
-	    fs.open('/dev/ttyACM0', 'a', 666, (e, fd) => {
+	    fs.open(tty, 'a', 666, (e, fd) => {
 		fs.write(fd, data, null, null, null, (err) => {
 		    if(err) throw err;
 		    console.log('ok!');	
-		});
-		fs.close(fd, function(){
-	    	    console.log('bye');
+		    fs.close(fd, (err) => {
+	    	        console.log(err);
+	            });
 	        });
 	    });
         });

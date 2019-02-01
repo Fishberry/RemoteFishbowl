@@ -1,15 +1,14 @@
 const express = require('express');
+const fs = require('fs');
 const router = express.Router();
-
 const serialPort = require('serialport');
-const arduinoPort = new serialPort('/dev/ttyACM0', {
+const arduinoPort = new serialPort('/dev/ttyACM1', {
 	baudRate: 9600,
 	dataBits: 8,
 	parity: 'none',
 	stopBits: 1,
 	flowControl: false
 });
-
 router.get('/', (req, res) => {
 	res.status(200).render('main.ejs');
 });

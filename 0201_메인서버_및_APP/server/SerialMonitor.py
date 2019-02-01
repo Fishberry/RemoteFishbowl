@@ -1,6 +1,6 @@
 import serial
 
-port = "/dev/ttyACM0"
+port = "/dev/ttyACM1"
 serialFromArduino = serial.Serial(port, 9600);
 serialFromArduino.flushInput();
 a=1
