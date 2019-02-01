@@ -2,49 +2,50 @@
 #include <Wire.h>
 #include "RTClib.h"
  
-const int WaterPumpA1 = 6; // ¿öÅÍÆßÇÁ AÀÇ Ã¹¹øÂ°ÇÉ
-const int WaterPumpA2 = 7; // ¿öÅÍÆßÇÁ AÀÇ µÎ¹øÂ°ÇÉ
-const int WaterPumpB1 = 4; // ¿öÅÍÆßÇÁ BÀÇ Ã¹¹øÂ°ÇÉ
-const int WaterPumpB2 = 5; // ¿öÅÍÆßÇÁ BÀÇ µÎ¹øÂ°ÇÉ
-const int SERVO = 8;       // ¼­º¸¸ğÅÍ 8¹øÇÉ
+const int WaterPumpA1 = 6; // ì›Œí„°íŒí”„ Aì˜ ì²«ë²ˆì§¸í•€
+const int WaterPumpA2 = 7; // ì›Œí„°íŒí”„ Aì˜ ë‘ë²ˆì§¸í•€
+const int WaterPumpB1 = 4; // ì›Œí„°íŒí”„ Bì˜ ì²«ë²ˆì§¸í•€
+const int WaterPumpB2 = 5; // ì›Œí„°íŒí”„ Bì˜ ë‘ë²ˆì§¸í•€
+const int SERVO = 8;       // ì„œë³´ëª¨í„° 8ë²ˆí•€
 
-Servo myServo;  // ¼­º¸¸ğÅÍ ÀÎ½ºÅÏ½º º¯¼ö
-RTC_DS1307 RTC; // RTC ÀÎ½ºÅÏ½º º¯¼ö
+Servo myServo;  // ì„œë³´ëª¨í„° ì¸ìŠ¤í„´ìŠ¤ ë³€ìˆ˜
+RTC_DS1307 RTC; // RTC ì¸ìŠ¤í„´ìŠ¤ ë³€ìˆ˜
 String year, month, day, hour, minute, second, time, date;
 
 void setup() {
   
   Serial.begin(9600);
-  /* ¼­º¸¸ğÅÍ */
+  /* ì„œë³´ëª¨í„° */
   myServo.attach(SERVO);
+  myServo.write(0); // ì²˜ìŒì— 0ë„ë¡œ ì´ˆê¸°í™”
   
   /* RTC */
-  // I^2C¹ö½º¿Í RTC ¸ğµÎ ½ÃÀÛ
+  // I^2Cë²„ìŠ¤ì™€ RTC ëª¨ë‘ ì‹œì‘
   Wire.begin();
   RTC.begin();
-  // RTC¿¡ ½Ã°£ÀÌ ¼³Á¤µÇÁö ¾Ê¾ÒÀ¸¸é ÄÄÇ»ÅÍ ½Ã°£À¸·Î ¼³Á¤
+  // RTCì— ì‹œê°„ì´ ì„¤ì •ë˜ì§€ ì•Šì•˜ìœ¼ë©´ ì»´í“¨í„° ì‹œê°„ìœ¼ë¡œ ì„¤ì •
   if(!RTC.isrunning()) {
     RTC.adjust(DateTime(__DATE__, __TIME__));
   }
 
-  /* ¿öÅÍÆßÇÁ */
-  pinMode(WaterPumpA1, OUTPUT);       // Motor A ¹æÇâ¼³Á¤1
-  pinMode(WaterPumpA2, OUTPUT);       // Motor A ¹æÇâ¼³Á¤2
-  pinMode(WaterPumpB1, OUTPUT);       // Motor B ¹æÇâ¼³Á¤1
-  pinMode(WaterPumpB2, OUTPUT);       // Motor B ¹æÇâ¼³Á¤2
+  /* ì›Œí„°íŒí”„ */
+  pinMode(WaterPumpA1, OUTPUT);       // Motor A ë°©í–¥ì„¤ì •1
+  pinMode(WaterPumpA2, OUTPUT);       // Motor A ë°©í–¥ì„¤ì •2
+  pinMode(WaterPumpB1, OUTPUT);       // Motor B ë°©í–¥ì„¤ì •1
+  pinMode(WaterPumpB2, OUTPUT);       // Motor B ë°©í–¥ì„¤ì •2
 
 }
 
 void loop() {
 
-  String userHour = "18"; // »ç¿ëÀÚ ½Ã°£ÀÔ·Â ¿¹½Ãº¯¼ö
-  String userMinute = "48";  // »ç¿ëÀÚ ½Ã°£ÀÔ·Â ¿¹½Ãº¯¼ö
+  String userHour = "18"; // ì‚¬ìš©ì ì‹œê°„ì…ë ¥ ì˜ˆì‹œë³€ìˆ˜
+  String userMinute = "48";  // ì‚¬ìš©ì ì‹œê°„ì…ë ¥ ì˜ˆì‹œë³€ìˆ˜
 
-  if(Serial.available())    // ½Ã¸®¾ó Åë½Å È°¼ºÈ­
+  if(Serial.available())    // ì‹œë¦¬ì–¼ í†µì‹  í™œì„±í™”
   {
-    String nodeData = Serial.readString(); // ½Ã¸®¾óÅë½Å »ç¿ëÀÚ ÀÔ·Â
+    String nodeData = Serial.readString(); // ì‹œë¦¬ì–¼í†µì‹  ì‚¬ìš©ì ì…ë ¥
     
-    if(nodeData == "1")  // 1À» ÀÔ·Â¹Ş¾ÒÀ¸¸é ´ÙÀ½À» ½ÇÇà
+    if(nodeData == "1")  // 1ì„ ì…ë ¥ë°›ì•˜ìœ¼ë©´ ë‹¤ìŒì„ ì‹¤í–‰
     {
       //getTemp();
     }
@@ -58,7 +59,7 @@ void loop() {
     }
   }
 
-  /* RTC ½Ã°£ ±¸ÇÏ±â */
+  /* RTC ì‹œê°„ êµ¬í•˜ê¸° */
   if( getTime(userHour, userMinute )) operateMotor();
   
 }
@@ -66,22 +67,22 @@ void loop() {
 boolean getTime(String userHour, String userMinute) {
   
   DateTime now = RTC.now();
-  Serial.print(now.year(), DEC);  // ³â
+  Serial.print(now.year(), DEC);  // ë…„
   year = String(now.year(), DEC);
   Serial.print('/');
-  Serial.print(now.month(), DEC);  // ¿ù
+  Serial.print(now.month(), DEC);  // ì›”
   month = String(now.month(), DEC);
   Serial.print('/');
-  Serial.print(now.day(), DEC);   // ÀÏ
+  Serial.print(now.day(), DEC);   // ì¼
   day = String(now.day(), DEC);
   Serial.print(' ');
-  Serial.print(now.hour(), DEC);    // ½Ã°£
+  Serial.print(now.hour(), DEC);    // ì‹œê°„
   hour = String(now.hour(), DEC);
   Serial.print(':');
-  Serial.print(now.minute(), DEC);   // ºĞ
+  Serial.print(now.minute(), DEC);   // ë¶„
   minute = String(now.minute(), DEC);
   Serial.print(':');
-  Serial.print(now.second(), DEC);   // ÃÊ
+  Serial.print(now.second(), DEC);   // ì´ˆ
   second = String(now.second(), DEC);
   Serial.print(' ');
   Serial.println();
@@ -92,33 +93,33 @@ boolean getTime(String userHour, String userMinute) {
 
 void operateMotor() {
   
-  /*¸ğÅÍA µ¿ÀÛ*/
-  analogWrite(WaterPumpA1, 255);     // Motor A ¹æÇâ¼³Á¤1
-  analogWrite(WaterPumpA2, 0);      // Motor A ¹æÇâ¼³Á¤2
-  delay(1000);                   // 1ÃÊ µ¿ÀÛ
+  /*ëª¨í„°A ë™ì‘*/
+  analogWrite(WaterPumpA1, 255);     // Motor A ë°©í–¥ì„¤ì •1
+  analogWrite(WaterPumpA2, 0);      // Motor A ë°©í–¥ì„¤ì •2
+  delay(1000);                   // 1ì´ˆ ë™ì‘
 
-  /*¸ğÅÍA ¸ØÃã*/
-  analogWrite(WaterPumpA1, 0);     // Motor A Á¤Áö
+  /*ëª¨í„°A ë©ˆì¶¤*/
+  analogWrite(WaterPumpA1, 0);     // Motor A ì •ì§€
   analogWrite(WaterPumpA2, 0);
-  delay(3000);                   // 3ÃÊ ´ë±â
+  delay(3000);                   // 3ì´ˆ ëŒ€ê¸°
 
-  /*¸ğÅÍB µ¿ÀÛ*/
-  analogWrite(WaterPumpB1, 255);     // Motor A ¹æÇâ¼³Á¤1
-  analogWrite(WaterPumpB2, 0);      // Motor A ¹æÇâ¼³Á¤2
-  delay(1000);                   // 1ÃÊ µ¿ÀÛ
+  /*ëª¨í„°B ë™ì‘*/
+  analogWrite(WaterPumpB1, 255);     // Motor A ë°©í–¥ì„¤ì •1
+  analogWrite(WaterPumpB2, 0);      // Motor A ë°©í–¥ì„¤ì •2
+  delay(1000);                   // 1ì´ˆ ë™ì‘
 
-   /*¸ğÅÍB ¸ØÃã*/
-  analogWrite(WaterPumpB1, 0);     // Motor A Á¤Áö
+   /*ëª¨í„°B ë©ˆì¶¤*/
+  analogWrite(WaterPumpB1, 0);     // Motor A ì •ì§€
   analogWrite(WaterPumpB2, 0);
-  delay(3000);                   // 3ÃÊ ´ë±â
+  delay(3000);                   // 3ì´ˆ ëŒ€ê¸°
 }
 
 void operateServo()
 {
-  /* ¼­º¸¸ğÅÍ 180µµ È¸Àü */
+  /* ì„œë³´ëª¨í„° 180ë„ íšŒì „ */
   for(int i=0; i<180; i++) {
-    myServo.write(i); // ¼­º¸¸ğÅÍ ÀÌµ¿
-    delay(15); // ¼­º¸¸ğÅÍ ÀÌµ¿ÀÌ ³¡³¯ ¶§±îÁö Àá±ñ ´ë±â
+    myServo.write(i); // ì„œë³´ëª¨í„° ì´ë™
+    delay(15); // ì„œë³´ëª¨í„° ì´ë™ì´ ëë‚  ë•Œê¹Œì§€ ì ê¹ ëŒ€ê¸°
   }
   delay(500);
   myServo.write(0);
