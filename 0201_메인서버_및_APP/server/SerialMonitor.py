@@ -1,9 +1,13 @@
 import serial
+import os
 
-port = "/dev/ttyACM1"
-serialFromArduino = serial.Serial(port, 9600);
+if os.path.exists("/dev/ttyACM0") :
+    tty = "/dev/ttyACM0"
+elif os.path.exists("/dev/ttyACM1") :
+    tty = "/dev/ttyACM1"
+
+serialFromArduino = serial.Serial(tty, 9600);
 serialFromArduino.flushInput();
-a=1
 
 while 1:
     input = serialFromArduino.readline();

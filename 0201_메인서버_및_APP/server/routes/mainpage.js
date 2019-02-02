@@ -2,12 +2,23 @@ const express = require('express');
 const fs = require('fs');
 const router = express.Router();
 const serialPort = require('serialport');
-const arduinoPort = new serialPort('/dev/ttyACM1', {
-	baudRate: 9600,
-	dataBits: 8,
-	parity: 'none',
-	stopBits: 1,
-	flowControl: false
+let arduinoPort = '';
+let tty = '';
+fs.readdir('/dev', (err, data) => {
+    if(err) { return done(err); }
+    data.forEach((file) => {
+	if(file === 'ttyACM0' || file === 'ttyACM1') {
+	    tty = '/dev/'+file;
+	    console.log('connect tty : ', tty);
+	    arduinoPort = new serialPort(tty, {
+		baudRate: 9600,
+		dataBits: 8,
+		parity: 'none',
+		stopBits: 1,
+		flowControl: false
+	    });
+	}
+    });
 });
 router.get('/', (req, res) => {
 	res.status(200).render('main.ejs');
