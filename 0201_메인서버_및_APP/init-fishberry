@@ -1,0 +1,21 @@
+#!/bin/sh -e
+# Filename : fishberry
+# usage : init-fishberry[ start | stop ]
+#
+case "$1" in
+start)
+    if [ -f /home/pi/Desktop/FishberryServer/program.sh ]
+    then
+        cd /home/pi/Desktop/FishberryServer
+        sudo nohup sh program.sh &
+    fi
+    ;;
+stop)
+    /usr/bin/pkill -x program.sh
+    ;;
+*)
+    echo "Usage : $0 {start | stop}"
+    exit 1
+    ;;
+esac
+exit 0
