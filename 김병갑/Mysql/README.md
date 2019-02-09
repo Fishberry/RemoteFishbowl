@@ -4,7 +4,7 @@
 설치 후 최초 Mysql 접근
 	sudo mysql -u root (처음은 패스워드가 없기 때문에 -p 옵션을 주지 않는다. 현재는 MariaDB로 개명되었다.)
 
-최초로 설정하는 법
+처음일 경우 설정하는 법
 
 1. 비밀번호 설정
 	use mysql; (mysql이라는 이름의 데이터베이스 사용)
@@ -24,3 +24,18 @@
 		update user set authentication_string=password('원하는 비밀번호'), plugin='mysql_native_password' where user='root';
 
 		위 과정을 거쳐야 정상적으로 작동을 하고 그렇지 않는다면 1.2에서 나온 에러가 발생할 것이다.
+
+=============================
+
+에러가 발생해서 완전히 제거하고 싶은 경우
+
+예를 들어, mysqld.sock을 찾을 수 없다거나, 권한 거부가 나서 열고 싶어도 열 수가 없어서 재설치를 해도 곤란한 경우가 온다. 이런 경우, 완벽하게 제거를 한 후에 재설치를 해야 정상작동을 하게 된다.
+
+완전 제거법
+
+sudo apt-get remove --purge mysql*
+sudo apt-get remove --purge mysql
+sudo apt-get remove --purge mariadb
+sudo apt-get remove --purge mariadb*
+sudo apt-get --purge remove mysql-server
+sudo apt-get --purge remove python-software-properties
