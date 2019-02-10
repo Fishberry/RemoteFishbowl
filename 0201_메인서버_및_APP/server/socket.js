@@ -17,6 +17,8 @@ fs.readdir('/dev', (err, data) => {
 
 module.exports = (server, app) => {
     let temperature = 0.0;
+    let phValue = 0.0;
+
     setInterval(() => {
     fs.readFile('/sys/bus/w1/devices/28-020d9246133d/w1_slave', 'utf8', (err, data) => {
         //console.log('읽어온 온도 : ', data);
@@ -28,6 +30,15 @@ module.exports = (server, app) => {
         //var second = 512;
         temperature = `${first}.${second}`;
         console.log("Temperature : " + temperature);
+    })}, 5000);
+
+    setInterval(() => {
+    fs.readFile('/home/pi/Desktop/FishberryServer/pH_log', 'utf8', (err, data) => {
+
+        var text = data;
+        var ph = text.substring(0,4);
+        phValue = `${ph}`;
+        console.log("phValue : " + phValue);
     })}, 5000);
 
     const io = socketio.listen(server);
@@ -64,5 +75,6 @@ module.exports = (server, app) => {
         socket.on('disconnect', () => {
             console.log('연결 해제');
         });
+
     });
 };
