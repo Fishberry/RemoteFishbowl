@@ -55,7 +55,7 @@ module.exports = (server, app) => {
 	//App으로 온도 출력    
         socket.on('reqMsg', (data) => {
             console.log('app에서 받은 메세지 : ', data);
-            socket.emit('serverMsg', temperature);
+            socket.emit('serverMsg', temperature, phValue);
         });
 
 	//App에서 아두이노를 동작시키기 위한 코드    
