@@ -33,12 +33,13 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        bt1 = (Button) findViewById(R.id.bt1);
-        bt2 = (Button) findViewById(R.id.bt2);
+        bt1 = (Button) findViewById(R.id.btn_frag_feed);
+        bt2 = (Button) findViewById(R.id.btn_frag_temperature);
         bt1.setOnClickListener(this);
         bt2.setOnClickListener(this);
         feedFrag = new FeedFrag();
         temperatureFragment = new TemperatureFragment();
+//        timePickerDialog = new TimePickerDialog(this, listener, 15, 30, false);
         setFrag(0);
 
         feedSettingDone = (Button) findViewById(R.id.feedSettingDone);
@@ -118,7 +119,7 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
 //        });
 
         try {
-            socket = IO.socket("http://fishberry.duckdns.org:3000");
+            socket = IO.socket("http://fishberry.iptime.org:3000/");
             socket.connect();
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,10 +134,10 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View v){
         switch (v.getId()){
-            case R.id.bt1:
+            case R.id.btn_frag_feed:
                 setFrag(0);
                 break;
-            case R.id.bt2:
+            case R.id.btn_frag_temperature:
                 setFrag(1);
                 break;
         }
@@ -167,9 +168,16 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    public void userSettingfeedQuantity(View v) {
-        Intent intent = new Intent(this, FeedQuantityUserSettingActivity.class);
-        startActivityForResult(intent, QUANTITY_OK);
+    // 먹이급여시간 사용자설정 버튼리스너
+    public void userSettingFeedTimer(View v) {
+        FeedUserSettingTimer feedUserSettingTimerDialog = new FeedUserSettingTimer(this);
+        feedUserSettingTimerDialog.setFeedUserSettingTimerListener(new FeedUserSettingTimer.FeedUserSettingTimerListener() {
+            @Override
+            public void onOkClicked(int year, int month, int day, int hour, int minute) {
+                Toast.makeText(FragActivity.this, "설정된 날짜: " + year + "/" + month + "/"  + day + "\n" + "설정된 시간: " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
+            }
+        });
+        feedUserSettingTimerDialog.show();
     }
 
     @Override

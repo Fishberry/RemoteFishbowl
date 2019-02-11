@@ -30,44 +30,44 @@
         app:layout_constraintTop_toBottomOf="@id/timerTitle"
         android:layout_marginTop="10dp"/>
     <Button
-        android:id="@+id/timer1"
+        android:id="@+id/btn_feedtimer_8h"
         android:text="8H"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/timer2"
+        app:layout_constraintEnd_toStartOf="@id/btn_feedtimer_12h"
         app:layout_constraintTop_toBottomOf="@id/timerText"
         android:layout_marginTop="20dp"
         app:layout_constraintHorizontal_chainStyle="packed"/>
     <Button
-        android:id="@+id/timer2"
+        android:id="@+id/btn_feedtimer_12h"
         android:text="12H"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/timer1"
-        app:layout_constraintEnd_toStartOf="@id/timer3"
-        app:layout_constraintTop_toTopOf="@id/timer1"
-        app:layout_constraintBottom_toBottomOf="@id/timer1"/>
+        app:layout_constraintStart_toEndOf="@id/btn_feedtimer_8h"
+        app:layout_constraintEnd_toStartOf="@id/btn_feedtimer_24h"
+        app:layout_constraintTop_toTopOf="@id/btn_feedtimer_8h"
+        app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_8h"/>
     <Button
-        android:id="@+id/timer3"
+        android:id="@+id/btn_feedtimer_24h"
         android:text="24H"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/timer2"
-        app:layout_constraintEnd_toStartOf="@id/userTimer"
-        app:layout_constraintTop_toTopOf="@id/timer1"
-        app:layout_constraintBottom_toBottomOf="@id/timer1"/>
+        app:layout_constraintStart_toEndOf="@id/btn_feedtimer_12h"
+        app:layout_constraintEnd_toStartOf="@id/btn_feedtimer_userSetting"
+        app:layout_constraintTop_toTopOf="@id/btn_feedtimer_8h"
+        app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_8h"/>
 
     <Button
-        android:id="@+id/userTimer"
+        android:id="@+id/btn_feedtimer_userSetting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="userSettingfeedQuantity"
+        android:onClick="userSettingFeedTimer"
         android:text="사용자 설정"
-        app:layout_constraintBottom_toBottomOf="@id/timer1"
+        app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_8h"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/timer3"
-        app:layout_constraintTop_toTopOf="@id/timer1" />
+        app:layout_constraintStart_toEndOf="@id/btn_feedtimer_24h"
+        app:layout_constraintTop_toTopOf="@id/btn_feedtimer_8h" />
     <TextView
         android:id="@+id/feedTitle"
         android:text="먹이 급여량 설정"
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timer1"
+        app:layout_constraintTop_toBottomOf="@id/btn_feedtimer_8h"
         android:layout_marginTop="50dp"/>
     <Button
         android:id="@+id/feed1"

@@ -6,6 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/colorMediumorchid</item>
+    </style>
+    <style name="FlatButton" parent="Theme.AppCompat.Light">
+        <item name="android:textColor">@color/colorMyPeach</item>
+        <item name="colorControlHighlight">@color/colorMyRed</item>
     </style>
 
 </resources>

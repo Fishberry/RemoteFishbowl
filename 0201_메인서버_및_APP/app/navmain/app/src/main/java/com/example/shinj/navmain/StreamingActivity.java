@@ -23,7 +23,7 @@ public class StreamingActivity extends BaseActivity {
         tempValue = (TextView) findViewById(R.id.TempValue);
 
         try {
-            socket = IO.socket("http://fishberry.duckdns.org:3000");
+            socket = IO.socket("http://fishberry.iptime.org:3000/");
             socket.connect();
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class StreamingActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);     //자바스크립트 사용 가능
 
         //원하는 URL 됨.
-        webView.loadUrl("http://fishberry.duckdns.org:8080/?action=stream");
+        webView.loadUrl("http://fishberry.iptime.org:3000/?action=stream");
 
     }
 
