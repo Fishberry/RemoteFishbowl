@@ -14,13 +14,14 @@ public class StreamingActivity extends BaseActivity {
     WebView webView;            //웹뷰 객체
     WebSettings webSettings;    //웹뷰 세팅 객체
     private Socket socket;
-    private TextView tempValue;
+    private TextView tempValue, phValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         tempValue = (TextView) findViewById(R.id.TempValue);
+        phValue = (TextView) findViewById(R.id.pHValue);
 
         try {
             socket = IO.socket("http://fishberry.iptime.org:3000/");
@@ -36,11 +37,12 @@ public class StreamingActivity extends BaseActivity {
 
                 while (true) {
                     try {
-                        socket.emit("reqMsg", "어플에서 온도값 받아갑니다");
+                        socket.emit("reqMsg", "App에서 측정값 받아갑니다");
                         socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
                         }).on("serverMsg", (Object... objects) -> {
-                            runOnUiThread(()->{
+                            runOnUiThread(()-> {
                                 tempValue.setText(objects[0].toString());
+                                phValue.setText(objects[1].toString());
                             });
                         });
                         Thread.sleep(5000);
