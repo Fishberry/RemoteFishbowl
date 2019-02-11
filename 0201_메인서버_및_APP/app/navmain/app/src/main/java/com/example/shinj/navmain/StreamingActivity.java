@@ -59,7 +59,7 @@ public class StreamingActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);     //자바스크립트 사용 가능
 
         //원하는 URL 됨.
-        webView.loadUrl("http://fishberry.iptime.org:3000/?action=stream");
+        webView.loadUrl("http://fishberry.iptime.org:8080/?action=stream");
 
     }
 
