@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>FishBerry Main</title>
+<title>FishBerry 수온 및 수질관리</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="styles/layout.css" rel="stylesheet" type="text/css" media="all">
@@ -9,11 +9,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 <script>
-$(document).ready(function(){
-	$("button").click(function(){
-		$.get("/main/" + $(this).attr("id"), function(data,status){});
-	});
-});
+// 자바스크립트 및 JQuery 문법 적는곳
 </script>
 </head>
 
@@ -43,7 +39,7 @@ $(document).ready(function(){
 </div>
 
 <div class="wrapper row1">
-  <header id="header" class="clear"> 
+  <header id="header" class="clear">
     <!-- ################################################################################################ -->
     <div id="logo" class="fl_left">
       <h1><a href="/">Fish Berry</a></h1>
@@ -70,23 +66,7 @@ $(document).ready(function(){
     <!-- ################################################################################################ -->
   </header>
 </div>
-    
-<div class="wrapper row2" >
-  <div class="overlay">
-    <section id="pageintro" class="clear"> 
-      <!-- ################################################################################################ -->
-      <div class="center">
-        <h2 class="heading xl btmspace-30">Streamming</h2>
-        <img style="-webkit-user-select: none;" src="http://fishberry.iptime.org:8080/?action=stream" width="403" height="302">
-      </div>
-      <div class="center" style="margin-top : 20px;">
-        <button type="button" class="btn btn-primary" id='StartServo'>서보모터</button>
-        <button type="button" class="btn btn-primary" id='StartWater'>워터펌프</button>
-      </div>
-      <!-- ################################################################################################ -->
-    </section>
-  </div>
-</div>
+<!-- 홈페이지 틀 고정을 위해 위 코드를 삭제하지 마세요 -->
     
 <div class="wrapper row3">
   <main class="container clear"> 
@@ -95,23 +75,17 @@ $(document).ready(function(){
     <div class="group">
       <div class="one_third first"><img src="" alt=""></div>
       <div class="two_third">
-        <h2 class="heading">여기에는 어떤 내용을 써야하나</h2>
+        <h2 class="heading">수온 및 수질관리 페이지 제작중</h2>
         <p>Cras pellentesque neque, consectetur adipiscing elit. Fusce venenatis elit ac ligula euismod varius. Maecenas feugiat purus quam, vel aliquet tellus sodales eu. Integer vitae vestibulum turpis, in sollicitudin quam. Aliquam vulputate non felis non luctus. Vestibulum eget augue nulla. Aliquam dignissim nibh mi, ut bibendum quam dapibus eget. Nam nec nisi vel sapien pulvinar ultrices. Curabitur rutrum nisl sagittis, pretium velit eget, convallis lacus. Nulla fermentum nulla ut lacus maximus, ut porttitor neque varius. Nullam sed vulputate sem. Sed bibendum porttitor metus.</p>
         <p>Donec lacinia lacus eros, nec luctus odio bibendum dictum. Vivamus nec egestas libero, non faucibus mauris. In in efficitur felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc porttitor turpis in ex porttitor, nec sagittis diam ultrices.</p>
-        <ul class="nospace group">
-          <li class="one_third first">
-            <h6 class="nospace btmspace-10"><a href="#"><i class="fa fa-location-arrow"></i> Praesent neque</a></h6>
-            <p class="nospace">Mauris consectetur vel tellus quis consectetur&hellip;</p>
-          </li>
-          <li class="one_third">
-            <h6 class="nospace btmspace-10"><a href="#"><i class="fa fa-lock"></i> Integer tinciduntt</a></h6>
-            <p class="nospace">Mauris consectetur vel tellus quis consectetur&hellip;</p>
-          </li>
-          <li class="one_third last">
-            <h6 class="nospace btmspace-10"><a href="#"><i class="fa fa-map-marker"></i> Aliquam mauris</a></h6>
-            <p class="nospace">Mauris consectetur vel tellus quis consectetur&hellip;</p>
-          </li>
-        </ul>
+        <p>Cras pellentesque neque, consectetur adipiscing elit. Fusce venenatis elit ac ligula euismod varius. Maecenas feugiat purus quam, vel aliquet tellus sodales eu. Integer vitae vestibulum turpis, in sollicitudin quam. Aliquam vulputate non felis non luctus. Vestibulum eget augue nulla. Aliquam dignissim nibh mi, ut bibendum quam dapibus eget. Nam nec nisi vel sapien pulvinar ultrices. Curabitur rutrum nisl sagittis, pretium velit eget, convallis lacus. Nulla fermentum nulla ut lacus maximus, ut porttitor neque varius. Nullam sed vulputate sem. Sed bibendum porttitor metus.</p>
+        <p>Donec lacinia lacus eros, nec luctus odio bibendum dictum. Vivamus nec egestas libero, non faucibus mauris. In in efficitur felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc porttitor turpis in ex porttitor, nec sagittis diam ultrices.</p>
+        <p>Cras pellentesque neque, consectetur adipiscing elit. Fusce venenatis elit ac ligula euismod varius. Maecenas feugiat purus quam, vel aliquet tellus sodales eu. Integer vitae vestibulum turpis, in sollicitudin quam. Aliquam vulputate non felis non luctus. Vestibulum eget augue nulla. Aliquam dignissim nibh mi, ut bibendum quam dapibus eget. Nam nec nisi vel sapien pulvinar ultrices. Curabitur rutrum nisl sagittis, pretium velit eget, convallis lacus. Nulla fermentum nulla ut lacus maximus, ut porttitor neque varius. Nullam sed vulputate sem. Sed bibendum porttitor metus.</p>
+        <p>Donec lacinia lacus eros, nec luctus odio bibendum dictum. Vivamus nec egestas libero, non faucibus mauris. In in efficitur felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc porttitor turpis in ex porttitor, nec sagittis diam ultrices.</p>
+        <p>Cras pellentesque neque, consectetur adipiscing elit. Fusce venenatis elit ac ligula euismod varius. Maecenas feugiat purus quam, vel aliquet tellus sodales eu. Integer vitae vestibulum turpis, in sollicitudin quam. Aliquam vulputate non felis non luctus. Vestibulum eget augue nulla. Aliquam dignissim nibh mi, ut bibendum quam dapibus eget. Nam nec nisi vel sapien pulvinar ultrices. Curabitur rutrum nisl sagittis, pretium velit eget, convallis lacus. Nulla fermentum nulla ut lacus maximus, ut porttitor neque varius. Nullam sed vulputate sem. Sed bibendum porttitor metus.</p>
+        <p>Donec lacinia lacus eros, nec luctus odio bibendum dictum. Vivamus nec egestas libero, non faucibus mauris. In in efficitur felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc porttitor turpis in ex porttitor, nec sagittis diam ultrices.</p>
+        <p>Cras pellentesque neque, consectetur adipiscing elit. Fusce venenatis elit ac ligula euismod varius. Maecenas feugiat purus quam, vel aliquet tellus sodales eu. Integer vitae vestibulum turpis, in sollicitudin quam. Aliquam vulputate non felis non luctus. Vestibulum eget augue nulla. Aliquam dignissim nibh mi, ut bibendum quam dapibus eget. Nam nec nisi vel sapien pulvinar ultrices. Curabitur rutrum nisl sagittis, pretium velit eget, convallis lacus. Nulla fermentum nulla ut lacus maximus, ut porttitor neque varius. Nullam sed vulputate sem. Sed bibendum porttitor metus.</p>
+        <p>Donec lacinia lacus eros, nec luctus odio bibendum dictum. Vivamus nec egestas libero, non faucibus mauris. In in efficitur felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc porttitor turpis in ex porttitor, nec sagittis diam ultrices.</p>
       </div>
     </div>
     <!-- ################################################################################################ -->
@@ -119,47 +93,8 @@ $(document).ready(function(){
     <div class="clear"></div>
   </main>
 </div>
-    
-<div class="wrapper row4">
-  <section id="info" class="clear"> 
-    <!-- ################################################################################################ -->
-    <div class="center btmspace-80">
-      <h2 class="heading btmspace-30">FishBerry Manual</h2>
-      <p class="lrspace">FishBerry의 기능을 이용하기 위해서 어려움이 있으시다면, 다음 메뉴얼을 참고하세요. </p>
-    </div>
-    <div class="group">
-      <div class="one_half first"><img src="" alt=""></div>
-      <div class="one_half">
-        <ul class="nospace group services">
-          <li>
-            <article><a href="#"><i class="fa fa-asterisk"></i></a>
-              <h6 class="heading">수온 & 수질 관리 메뉴얼</h6>
-              <p>수온 & 수질 관리 메뉴얼입니다. 자세한 내용은 타이틀을 클릭해주세요.</p>
-              <footer><a href="/water">Read More &raquo;</a></footer>
-            </article>
-          </li>
-          <li>
-            <article><a href="#"><i class="fa fa-bar-chart"></i></a>
-              <h6 class="heading">자동 먹이급여 설정</h6>
-              <p>Maecenas luctus sed nulla ac faucibus cras pellent esque neque vitae tincidunt tempus&hellip;</p>
-              <footer><a href="/feed">Read More &raquo;</a></footer>
-            </article>
-          </li>
-          <li>
-            <article><a href="#"><i class="fa fa-paper-plane-o"></i></a>
-              <h6 class="heading">부분환수 설정</h6>
-              <p>Quisque sit amet tellus nunc praesent nunc augue, eleifend ac consequat sed egestas eu nunc&hellip;</p>
-              <footer><a href="/exchange">Read More &raquo;</a></footer>
-            </article>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <!-- ################################################################################################ -->
-    <div class="clear"></div>
-  </section>
-</div>
 
+<!-- 홈페이지 틀 고정을 위해 아래 코드를 삭제하지 마세요 -->
 <div class="wrapper row6">
   <div id="copyright" class="clear"> 
     <!-- ################################################################################################ -->

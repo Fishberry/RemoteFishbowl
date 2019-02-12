@@ -24,6 +24,18 @@ router.get('/', (req, res) => {
 	res.status(200).render('main.ejs');
 });
 
+router.get('/water', (req, res) => {
+	res.status(200).render('water.ejs');
+});
+
+router.get('/feed', (req, res) => {
+	res.status(200).render('feed.ejs');
+});
+
+router.get('/exchange', (req, res) => {
+	res.status(200).render('exchange.ejs');
+});
+
 router.get('/main/StartServo', (req, res) => {
 	console.log('서보모터 동작');
 	arduinoPort.write('StartServo');
