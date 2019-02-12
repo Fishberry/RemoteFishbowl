@@ -3,6 +3,7 @@ package com.example.shinj.navmain;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,12 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
     FragmentTransaction tran;
     FeedFrag feedFrag;
     TemperatureFragment temperatureFragment;
+    int timerValue = 0;
+    int circleValue = 0;
+//    int minTemper = 0;
+//    int maxTemper = 0;
+//    double minPH = 0.0;
+//    double maxPH = 0.0;
 
     /* Feed 프래그먼트 */
     public static final int QUANTITY_OK = 1000;
@@ -35,88 +42,14 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
 
         bt1 = (Button) findViewById(R.id.btn_frag_feed);
         bt2 = (Button) findViewById(R.id.btn_frag_temperature);
+
         bt1.setOnClickListener(this);
         bt2.setOnClickListener(this);
         feedFrag = new FeedFrag();
         temperatureFragment = new TemperatureFragment();
-//        timePickerDialog = new TimePickerDialog(this, listener, 15, 30, false);
         setFrag(0);
 
         feedSettingDone = (Button) findViewById(R.id.feedSettingDone);
-//        tempSpinner1 = (Spinner)findViewById(R.id.tempRange1);
-//        tempSpinner2 = (Spinner)findViewById(R.id.tempRange2);
-//        phSpinner1 = (Spinner)findViewById(R.id.pHRange1);
-//        phSpinner2 = (Spinner)findViewById(R.id.pHRange2);
-//
-//        final ArrayList<String> tempList = new ArrayList<>(); // 0도부터 40도까지 온도 리스트
-//        final ArrayList<String> phList = new ArrayList<>(); // 0도부터 40도까지 ph 리스트
-//
-//        // 스피너에 온도 설정 범위를 0도부터 40도까지 설정
-//        for(int i=0; i<41; i++) {
-//            tempNnumber = String.valueOf(i);
-//            tempList.add(tempNnumber);
-//        }
-//
-//        // 스피너에 ph 범위를 1.0~14.0 까지 설정
-//        for(double i=1.0; i<=14.0; i=i+0.1) {
-//            phNumber = String.format("%.1f",i);
-//            phList.add(phNumber);
-//        }
-//
-//        ArrayAdapter spinnerAdapter_temp = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, tempList);
-//        ArrayAdapter spinnerAdapter_ph = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, phList);
-//        tempSpinner1.setAdapter(spinnerAdapter_temp);
-//        tempSpinner2.setAdapter(spinnerAdapter_temp);
-//        phSpinner1.setAdapter(spinnerAdapter_ph);
-//        phSpinner2.setAdapter(spinnerAdapter_ph);
-//
-//        tempSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//
-//        tempSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//
-//        phSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//
-//        phSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
 
         try {
             socket = IO.socket("http://fishberry.iptime.org:3000/");
@@ -131,6 +64,7 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
         return R.layout.activity_frag;
     }
 
+    //프레그먼트 클릭
     @Override
     public void onClick(View v){
         switch (v.getId()){
@@ -165,6 +99,30 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
             case R.id.feedSettingDone:
                 socket.emit("reqData", "StartServo");
                 break;
+            case R.id.btn_feedtimer_8h:
+                feedFrag.selectTimer(R.id.btn_feedtimer_8h);
+                timerValue = 8 * 60 * 60;
+                break;
+            case R.id.btn_feedtimer_12h:
+                feedFrag.selectTimer(R.id.btn_feedtimer_12h);
+                timerValue = 12 * 60 * 60;
+                break;
+            case R.id.btn_feedtimer_24h:
+                feedFrag.selectTimer(R.id.btn_feedtimer_24h);
+                timerValue = 24 * 60 * 60;
+                break;
+            case R.id.feed1:
+                feedFrag.selectCircle(R.id.feed1);
+                circleValue = 1;
+                break;
+            case R.id.feed2:
+                feedFrag.selectCircle(R.id.feed2);
+                circleValue = 2;
+                break;
+            case R.id.feed3:
+                feedFrag.selectCircle(R.id.feed3);
+                circleValue = 3;
+                break;
         }
     }
 
@@ -175,6 +133,8 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void onOkClicked(int year, int month, int day, int hour, int minute) {
                 Toast.makeText(FragActivity.this, "설정된 날짜: " + year + "/" + month + "/"  + day + "\n" + "설정된 시간: " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
+                feedFrag.selectTimer(R.id.btn_feedtimer_userSetting);
+                feedFrag.userSettingFeedButton.setText(hour + "H " + minute + "M");
             }
         });
         feedUserSettingTimerDialog.show();
@@ -187,9 +147,11 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
+    /* 먹이값 저장취소 */
     public void savefeedButton(View v) {
-        Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
+        socket.emit("insertFeed", timerValue, circleValue);
         socket.disconnect();
+        Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -198,16 +160,20 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
         finish();
     }
 
-//    /* Temper 프래그먼트 */
-//
-//    public void saveTemperButton(View v) {
-//        Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
-//        finish();
-//    }
-//
-//    public void cancelTemperButton(View v) {
-//        finish();
-//    }
+    /* 온도 저장취소 */
+
+    public void saveTemperPHButton(View v) {
+        socket.emit("insertTemper", temperatureFragment.minTemper, temperatureFragment.maxTemper);
+        socket.emit("insertPH", temperatureFragment.minPH, temperatureFragment.maxPH);
+        socket.disconnect();
+        Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    public void cancelTemperPHButton(View v) {
+        socket.disconnect();
+        finish();
+    }
 
     @Override
     public void onBackPressed() {

@@ -113,7 +113,7 @@
         android:layout_marginBottom="50dp"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintHorizontal_weight="1"
-        android:onClick="saveTemperButton"/>
+        android:onClick="saveTemperPHButton"/>
 
     <Button
         android:id="@+id/temperCancelButton"
@@ -125,7 +125,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="50dp"
         app:layout_constraintHorizontal_weight="1"
-        android:onClick="cancelTemperButton"/>
+        android:onClick="cancelTemperPHButton"/>
 
     <TextView
         android:text="@string/version"
