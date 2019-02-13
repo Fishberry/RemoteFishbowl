@@ -1,10 +1,15 @@
 package com.example.shinj.navmain;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -59,6 +64,38 @@ public class StreamingActivity extends BaseActivity {
         webView.setWebViewClient(new WebViewClient());
         webSettings = webView.getSettings();    //웹뷰의 세팅을 웹뷰세팅 객체에게 받는다.
         webSettings.setJavaScriptEnabled(true);     //자바스크립트 사용 가능
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
+
+        webView.setLongClickable(true);
+        webView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (v == webView) {
+
+                    // 롱 클릭한 부분의 정보를 구한다
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                    builder.setTitle("스트리밍 전체화면")
+                            .setMessage("전체화면으로 보시겠습니까?")
+                            .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(StreamingActivity.this, FullStreammingActivity.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    finish();
+                                }
+                            }).show();
+                }
+                return false;
+            }
+        });
 
         //원하는 URL 됨.
         webView.loadUrl("http://fishberry.iptime.org:8080/?action=stream");

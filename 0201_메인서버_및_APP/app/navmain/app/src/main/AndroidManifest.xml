@@ -11,13 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BaseActivity"/>
+        <activity android:name=".BaseActivity" />
         <activity android:name=".ManualActivity" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".FragActivity" />
         <activity android:name=".StreamingActivity" />
         <activity android:name=".FeedQuantityUserSettingActivity" />
+        <activity
+            android:name=".FullStreammingActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait">
