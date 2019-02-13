@@ -133,6 +133,7 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void onOkClicked(int year, int month, int day, int hour, int minute) {
                 Toast.makeText(FragActivity.this, "설정된 날짜: " + year + "/" + month + "/"  + day + "\n" + "설정된 시간: " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
+                timerValue = hour * minute * 60;
                 feedFrag.selectTimer(R.id.btn_feedtimer_userSetting);
                 feedFrag.userSettingFeedButton.setText(hour + "H " + minute + "M");
             }

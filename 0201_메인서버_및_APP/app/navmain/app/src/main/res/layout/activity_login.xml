@@ -20,19 +20,19 @@
         android:layout_marginTop="70dp"/>
     <TextView
         android:id="@+id/idText"
-        android:text="아이디 : "
+        android:text="IP : "
         android:textSize="25sp"
         android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/idEdit"
+        app:layout_constraintEnd_toStartOf="@id/ipEdit"
         app:layout_constraintTop_toBottomOf="@id/loginText"
         android:layout_marginTop="25dp"
         app:layout_constraintHorizontal_chainStyle="packed"/>
     <EditText
-        android:id="@+id/idEdit"
-        android:hint="                                   "
+        android:id="@+id/ipEdit"
+        android:hint="IP 혹은 주소를 넣어주세요"
         android:textSize="25sp"
         android:textColor="@color/white"
         android:layout_width="wrap_content"

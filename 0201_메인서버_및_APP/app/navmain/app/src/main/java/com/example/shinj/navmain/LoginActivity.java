@@ -5,17 +5,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private Socket socket;
+    private EditText ipEdit;
+    private EditText pwEdit;
+    private String confirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ipEdit = (EditText) findViewById(R.id.ipEdit);
+        pwEdit = (EditText) findViewById(R.id.pwEdit);
+
         startSplash();
     }
 
@@ -25,8 +39,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void pushLoginButton(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+
+        try {
+            socket = IO.socket("http://" + ipEdit.getText().toString() + ":3000/");
+            socket.connect();
+            socket.emit("confirmPassword", pwEdit.getText().toString());
+            socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
+            }).on("passwordResult", (Object... objects) -> {
+
+                Log.d("글자 확인", objects[0].toString());
+                confirm = objects[0].toString();
+                Log.d("확인", confirm);
+
+                if(confirm.equals("OK")) {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
