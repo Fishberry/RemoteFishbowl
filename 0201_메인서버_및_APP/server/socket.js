@@ -6,6 +6,7 @@ const mysql = require('mysql');
 const db = require('./findDB');
 const confirmPW = require('./confirmPassword');
 const router = express.Router();
+const diff = require('./views/time_diff');
 
 const connection = mysql.createConnection({
 	host: 'localhost',
@@ -30,6 +31,26 @@ fs.readdir('/dev', (err, data) => {
 module.exports = (server, app) => {
     let temperature = 0.0;
     let phValue = 0.0;
+
+    let setHour = 0;
+    let setMinute = 0;
+
+    let getHour = 0;
+    let getMinute = 0;
+    let getSecond = 0;
+
+    connection.query('select * from FeedSetting', (error, results, fields) => {
+    	setHour = (results[0].timer)/3600;
+	setMinute = (results[0].timer)%60;
+    });
+
+    setInterval(() => {
+    	var time_v = diff(new Date(), setHour, setMinute);
+	getHour = time_v.hour;
+	getMinute = time_v.minute;
+	getSecond = time_v.second;
+    	console.log(getHour+"시간 "+getMinute+"분 "+getSecond+"초 뒤 먹이급여 시작");
+    }, 1000);
 
     setInterval(() => {
     fs.readFile('/sys/bus/w1/devices/28-020d9246133d/w1_slave', 'utf8', (err, data) => {
@@ -68,6 +89,11 @@ module.exports = (server, app) => {
         socket.on('reqMsg', (data) => {
             console.log('app에서 받은 메세지 : ', data);
             socket.emit('serverMsg', temperature, phValue);
+        });
+
+        socket.on('reqTime', (data) => {
+            console.log('app에서 받은 시간요청 메세지 : ', data);
+            socket.emit('resTime', getHour, getMinute, getSecond);
         });
 
 	//App에서 아두이노를 동작시키기 위한 코드    
