@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(confirm.equals("OK")) {
                     Intent intent = new Intent(this, MainActivity.class);
+                    intent.putExtra("address", ipEdit.getText().toString());
                     startActivity(intent);
                 }
             });

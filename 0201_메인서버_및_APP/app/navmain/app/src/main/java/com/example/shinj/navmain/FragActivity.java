@@ -31,6 +31,7 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
     public static final int QUANTITY_OK = 1000;
     private Button feedSettingDone;
     private Socket socket;
+    String address;
 
 //    /* Temper 프래그먼트 */
 //    private Spinner tempSpinner1, tempSpinner2, phSpinner1, phSpinner2;
@@ -39,6 +40,8 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent extraIntent = getIntent();
+        address = extraIntent.getStringExtra("address");
 
         bt1 = (Button) findViewById(R.id.btn_frag_feed);
         bt2 = (Button) findViewById(R.id.btn_frag_temperature);
@@ -52,7 +55,7 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
         feedSettingDone = (Button) findViewById(R.id.feedSettingDone);
 
         try {
-            socket = IO.socket("http://fishberry.iptime.org:3000/");
+            socket = IO.socket("http://" + address + ":3000/");
             socket.connect();
         } catch (Exception e) {
             e.printStackTrace();

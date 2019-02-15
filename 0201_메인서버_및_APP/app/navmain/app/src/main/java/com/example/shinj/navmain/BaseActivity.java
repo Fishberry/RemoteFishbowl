@@ -19,11 +19,14 @@ abstract public class BaseActivity extends AppCompatActivity {
     public DrawerLayout mDrawerLayout;
     public Toolbar toolbar;
     public ActionBar actionBar;
+    String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
+        Intent extraIntent = getIntent();
+        address = extraIntent.getStringExtra("address");
 
         configureToolbar();
     }
@@ -51,6 +54,7 @@ abstract public class BaseActivity extends AppCompatActivity {
                     //  네비게이션바 - 스트리밍
                     case R.id.navigation_item_streaming:
                         intent = new Intent(getApplicationContext(), StreamingActivity.class);
+                        intent.putExtra("address", address);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
@@ -58,6 +62,7 @@ abstract public class BaseActivity extends AppCompatActivity {
                     // 네비게이션바 - 설정
                     case R.id.navigation_item_settings:
                         intent = new Intent(getApplicationContext(), FragActivity.class);
+                        intent.putExtra("address", address);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;

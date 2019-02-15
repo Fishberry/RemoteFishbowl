@@ -20,16 +20,20 @@ public class StreamingActivity extends BaseActivity {
     WebSettings webSettings;    //웹뷰 세팅 객체
     private Socket socket;
     private TextView tempValue, phValue;
+    Intent extraIntent;
+    String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        extraIntent = getIntent();
 
         tempValue = (TextView) findViewById(R.id.TempValue);
         phValue = (TextView) findViewById(R.id.pHValue);
+        address = extraIntent.getStringExtra("address");
 
         try {
-            socket = IO.socket("http://fishberry.iptime.org:3000/");
+            socket = IO.socket("http://" + address + ":3000/");
             socket.connect();
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,7 +102,7 @@ public class StreamingActivity extends BaseActivity {
         });
 
         //원하는 URL 됨.
-        webView.loadUrl("http://fishberry.iptime.org:8080/?action=stream");
+        webView.loadUrl("http://" + address + ":8080/?action=stream");
 
     }
 

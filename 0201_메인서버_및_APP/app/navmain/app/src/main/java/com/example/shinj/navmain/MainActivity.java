@@ -12,12 +12,19 @@ public class MainActivity extends BaseActivity {
 
     WebView webView;            //웹뷰 객체
     WebSettings webSettings;    //웹뷰 세팅 객체
+    String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent extraIntent = getIntent();
+        address = extraIntent.getStringExtra("address");
+
+        Intent baseIntent = new Intent(this, BaseActivity.class);
+        baseIntent.putExtra("address", address);
 
         Intent intent = new Intent(getApplicationContext(), StreamingActivity.class);
+        intent.putExtra("address", address);
         startActivity(intent);
 
         //웹뷰 객체 레이아웃 아이디와 매칭 및 설정
@@ -27,7 +34,7 @@ public class MainActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);     //자바스크립트 사용 가능
 
         //원하는 URL 됨.
-        webView.loadUrl("http://fishberry.iptime.org:3000");
+        webView.loadUrl("http://" + address + ":3000");
     }
 
     @Override
