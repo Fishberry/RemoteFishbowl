@@ -2,6 +2,18 @@ const express = require('express');
 const fs = require('fs');
 const router = express.Router();
 const serialPort = require('serialport');
+const http = require('http');
+const url = require('url');
+const mysql = require('mysql');
+const db = require('../findDB');
+const connection = mysql.createConnection({
+	host: 'localhost',
+	user: 'root',
+	password: '1234',
+	database: 'Fishberry'
+});
+connection.connect();
+
 let arduinoPort = '';
 let tty = '';
 fs.readdir('/dev', (err, data) => {
@@ -46,6 +58,14 @@ router.get('/main/StartWater', (req, res) => {
 	console.log('워터펌프  동작');
 	arduinoPort.write('StartWater');
 	res.status(200).send('Serial Controll OK!!');
+});
+
+router.get('/inputValue', (req, res) => {
+	const _url = req.url;
+	const queryData = url.parse(_url, true).query;
+	db.insertTemper(queryData.minTemper, queryData.maxTemper);
+	db.insertPH(queryData.minPH, queryData.maxPH);
+	res.status(200).render('water.ejs');
 });
 
 module.exports = router;

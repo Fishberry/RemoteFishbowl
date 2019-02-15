@@ -12,6 +12,7 @@
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "dataformat": "^1.0.0",
+    "dns": "^0.2.2",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-jsdom": "0.0.1",

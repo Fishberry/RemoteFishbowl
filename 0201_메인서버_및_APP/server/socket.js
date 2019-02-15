@@ -2,7 +2,19 @@ const express = require('express');
 const path = require('path');
 const socketio = require('socket.io');
 const fs = require('fs');
+const mysql = require('mysql');
+const db = require('./findDB');
+const confirmPW = require('./confirmPassword');
 const router = express.Router();
+
+const connection = mysql.createConnection({
+	host: 'localhost',
+	user: 'root',
+	password: '1234',
+	database: 'Fishberry'
+});
+
+connection.connect();
 
 let tty = '';
 fs.readdir('/dev', (err, data) => {
@@ -71,6 +83,45 @@ module.exports = (server, app) => {
 	        });
 	    });
         });
+
+	socket.on('confirmPassword', (data) => {
+		console.log('data : ' + data);
+		
+		connection.query('select * from passwordSetting', (error, results, fields) => {
+			if(error)
+				console.log(error);
+			else {
+				console.log(results);
+
+				if(data == results[0].password)
+					socket.emit('passwordResult', "OK");
+				else
+					socket.emit('passwordResult', "NO");
+			}
+		});
+	});
+
+	socket.on('insertTemper', (min, max) => {
+		console.log('minTemper : ' + min);
+		console.log('maxTemper : ' + max);
+
+		db.insertTemper(min, max);
+	});
+
+	socket.on('insertPH', (min, max) => {
+		console.log('minPH : ' + min);
+		console.log('maxPH : ' + max);
+
+		db.insertPH(min, max);
+	});
+
+	socket.on('insertFeed', (timer, circle) => {
+		console.log('timer : ' + timer);
+		console.log('circle : ' + circle);
+
+		db.insertFeed(timer, circle);
+
+	});
 	   
         socket.on('disconnect', () => {
             console.log('연결 해제');
