@@ -32,24 +32,31 @@ module.exports = (server, app) => {
     let temperature = 0.0;
     let phValue = 0.0;
 
-    let setHour = 0;
-    let setMinute = 0;
+    //let setHour = 0;
+    //let setMinute = 0;
 
     let getHour = 0;
     let getMinute = 0;
     let getSecond = 0;
 
-    connection.query('select * from FeedSetting', (error, results, fields) => {
-    	setHour = (results[0].timer)/3600;
-	setMinute = (results[0].timer)%60;
-    });
+    let timer = 0;
 
     setInterval(() => {
-    	var time_v = diff(new Date(), setHour, setMinute);
-	getHour = time_v.hour;
-	getMinute = time_v.minute;
-	getSecond = time_v.second;
-    	console.log(getHour+"시간 "+getMinute+"분 "+getSecond+"초 뒤 먹이급여 시작");
+    connection.query('select * from FeedSetting', (error, results, fields) => {
+	if(results[0].timer <= 0) {
+	    // 여기에 지정된 시간 되면 서보모터 작동되도록 코드추가
+	    // 아래 28800으로 임의로 적은건 나중에 바꿀예정
+	    connection.query('update FeedSetting set timer=28800', () => {});
+	}
+	if(results[0].timer > 0) {
+	    timer = results[0].timer-1;
+	    connection.query('update FeedSetting set timer='+timer, () => {});
+    	    getHour = parseInt(timer/60/60);
+    	    getMinute = parseInt(timer/60%60);
+    	    getSecond = parseInt(timer%60);
+    	    console.log(getHour+"시간 "+getMinute+"분 "+getSecond+"초 뒤 먹이급여 시작");
+	}
+    });
     }, 1000);
 
     setInterval(() => {
