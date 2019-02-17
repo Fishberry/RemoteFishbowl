@@ -32,6 +32,8 @@ fs.readdir('/dev', (err, data) => {
 module.exports = (server, app) => {
     let temperature = 0.0;
     let phValue = 0.0;
+    var waterArduinoReadValue;
+    var waterValue = 0;
 
     //let setHour = 0;
     //let setMinute = 0;
@@ -43,9 +45,20 @@ module.exports = (server, app) => {
     let timer = 0;
 
     setInterval(() => {
+
     connection.query('select * from FeedSetting', (error, results, fields) => {
 	if(results[0].timer <= 0) {
 	    // 여기에 지정된 시간 되면 서보모터 작동되도록 코드추가
+	    fs.open(tty, 'a', 666, (e, fd) => {
+		fs.write(fd, 'StartServo', null, null, null, (err) => {
+		    if(err) throw err;
+		    console.log('ok!');	
+		    fs.close(fd, (err) => {
+	    	        console.log(err);
+	            });
+	        });
+	    });
+
 	    // 아래 28800으로 임의로 적은건 나중에 바꿀예정
 	    connection.query('update FeedSetting set timer=28800', () => {});
 	}
@@ -107,6 +120,10 @@ module.exports = (server, app) => {
 	//App에서 아두이노를 동작시키기 위한 코드    
         socket.on('reqData', (data) => {
             console.log('app에서 받은 입력 : ', data);
+	    
+	    if(data == 'StartWater')
+		data = 1;
+
 	    fs.open(tty, 'a', 666, (e, fd) => {
 		fs.write(fd, data, null, null, null, (err) => {
 		    if(err) throw err;

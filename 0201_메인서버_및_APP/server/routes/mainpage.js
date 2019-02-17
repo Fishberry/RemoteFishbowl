@@ -64,12 +64,20 @@ router.get('/main/StartWater', (req, res) => {
 	res.status(200).send('Serial Controll OK!!');
 });
 
-router.get('/inputValue', (req, res) => {
+router.get('/inputWaterValue', (req, res) => {
 	const _url = req.url;
 	const queryData = url.parse(_url, true).query;
 	db.insertTemper(queryData.minTemper, queryData.maxTemper);
 	db.insertPH(queryData.minPH, queryData.maxPH);
 	res.status(200).render('water.ejs');
+});
+
+router.get('/inputFeedValue', (req, res) => {
+	const _url = req.url;
+	const queryData = url.parse(_url, true).query;
+	let setTime = (parseInt(queryData.feedTimerHour)*3600) + (parseInt(queryData.feedTimerMinute)*60);
+	db.insertFeed(setTime, queryData.feedcnt);
+	res.status(200).render('feed.ejs');
 });
 
 module.exports = router;

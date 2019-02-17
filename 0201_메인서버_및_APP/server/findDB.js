@@ -10,6 +10,8 @@ const connection = mysql.createConnection({
 connection.connect();
 
 exports.insertTemper = function(min, max) {
+	connection.query('update TemperSetting set min='+min+', max='+max);
+		/*
 	connection.query('delete from TemperSetting;', () => {});
 	connection.query('insert into TemperSetting values (' + min + ', ' + max + ');', (error, results) => {
 		if(error)
@@ -17,9 +19,12 @@ exports.insertTemper = function(min, max) {
 		else
 			console.log(results);
 	});
+	*/
 };
 
 exports.insertPH = function(min, max) {
+	connection.query('update PHSetting set min='+min+', max='+max);
+		/*
 	connection.query('delete from PHSetting', () => {});
 	connection.query('insert into PHSetting values (' + min + ', ' + max + ');', (error, results) => {
 		if(error)
@@ -27,9 +32,12 @@ exports.insertPH = function(min, max) {
 		else
 			console.log(results);
 	});
+	*/
 };
 
 exports.insertFeed = function(timer, circle) {
+	connection.query('update FeedSetting set timer='+timer+', circle='+circle);
+	/*
 	connection.query('delete from FeedSetting;', () => {});
 	connection.query('insert into FeedSetting values (' + timer + ', ' + circle + ');', (error, results) => {
 		if(error)
@@ -37,6 +45,7 @@ exports.insertFeed = function(timer, circle) {
 		else
 			console.log(results);
 	});
+	*/
 };
 
 exports.confirmPassword = function(password) {
