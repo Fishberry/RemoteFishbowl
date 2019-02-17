@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>FishBerry 수온 및 수질관리</title>
+<title>Streaming</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="styles/layout.css" rel="stylesheet" type="text/css" media="all">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-<style>.inputValue, .trcss {display:inline;}</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 <script>
-// 자바스크립트 및 JQuery 문법 적는곳
+$(document).ready(function(){
+	$("button").click(function(){
+		$.get("/main/" + $(this).attr("id"), function(data,status){});
+	});
+});
 </script>
 </head>
 
@@ -40,7 +43,7 @@
 </div>
 
 <div class="wrapper row1">
-  <header id="header" class="clear">
+  <header id="header" class="clear"> 
     <!-- ################################################################################################ -->
     <div id="logo" class="fl_left">
       <h1><a href="/">Fish Berry</a></h1>
@@ -67,49 +70,24 @@
     <!-- ################################################################################################ -->
   </header>
 </div>
-<!-- 홈페이지 틀 고정을 위해 위 코드를 삭제하지 마세요 -->
     
-<div class="wrapper row3">
-  <main class="container clear">
-    <!-- main body -->
-    <!-- ################################################################################################ -->
-    <div class="group">
-      <div class="one_third first"><img src="images/water/waterIMG.png" alt=""></div>
-      <div class="two_third">
-        <h2 class="heading">수온 및 수질관리 페이지</h2>
-        <p> 수온과 pH값에 대해서 경고범위를 설정해 주세요 </p>
-        <div class = "inputValue">
-            <form action="/inputValue" method="get">
-                <table>
-                    <tr>
-                        <td align="center"><b>수온 경고범위 : </b></td>
-                        <td><input type="number" name="minTemper" min="1" max="40"> ~ <input type="number" name="maxTemper" min="1" max="40"></td>
-                    </tr>
-                    <tr>
-                        <td align="center"><b>pH 경고범위 : </b></td>
-                        <td><input type="text" name="minPH" size="5"> ~ <input type="text" name="maxPH" size="5"></td>
-                    </tr>
-                    
-                </table>
-                
-                <ul>
-		            <li style="text-decoration: none; list-style: none;">
-		                <input type="submit" value='저장' style="color: #fff; font-size: 14px; width: 150px; height: 44px; background: #f75f52;"> 
-		                <input type="reset" value='취소' style="color: #000; font-size: 14px; width: 150px; height: 44px; background: #ffffff;" onClick="history.go(-1)"> <br>
-		            </li>
-		        </ul>
-           
-            </form>
-        </div>
+<div class="wrapper row2" >
+  <div class="overlay">
+    <section id="pageintro" class="clear"> 
+      <!-- ################################################################################################ -->
+      <div class="center">
+        <h2 class="heading xl btmspace-30">Streamming</h2>
+        <img style="-webkit-user-select: none;" src="http://fishberry.iptime.org:8080/?action=stream" width="403" height="302">
       </div>
-    </div>
-    <!-- ################################################################################################ -->
-    <!-- / main body -->
-    <div class="clear"></div>
-  </main>
+      <div class="center" style="margin-top : 20px;">
+        <button type="button" class="btn btn-primary" id='StartServo'>서보모터</button>
+        <button type="button" class="btn btn-primary" id='StartWater'>워터펌프</button>
+      </div>
+      <!-- ################################################################################################ -->
+    </section>
+  </div>
 </div>
 
-<!-- 홈페이지 틀 고정을 위해 아래 코드를 삭제하지 마세요 -->
 <div class="wrapper row6">
   <div id="copyright" class="clear"> 
     <!-- ################################################################################################ -->

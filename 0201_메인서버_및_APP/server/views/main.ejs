@@ -56,7 +56,7 @@ $(document).ready(function(){
             <li><a href="/water">수온 & 수질 관리</a></li>
             <li><a href="/feed">먹이급여 관리</a></li>
             <li><a href="/exchange">부분환수 관리</a></li>
-            <li><a href="/">어항 스트리밍</a></li>
+            <li><a href="/streaming">어항 스트리밍</a></li>
           </ul>
         </li>
         <li><a class="drop" href="#">사용자관리</a>
@@ -85,6 +85,7 @@ $(document).ready(function(){
       </div>
       <!-- ################################################################################################ -->
     </section>
+
   </div>
 </div>
     
@@ -96,6 +97,18 @@ $(document).ready(function(){
       <div class="one_third first"><img src="" alt=""></div>
       <div class="two_third">
         <h2 class="heading">여기에는 어떤 내용을 써야하나</h2>
+	<script type="text/javascript" src="./time_diff.js"></script>
+	<div id = "div1">
+	<p id="demo"></p>
+	</div>
+	<script>
+	  var parent = document.getElementById("div1");
+	  var child = document.getElementById("demo");
+	  var para = document.createElement("p");
+	  var node = document.createTextNode(time_diff.minute);
+	  para.appendChild(node);
+	  parent.replaceChild(para, child);
+	</script>
         <p>Cras pellentesque neque, consectetur adipiscing elit. Fusce venenatis elit ac ligula euismod varius. Maecenas feugiat purus quam, vel aliquet tellus sodales eu. Integer vitae vestibulum turpis, in sollicitudin quam. Aliquam vulputate non felis non luctus. Vestibulum eget augue nulla. Aliquam dignissim nibh mi, ut bibendum quam dapibus eget. Nam nec nisi vel sapien pulvinar ultrices. Curabitur rutrum nisl sagittis, pretium velit eget, convallis lacus. Nulla fermentum nulla ut lacus maximus, ut porttitor neque varius. Nullam sed vulputate sem. Sed bibendum porttitor metus.</p>
         <p>Donec lacinia lacus eros, nec luctus odio bibendum dictum. Vivamus nec egestas libero, non faucibus mauris. In in efficitur felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc porttitor turpis in ex porttitor, nec sagittis diam ultrices.</p>
         <ul class="nospace group">

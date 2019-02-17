@@ -48,6 +48,10 @@ router.get('/exchange', (req, res) => {
 	res.status(200).render('exchange.ejs');
 });
 
+router.get('/streaming', (req, res) => {
+	res.status(200).render('streaming.ejs');
+});
+
 router.get('/main/StartServo', (req, res) => {
 	console.log('서보모터 동작');
 	arduinoPort.write('StartServo');

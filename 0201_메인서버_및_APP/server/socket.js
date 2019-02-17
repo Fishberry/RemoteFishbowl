@@ -3,6 +3,7 @@ const path = require('path');
 const socketio = require('socket.io');
 const fs = require('fs');
 const mysql = require('mysql');
+const crypto = require('crypto');
 const db = require('./findDB');
 const confirmPW = require('./confirmPassword');
 const router = express.Router();
@@ -126,7 +127,11 @@ module.exports = (server, app) => {
 			else {
 				console.log(results);
 
-				if(data == results[0].password)
+				var decipher = crypto.createDecipher('aes256', 'password');
+				decipher.update(results[0].password, 'hex', 'ascii');
+				var decipherd = decipher.final('ascii');
+
+				if(data == decipherd)
 					socket.emit('passwordResult', "OK");
 				else
 					socket.emit('passwordResult', "NO");
