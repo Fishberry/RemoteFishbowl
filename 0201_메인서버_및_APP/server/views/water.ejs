@@ -83,17 +83,24 @@
                 <table>
                     <tr>
                         <td align="center"><b>수온 경고범위 : </b></td>
-                        <td><input type="number" name="minTemper" min="1" max="40"> ~ <input type="number" name="maxTemper" min="1" max="40"></td>
+                        <td class="inline">
+				<input type="number" name="minTemper" min="1" max="40"> ~ <input type="number" name="maxTemper" min="1" max="40">
+				(1도 ~ 40도 사이 값을 입력해주세요)
+			</td>
+
                     </tr>
                     <tr>
                         <td align="center"><b>pH 경고범위 : </b></td>
-                        <td><input type="text" name="minPH" size="5"> ~ <input type="text" name="maxPH" size="5"></td>
+                        <td class="inline">
+				<input type="text" name="minPH" size="5"> ~ <input type="text" name="maxPH" size="5">
+				(0.0 ~ 14.0 사이 값을 입력해주세요)
+			</td>
                     </tr>
                     
                 </table>
                 
                 <ul>
-		            <li style="text-decoration: none; list-style: none;">
+		            <li class="inline" style="text-decoration: none; list-style: none;">
 		                <input type="submit" value='저장' style="color: #fff; font-size: 14px; width: 150px; height: 44px; background: #f75f52;"> 
 		                <input type="reset" value='취소' style="color: #000; font-size: 14px; width: 150px; height: 44px; background: #ffffff;" onClick="history.go(-1)"> <br>
 		            </li>

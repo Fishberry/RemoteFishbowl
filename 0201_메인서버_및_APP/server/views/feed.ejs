@@ -81,12 +81,12 @@
             <form action="/inputFeedValue" method="get">
                 <table>
                     <tr>
-                        <td align="center"><b>먹이급여 타이머  : </b></td>
-			<td><input type="number" name="feedTimerHour" min="0" max="24">시간 <input type="number" name="feedTimerMinute" min="0" max="60">분</td>
+                        <td align="center"><b>먹이급여 타이머 : </b></td>
+			<td class="inline"><input type="number" name="feedTimerHour" min="0" max="24">시간 <input type="number" name="feedTimerMinute" min="0" max="60">분</td>
                     </tr>
                     <tr>
                         <td align="center"><b>먹이급여량 : </b></td>
-			<td>
+			<td class="inline">
 				<label><input type="radio" name="feedcnt" value="1">1회전</label> 
 				<label><input type="radio" name="feedcnt" value="2">2회전</label> 
 				<label><input type="radio" name="feedcnt" value="3">3회전</label> 
@@ -96,11 +96,11 @@
                 </table>
                 
                 <ul>
-		            <li style="text-decoration: none; list-style: none;">
-		                <input type="submit" value='저장' style="color: #fff; font-size: 14px; width: 150px; height: 44px; background: #f75f52;"> 
-		                <input type="reset" value='취소' style="color: #000; font-size: 14px; width: 150px; height: 44px; background: #ffffff;" onClick="history.go(-1)"> <br>
-		            </li>
-		        </ul>
+		    <li class="inline" style="text-decoration: none; list-style: none;">
+		        <input type="submit" value='저장' style="color: #fff; font-size: 14px; width: 150px; height: 44px; background: #f75f52;"> 
+		        <input type="reset" value='취소' style="color: #000; font-size: 14px; width: 150px; height: 44px; background: #ffffff;" onClick="history.go(-1)"> <br>
+		    </li>
+		</ul>
            
             </form>
         </div>

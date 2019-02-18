@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const app = express();
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const server = http.createServer(app);
 const morgan = require('morgan');
@@ -18,6 +19,7 @@ app.use(morgan('dev'));		// 요청에 대한 정보를 콘솔에 기록
 app.use(express.static(path.join(__dirname, 'public')));	// 정적파일(css, js등)의 위치지정
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+app.use(cookieParser());
 
 // 라우터 지정
 app.use('/', mainpageRouter);
