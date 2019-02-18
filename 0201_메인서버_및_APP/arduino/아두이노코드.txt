@@ -17,15 +17,14 @@ void setup() {
   Serial.begin(9600);
   /* 서보모터 */
   myServo.attach(SERVO);
+  myServo.write(0); // 처음에 0도로 초기화
   
   /* RTC */
   // I^2C버스와 RTC 모두 시작
   Wire.begin();
   RTC.begin();
-  // RTC에 시간이 설정되지 않았으면 컴퓨터 시간으로 설정
-  if(!RTC.isrunning()) {
-    RTC.adjust(DateTime(__DATE__, __TIME__));
-  }
+  // RTC에 컴퓨터 시간으로 설정
+  RTC.adjust(DateTime(__DATE__, __TIME__));
 
   /* 워터펌프 */
   pinMode(WaterPumpA1, OUTPUT);       // Motor A 방향설정1
@@ -37,18 +36,14 @@ void setup() {
 
 void loop() {
 
-  String userHour = "18"; // 사용자 시간입력 예시변수
-  String userMinute = "48";  // 사용자 시간입력 예시변수
+  String userHour = "12"; // 사용자 시간입력 예시변수
+  String userMinute = "34";  // 사용자 시간입력 예시변수
 
   if(Serial.available())    // 시리얼 통신 활성화
   {
     String nodeData = Serial.readString(); // 시리얼통신 사용자 입력
     
-    if(nodeData == "1")  // 1을 입력받았으면 다음을 실행
-    {
-      //getTemp();
-    }
-    else if(nodeData == "StartServo")
+    if(nodeData == "StartServo")
     {
       operateServo();
     }
@@ -59,7 +54,7 @@ void loop() {
   }
 
   /* RTC 시간 구하기 */
-  if( getTime(userHour, userMinute )) operateMotor();
+  getTime(userHour, userMinute);
   
 }
 
@@ -86,8 +81,7 @@ boolean getTime(String userHour, String userMinute) {
   Serial.print(' ');
   Serial.println();
   delay(1000);
-  if( hour == userHour && minute == userMinute ) return true;
-  else return false;
+  if( hour == userHour && minute == userMinute ) operateMotor();
 }
 
 void operateMotor() {
@@ -97,6 +91,8 @@ void operateMotor() {
   analogWrite(WaterPumpA2, 0);      // Motor A 방향설정2
   delay(1000);                   // 1초 동작
 
+  Serial.write("MiddleWater");
+  
   /*모터A 멈춤*/
   analogWrite(WaterPumpA1, 0);     // Motor A 정지
   analogWrite(WaterPumpA2, 0);
@@ -107,10 +103,13 @@ void operateMotor() {
   analogWrite(WaterPumpB2, 0);      // Motor A 방향설정2
   delay(1000);                   // 1초 동작
 
+  Serial.write("FinishWater");
+  
    /*모터B 멈춤*/
   analogWrite(WaterPumpB1, 0);     // Motor A 정지
   analogWrite(WaterPumpB2, 0);
   delay(3000);                   // 3초 대기
+
 }
 
 void operateServo()
@@ -118,11 +117,16 @@ void operateServo()
   myServo.write(0); // 처음에 0도로 초기화
   delay(500);
   /* 서보모터 180도 회전 */
-  for(int i=0; i<180; i++) {
+  for(int i=0; i<160; i++) {
     myServo.write(i); // 서보모터 이동
     delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
   }
   delay(1000);
-  myServo.write(0);
+  
+  for(int i=160; i>=0; i--) {
+    myServo.write(i); // 서보모터 이동
+    delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
+  }
+  
   delay(1000);
 }
