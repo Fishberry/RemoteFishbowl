@@ -39,6 +39,7 @@ File: Layout CSS
 
 #header #logo{}
 #header #logo h1{margin:0; padding:0;}
+#header #logo a{text-decoration:none;}
 
 
 /* PageIntro

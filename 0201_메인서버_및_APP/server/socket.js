@@ -122,7 +122,7 @@ module.exports = (server, app) => {
             console.log('app에서 받은 입력 : ', data);
 	    
 	    if(data == 'StartWater')
-		data = 1;
+		waterValue = 1;
 
 	    fs.open(tty, 'a', 666, (e, fd) => {
 		fs.write(fd, data, null, null, null, (err) => {

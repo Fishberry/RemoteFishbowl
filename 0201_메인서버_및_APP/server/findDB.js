@@ -10,42 +10,30 @@ const connection = mysql.createConnection({
 connection.connect();
 
 exports.insertTemper = function(min, max) {
-	connection.query('update TemperSetting set min='+min+', max='+max);
-		/*
-	connection.query('delete from TemperSetting;', () => {});
-	connection.query('insert into TemperSetting values (' + min + ', ' + max + ');', (error, results) => {
+	connection.query('update TemperSetting set min='+min+', max='+max, (error, results) => {
 		if(error)
 			console.log(error);
 		else
 			console.log(results);
 	});
-	*/
 };
 
 exports.insertPH = function(min, max) {
-	connection.query('update PHSetting set min='+min+', max='+max);
-		/*
-	connection.query('delete from PHSetting', () => {});
-	connection.query('insert into PHSetting values (' + min + ', ' + max + ');', (error, results) => {
+	connection.query('update PHSetting set min='+min+', max='+max, (error, results) => {
 		if(error)
 			console.log(error);
 		else
 			console.log(results);
 	});
-	*/
 };
 
 exports.insertFeed = function(timer, circle) {
-	connection.query('update FeedSetting set timer='+timer+', circle='+circle);
-	/*
-	connection.query('delete from FeedSetting;', () => {});
-	connection.query('insert into FeedSetting values (' + timer + ', ' + circle + ');', (error, results) => {
+	connection.query('update FeedSetting set timer='+timer+', circle='+circle, (error, results) => {
 		if(error)
 			console.log(error);
 		else
 			console.log(results);
 	});
-	*/
 };
 
 exports.confirmPassword = function(password) {

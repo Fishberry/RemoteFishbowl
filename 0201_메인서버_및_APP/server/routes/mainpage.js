@@ -5,7 +5,9 @@ const serialPort = require('serialport');
 const http = require('http');
 const url = require('url');
 const mysql = require('mysql');
+const crypto = require('crypto');
 const db = require('../findDB');
+
 const connection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
@@ -33,7 +35,59 @@ fs.readdir('/dev', (err, data) => {
     });
 });
 router.get('/', (req, res) => {
-	res.status(200).render('main.ejs');
+	var cookieValue = req.cookies.password;
+
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else
+		res.status(200).render('main.ejs');
+});
+
+router.post('/password', (req, res) => {
+	connection.query('select * from passwordSetting', (error, results, fields) => {
+		if(error)
+			console.log(error);
+		else {
+			var cipher = crypto.createCipher('aes256', 'password');
+			cipher.update(req.body.PASSWORD, 'ascii', 'hex');
+			var cipherd = cipher.final('hex');
+	
+			if(cipherd == results[0].password) {
+				res.cookie('password', req.body.PASSWORD, {
+					maxAge: 1800000
+				});
+
+				res.status(200).render('main.ejs');
+			}
+			else
+				res.send('<script type="text/javascript">alert("비밀번호가 올바르지 않습니다."); history.back();</script>');
+		}
+	});
+});
+
+router.post('/setPassword', (req, res) => {
+	connection.query('select * from passwordSetting', (error, results, fields) => {
+		if(error)
+			console.log(error);
+		else {
+			console.log('before password : ' + req.body.beforePW);
+			var cipher = crypto.createCipher('aes256', 'password');
+			cipher.update(req.body.beforePW, 'ascii', 'hex');
+			var cipherd = cipher.final('hex');
+	
+			if(cipherd == results[0].password) {
+				var cipher2 = crypto.createCipher('aes256', 'password');
+				cipher2.update(req.body.newPW, 'ascii', 'hex');
+				var cipherd2 = cipher2.final('hex');
+				connection.query("update passwordSetting set password='" + cipherd2 + "';");
+
+				res.send('<script type="text/javascript">alert("비밀번호가 변경되었습니다."); history.back();</script>');
+			}
+			else
+				res.send('<script type="text/javascript">alert("현재 비밀번호가 올바르지 않습니다."); history.back();</script>');
+		
+		}
+	});
 });
 
 router.get('/water', (req, res) => {
@@ -50,6 +104,15 @@ router.get('/exchange', (req, res) => {
 
 router.get('/streaming', (req, res) => {
 	res.status(200).render('streaming.ejs');
+});
+
+router.get('/changePW', (req, res) => {
+	res.status(200).render('changePW.ejs');
+});
+
+router.get('/logout', (req, res) => {
+	res.clearCookie('password');
+	res.redirect('/');
 });
 
 router.get('/main/StartServo', (req, res) => {
@@ -69,7 +132,7 @@ router.get('/inputWaterValue', (req, res) => {
 	const queryData = url.parse(_url, true).query;
 	db.insertTemper(queryData.minTemper, queryData.maxTemper);
 	db.insertPH(queryData.minPH, queryData.maxPH);
-	res.status(200).render('water.ejs');
+	res.send('<script type="text/javascript">alert("설정값이 저장되었습니다."); history.back();</script>');
 });
 
 router.get('/inputFeedValue', (req, res) => {
@@ -77,7 +140,7 @@ router.get('/inputFeedValue', (req, res) => {
 	const queryData = url.parse(_url, true).query;
 	let setTime = (parseInt(queryData.feedTimerHour)*3600) + (parseInt(queryData.feedTimerMinute)*60);
 	db.insertFeed(setTime, queryData.feedcnt);
-	res.status(200).render('feed.ejs');
+	res.send('<script type="text/javascript">alert("설정값이 저장되었습니다."); history.back();</script>');
 });
 
 module.exports = router;

@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="styles/layout.css" rel="stylesheet" type="text/css" media="all">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+<style>.inputValue {display:inline;}</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 <script>
@@ -64,34 +65,33 @@
     <!-- main body -->
     <!-- ################################################################################################ -->
     <div class="group">
-      <div class="one_third first"><img src="images/feed/fish-feed.png" alt=""></div>
+      <div class="one_third first"><img src="images/locker.png" alt="" style="width:290px; height:270px;"></div>
       <div class="two_third">
-        <p style="font-size:24px;"> 먹이급여 관리페이지 </p>
-        <p> 급여설정을 진행해주세요  </p>
+        <p style="font-size:24px;"> 비밀번호 변경 페이지 </p>
+        <p> Fishberry에 접속할 비밀번호를 변경해 주세요 (기본값 '0000')</p>
         <div class = "inputValue">
-            <form action="/inputFeedValue" method="get">
+            <form action="/setPassword" method="post">
                 <table>
                     <tr>
-                        <td align="center"><b>먹이급여 타이머 : </b></td>
-			<td class="inline"><input type="number" name="feedTimerHour" min="0" max="24">시간 <input type="number" name="feedTimerMinute" min="0" max="60">분마다 먹이급여 설정</td>
-                    </tr>
-                    <tr>
-                        <td align="center"><b>먹이급여량 : </b></td>
-			<td class="inline">
-				<label><input type="radio" name="feedcnt" value="1">1회전</label> 
-				<label><input type="radio" name="feedcnt" value="2">2회전</label> 
-				<label><input type="radio" name="feedcnt" value="3">3회전</label> 
+                        <td align="center"><b>현재 비밀번호 : </b></td>
+                        <td class="inline">
+				<input type="password" name="beforePW" size="20">
 			</td>
                     </tr>
-                    
+                    <tr>
+                        <td align="center"><b>새로운 비밀번호 : </b></td>
+                        <td class="inline">
+				<input type="password" name="newPW" size="20">
+			</td>
+                    </tr>
                 </table>
                 
                 <ul>
-		    <li class="inline" style="text-decoration: none; list-style: none;">
-		        <input type="submit" value='저장' style="color: #fff; font-size: 14px; width: 150px; height: 44px; background: #f75f52;"> 
-		        <input type="reset" value='취소' style="color: #000; font-size: 14px; width: 150px; height: 44px; background: #ffffff;" onClick="history.go(-1)"> <br>
-		    </li>
-		</ul>
+		            <li class="inline" style="text-decoration: none; list-style: none;">
+		                <input type="submit" value='저장' style="color: #fff; font-size: 14px; width: 150px; height: 44px; background: #f75f52;"> 
+		                <input type="reset" value='취소' style="color: #000; font-size: 14px; width: 150px; height: 44px; background: #ffffff;" onClick="history.go(-1)"> <br>
+		            </li>
+		        </ul>
            
             </form>
         </div>
