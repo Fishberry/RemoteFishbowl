@@ -2,10 +2,10 @@
 #include <Wire.h>
 #include "RTClib.h"
  
-const int WaterPumpA1 = 6; // 워터펌프 A의 첫번째핀
-const int WaterPumpA2 = 7; // 워터펌프 A의 두번째핀
-const int WaterPumpB1 = 4; // 워터펌프 B의 첫번째핀
-const int WaterPumpB2 = 5; // 워터펌프 B의 두번째핀
+const int WaterPumpA1 = 2; // 워터펌프 A의 첫번째핀
+const int WaterPumpA2 = 3; // 워터펌프 A의 두번째핀
+const int WaterPumpB1 = 9; // 워터펌프 B의 첫번째핀
+const int WaterPumpB2 = 10; // 워터펌프 B의 두번째핀
 const int SERVO = 8;       // 서보모터 8번핀
 
 Servo myServo;  // 서보모터 인스턴스 변수
