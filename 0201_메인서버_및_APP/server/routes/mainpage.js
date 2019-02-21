@@ -36,7 +36,6 @@ fs.readdir('/dev', (err, data) => {
 });
 router.get('/', (req, res) => {
 	var cookieValue = req.cookies.password;
-
 	if(cookieValue == null)
 		res.status(200).render('passwordPage.ejs');
 	else
@@ -66,6 +65,10 @@ router.post('/password', (req, res) => {
 });
 
 router.post('/setPassword', (req, res) => {
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else {
 	connection.query('select * from passwordSetting', (error, results, fields) => {
 		if(error)
 			console.log(error);
@@ -88,26 +91,47 @@ router.post('/setPassword', (req, res) => {
 		
 		}
 	});
+	}
 });
 
 router.get('/water', (req, res) => {
-	res.status(200).render('water.ejs');
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else
+		res.status(200).render('water.ejs');
 });
 
 router.get('/feed', (req, res) => {
-	res.status(200).render('feed.ejs');
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else
+		res.status(200).render('feed.ejs');
 });
 
 router.get('/exchange', (req, res) => {
-	res.status(200).render('exchange.ejs');
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else
+		res.status(200).render('exchange.ejs');
 });
 
 router.get('/streaming', (req, res) => {
-	res.status(200).render('streaming.ejs');
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else
+		res.status(200).render('streaming.ejs');
 });
 
 router.get('/changePW', (req, res) => {
-	res.status(200).render('changePW.ejs');
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else
+		res.status(200).render('changePW.ejs');
 });
 
 router.get('/logout', (req, res) => {
@@ -116,31 +140,51 @@ router.get('/logout', (req, res) => {
 });
 
 router.get('/main/StartServo', (req, res) => {
-	console.log('서보모터 동작');
-	arduinoPort.write('StartServo');
-	res.status(200).send('Serial Controll OK!!');
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else {
+		console.log('서보모터 동작');
+		arduinoPort.write('StartServo');
+		res.status(200).send('Serial Controll OK!!');
+	}
 });
 
 router.get('/main/StartWater', (req, res) => {
-	console.log('워터펌프  동작');
-	arduinoPort.write('StartWater');
-	res.status(200).send('Serial Controll OK!!');
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else {
+		console.log('워터펌프  동작');
+		arduinoPort.write('StartWater');
+		res.status(200).send('Serial Controll OK!!');
+	}
 });
 
 router.get('/inputWaterValue', (req, res) => {
-	const _url = req.url;
-	const queryData = url.parse(_url, true).query;
-	db.insertTemper(queryData.minTemper, queryData.maxTemper);
-	db.insertPH(queryData.minPH, queryData.maxPH);
-	res.send('<script type="text/javascript">alert("설정값이 저장되었습니다."); history.back();</script>');
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else {
+		const _url = req.url;
+		const queryData = url.parse(_url, true).query;
+		db.insertTemper(queryData.minTemper, queryData.maxTemper);
+		db.insertPH(queryData.minPH, queryData.maxPH);
+		res.send('<script type="text/javascript">alert("설정값이 저장되었습니다."); history.back();</script>');
+	}
 });
 
 router.get('/inputFeedValue', (req, res) => {
-	const _url = req.url;
-	const queryData = url.parse(_url, true).query;
-	let setTime = (parseInt(queryData.feedTimerHour)*3600) + (parseInt(queryData.feedTimerMinute)*60);
-	db.insertFeed(setTime, queryData.feedcnt);
-	res.send('<script type="text/javascript">alert("설정값이 저장되었습니다."); history.back();</script>');
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else {
+		const _url = req.url;
+		const queryData = url.parse(_url, true).query;
+		let setTime = (parseInt(queryData.feedTimerHour)*3600) + (parseInt(queryData.feedTimerMinute)*60);
+		db.insertFeed(setTime, queryData.feedcnt);
+		res.send('<script type="text/javascript">alert("설정값이 저장되었습니다."); history.back();</script>');
+	}
 });
 
 module.exports = router;
