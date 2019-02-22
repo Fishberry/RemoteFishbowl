@@ -11,7 +11,7 @@
 
 ### 2019-02-22 추가
 
-서버를 자동으로 실행시키기 위해서 /etc/rc.local에 /usr/bin/forever start /home/pi/Desktop/FishberryServer/app.js 명령을 추가함  
+서버를 자동으로 실행시키기 위해 /etc/rc.local에 /usr/bin/forever start /home/pi/Desktop/FishberryServer/app.js 명령을 추가  
 forever 명령어는 서버를 자동으로 재시작해주는 nodemon 모듈과 비슷하며,   
 start / stop / restart 처럼 프로세스를 관리해 줄 수 있다.  
 http://todactodac.blogspot.com/2016/06/nodejs-forever.html 페이지를 참고  
