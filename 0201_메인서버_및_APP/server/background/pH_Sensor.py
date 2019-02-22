@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import time # sleep 사용을 위해 임포트
 
 # 아래 두개 임포트는 라즈베리파이의 GPIO사용과 MCP3008 부품을 이용하기 위해서.

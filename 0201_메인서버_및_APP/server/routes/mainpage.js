@@ -6,7 +6,7 @@ const http = require('http');
 const url = require('url');
 const mysql = require('mysql');
 const crypto = require('crypto');
-const db = require('../findDB');
+const db = require('../models/findDB');
 
 const connection = mysql.createConnection({
 	host: 'localhost',

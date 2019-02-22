@@ -4,10 +4,9 @@ const socketio = require('socket.io');
 const fs = require('fs');
 const mysql = require('mysql');
 const crypto = require('crypto');
-const db = require('./findDB');
+const db = require('./models/findDB');
 const confirmPW = require('./confirmPassword');
 const router = express.Router();
-const diff = require('./views/time_diff');
 
 const connection = mysql.createConnection({
 	host: 'localhost',
@@ -34,9 +33,6 @@ module.exports = (server, app) => {
     let phValue = 0.0;
     var waterArduinoReadValue;
     var waterValue = 0;
-
-    //let setHour = 0;
-    //let setMinute = 0;
 
     let getHour = 0;
     let getMinute = 0;
@@ -75,19 +71,18 @@ module.exports = (server, app) => {
 
     setInterval(() => {
     fs.readFile('/sys/bus/w1/devices/28-020d9246133d/w1_slave', 'utf8', (err, data) => {
-        //console.log('읽어온 온도 : ', data);
+        //console.log('읽어온 온도 : ', data);a // 전체 파일의 내용을 로그찍음
 
         var text = data;
         var first = text.substring(69,71);
         var second = text.substring(71,74);
-        //var first = 24;
-        //var second = 512;
+
         temperature = `${first}.${second}`;
         console.log("Temperature : " + temperature);
     })}, 5000);
 
     setInterval(() => {
-    fs.readFile('/home/pi/Desktop/FishberryServer/pH_log', 'utf8', (err, data) => {
+    fs.readFile('/home/pi/Desktop/FishberryServer/background/pH_log', 'utf8', (err, data) => {
 
         var text = data;
         var ph = text.substring(0,4);

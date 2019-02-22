@@ -11,4 +11,9 @@ serialFromArduino.flushInput();
 
 while 1:
     input = serialFromArduino.readline();
-    print input[:-1]
+
+    if input == 'FinalWater':
+        with open('water_log', 'w') as f:
+            f.write(input)
+    else :
+        print input[:-1]
