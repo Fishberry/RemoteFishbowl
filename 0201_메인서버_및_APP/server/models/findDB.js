@@ -27,8 +27,8 @@ exports.insertPH = function(min, max) {
 	});
 };
 
-exports.insertFeed = function(timer, circle) {
-	connection.query('update FeedSetting set timer='+timer+', circle='+circle, (error, results) => {
+exports.insertFeed = function(timer, circle, save_time) {
+	connection.query('update FeedSetting set timer='+timer+', circle='+circle+', save_time='+save_time, (error, results) => {
 		if(error)
 			console.log(error);
 		else

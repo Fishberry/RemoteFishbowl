@@ -1,0 +1,142 @@
+﻿#include <Servo.h>
+#include <Wire.h>
+#include "RTClib.h"
+ 
+const int WaterPumpA1 = 2; // 워터펌프 A의 첫번째핀
+const int WaterPumpA2 = 3; // 워터펌프 A의 두번째핀
+const int WaterPumpB1 = 9; // 워터펌프 B의 첫번째핀
+const int WaterPumpB2 = 10; // 워터펌프 B의 두번째핀
+const int SERVO = 8;       // 서보모터 8번핀
+
+Servo myServo;  // 서보모터 인스턴스 변수
+RTC_DS1307 RTC; // RTC 인스턴스 변수
+String year, month, day, hour, minute, second, time, date;
+
+void setup() {
+  
+  Serial.begin(9600);
+  /* 서보모터 */
+  myServo.attach(SERVO);
+  myServo.write(0); // 처음에 0도로 초기화
+  
+  /* RTC */
+  // I^2C버스와 RTC 모두 시작
+  Wire.begin();
+  RTC.begin();
+  // RTC에 컴퓨터 시간으로 설정
+  RTC.adjust(DateTime(__DATE__, __TIME__));
+
+  /* 워터펌프 */
+  pinMode(WaterPumpA1, OUTPUT);       // Motor A 방향설정1
+  pinMode(WaterPumpA2, OUTPUT);       // Motor A 방향설정2
+  pinMode(WaterPumpB1, OUTPUT);       // Motor B 방향설정1
+  pinMode(WaterPumpB2, OUTPUT);       // Motor B 방향설정2
+
+}
+
+void loop() {
+
+  String userHour = "12"; // 사용자 시간입력 예시변수
+  String userMinute = "34";  // 사용자 시간입력 예시변수
+
+  if(Serial.available())    // 시리얼 통신 활성화
+  {
+    String nodeData = Serial.readString(); // 시리얼통신 사용자 입력
+    
+    if(nodeData == "StartServo1")
+    {
+      operateServo(1);
+    }
+    if(nodeData == "StartServo2")
+    {
+      operateServo(2);
+    }
+    if(nodeData == "StartServo3")
+    {
+      operateServo(3);
+    }
+    else if(nodeData == "StartWater")
+    {
+      operateMotor();
+    }
+  }
+
+  /* RTC 시간 구하기 */
+  getTime(userHour, userMinute);
+  
+}
+
+boolean getTime(String userHour, String userMinute) {
+  
+  DateTime now = RTC.now();
+  Serial.print(now.year(), DEC);  // 년
+  year = String(now.year(), DEC);
+  Serial.print('/');
+  Serial.print(now.month(), DEC);  // 월
+  month = String(now.month(), DEC);
+  Serial.print('/');
+  Serial.print(now.day(), DEC);   // 일
+  day = String(now.day(), DEC);
+  Serial.print(' ');
+  Serial.print(now.hour(), DEC);    // 시간
+  hour = String(now.hour(), DEC);
+  Serial.print(':');
+  Serial.print(now.minute(), DEC);   // 분
+  minute = String(now.minute(), DEC);
+  Serial.print(':');
+  Serial.print(now.second(), DEC);   // 초
+  second = String(now.second(), DEC);
+  Serial.print(' ');
+  Serial.println();
+  delay(1000);
+  if( hour == userHour && minute == userMinute ) operateMotor();
+}
+
+void operateMotor() {
+  
+  /*모터A 동작*/
+  analogWrite(WaterPumpA1, 255);     // Motor A 방향설정1
+  analogWrite(WaterPumpA2, 0);      // Motor A 방향설정2
+  delay(1000);                   // 1초 동작
+
+  Serial.write("MiddleWater");
+  
+  /*모터A 멈춤*/
+  analogWrite(WaterPumpA1, 0);     // Motor A 정지
+  analogWrite(WaterPumpA2, 0);
+  delay(3000);                   // 3초 대기
+
+  /*모터B 동작*/
+  analogWrite(WaterPumpB1, 255);     // Motor A 방향설정1
+  analogWrite(WaterPumpB2, 0);      // Motor A 방향설정2
+  delay(1000);                   // 1초 동작
+
+  Serial.write("FinishWater");
+  
+   /*모터B 멈춤*/
+  analogWrite(WaterPumpB1, 0);     // Motor A 정지
+  analogWrite(WaterPumpB2, 0);
+  delay(3000);                   // 3초 대기
+
+}
+
+void operateServo(int circle)
+{
+  for(int k=0; k<circle; k++) {
+    myServo.write(0); // 처음에 0도로 초기화
+    delay(500);
+    /* 서보모터 170도 회전 */
+    for(int i=0; i<170; i++) {
+      myServo.write(i); // 서보모터 이동
+      delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
+    }
+    delay(500);
+  
+    for(int i=170; i>=0; i--) {
+      myServo.write(i); // 서보모터 이동
+      delay(10); // 서보모터 이동이 끝날 때까지 잠깐 대기
+    }
+  
+    delay(1000);
+  }
+}

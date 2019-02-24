@@ -1,4 +1,4 @@
-const express = require('express'); 
+﻿const express = require('express'); 
 const path = require('path');
 const socketio = require('socket.io');
 const fs = require('fs');
@@ -44,19 +44,47 @@ module.exports = (server, app) => {
 
     connection.query('select * from FeedSetting', (error, results, fields) => {
 	if(results[0].timer <= 0) {
-	    // 여기에 지정된 시간 되면 서보모터 작동되도록 코드추가
-	    fs.open(tty, 'a', 666, (e, fd) => {
-		fs.write(fd, 'StartServo', null, null, null, (err) => {
-		    if(err) throw err;
-		    console.log('ok!');	
-		    fs.close(fd, (err) => {
-	    	        console.log(err);
-	            });
-	        });
-	    });
+	    if(results[0].circle == 1) {
+	    	// 여기에 지정된 시간 되면 서보모터 작동되도록 코드추가
+	    	fs.open(tty, 'a', 666, (e, fd) => {
+			fs.write(fd, 'StartServo1', null, null, null, (err) => {
+			    if(err) throw err;
+			    console.log('Servo1');	
+			    fs.close(fd, (err) => {
+	    		        console.log(err);
+	      	      });
+	    	    });
+	   	 });
+	    }
+
+	    else if(results[0].circle == 2) {
+	    	// 여기에 지정된 시간 되면 서보모터 작동되도록 코드추가
+	    	fs.open(tty, 'a', 666, (e, fd) => {
+			fs.write(fd, 'StartServo2', null, null, null, (err) => {
+			    if(err) throw err;
+			    console.log('Servo2');	
+			    fs.close(fd, (err) => {
+	    		        console.log(err);
+	      	      });
+	    	    });
+	   	 });
+	    }
+
+	    else if(results[0].circle == 3) {
+	    	// 여기에 지정된 시간 되면 서보모터 작동되도록 코드추가
+	    	fs.open(tty, 'a', 666, (e, fd) => {
+			fs.write(fd, 'StartServo3', null, null, null, (err) => {
+			    if(err) throw err;
+			    console.log('Servo3');	
+			    fs.close(fd, (err) => {
+	    		        console.log(err);
+	      	      });
+	    	    });
+	   	 });
+	    }
 
 	    // 아래 28800으로 임의로 적은건 나중에 바꿀예정
-	    connection.query('update FeedSetting set timer='+results[0].save_time, () => {});
+	    connection.query('update FeedSetting set timer=28800', () => {});
 	}
 	if(results[0].timer > 0) {
 	    timer = results[0].timer-1;
@@ -169,7 +197,7 @@ module.exports = (server, app) => {
 		console.log('timer : ' + timer);
 		console.log('circle : ' + circle);
 
-		db.insertFeed(timer, circle, timer);
+		db.insertFeed(timer, circle);
 
 	});
 	   
