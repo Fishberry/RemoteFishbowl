@@ -89,6 +89,11 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         socket.disconnect();
     }
 
+    public void cancelWaterButton(View v){
+        socket.disconnect();
+        finish();
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -117,6 +117,11 @@ public class TemperatureActivity extends BaseActivity {
         finish();
     }
 
+    public void cancelTemperPHButton(View v) {
+        socket.disconnect();
+        finish();
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
