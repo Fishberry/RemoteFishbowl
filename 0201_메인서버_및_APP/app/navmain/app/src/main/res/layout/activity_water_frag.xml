@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context=".FragActivity">
+            tools:context=".WaterFragActivity">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,8 +35,8 @@
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="먹이급여"
-                    android:id="@+id/btn_frag_feed"
+                    android:text="바로환수"
+                    android:id="@+id/btn_water_frag_now"
                     android:background="@drawable/btn_border"
                     android:layout_weight="1" />
                 <Button
@@ -44,17 +44,8 @@
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="pH/온도"
-                    android:id="@+id/btn_frag_temperature"
-                    android:background="@drawable/btn_border"
-                    android:layout_weight="1"/>
-                <Button
-                    android:theme="@style/FlatButton"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="환수"
-                    android:id="@+id/btn_frag_water"
+                    android:text="예약환수"
+                    android:id="@+id/btn_water_frag_reserve"
                     android:background="@drawable/btn_border"
                     android:layout_weight="1"/>
             </LinearLayout>

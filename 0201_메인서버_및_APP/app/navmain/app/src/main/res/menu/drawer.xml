@@ -5,16 +5,20 @@
         <item
             android:id="@+id/navigation_item_streaming"
             android:checked="true"
-            android:icon="@drawable/ic_attachment"
-            android:title="@string/nav_item_attachment" />
+            android:icon="@drawable/ic_emoticon"
+            android:title="내 어항" />
         <item
-            android:id="@+id/navigation_item_settings"
-            android:icon="@drawable/ic_image"
-            android:title="@string/nav_item_images" />
+            android:id="@+id/navigation_item_feed"
+            android:icon="@drawable/ic_emoticon"
+            android:title="먹이급여" />
         <item
-            android:id="@+id/navigation_item_alarm"
-            android:icon="@drawable/ic_place"
-            android:title="@string/nav_item_location" />
+            android:id="@+id/navigation_item_water"
+            android:icon="@drawable/ic_emoticon"
+            android:title="환수" />
+        <item
+            android:id="@+id/navigation_item_temperPh"
+            android:icon="@drawable/ic_emoticon"
+            android:title="온도/pH" />
     </group>
 
     <item android:title="@string/nav_sub_menu">

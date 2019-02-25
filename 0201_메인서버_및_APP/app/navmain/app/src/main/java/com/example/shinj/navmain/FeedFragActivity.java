@@ -3,41 +3,27 @@ package com.example.shinj.navmain;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.media.VolumeProviderCompat;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 import android.widget.Toast;
-
-import java.sql.Time;
-import java.util.Date;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
 
-public class FragActivity extends BaseActivity implements View.OnClickListener{
+public class FeedFragActivity extends BaseActivity implements View.OnClickListener{
 
-    Button bt1,bt2,bt3;
+    private Socket socket;
+    Button btn_feed_frag_now, btn_feed_frag_reserve, feedSettingDone;
     FragmentManager fm;
     FragmentTransaction tran;
-    FeedFrag feedFrag;
-    TemperatureFragment temperatureFragment;
-    WaterFragment waterFragment;
-    int timerValue = 0;
-    int circleValue = 0;
-//    int minTemper = 0;
-//    int maxTemper = 0;
-//    double minPH = 0.0;
-//    double maxPH = 0.0;
+    FeedNowFragment feedNowFragment;
+    FeedReserveFragment feedReserveFragment;
+    int timerFeed = 0;
+    int circleFeed = 0;
 
-    /* Feed 프래그먼트 */
     public static final int QUANTITY_OK = 1000;
-    private Button feedSettingDone;
-    private Socket socket;
     String address;
 
 //    /* Temper 프래그먼트 */
@@ -51,17 +37,14 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
         Intent extraIntent = getIntent();
         address = extraIntent.getStringExtra("address");
 
-        bt1 = (Button) findViewById(R.id.btn_frag_feed);
-        bt2 = (Button) findViewById(R.id.btn_frag_temperature);
-        bt3 = (Button) findViewById(R.id.btn_frag_water);
+        btn_feed_frag_now = (Button) findViewById(R.id.btn_feed_frag_now);
+        btn_feed_frag_reserve = (Button) findViewById(R.id.btn_feed_frag_reserve);
+        btn_feed_frag_now.setOnClickListener(this);
+        btn_feed_frag_reserve.setOnClickListener(this);
 
-        bt1.setOnClickListener(this);
-        bt2.setOnClickListener(this);
-        bt3.setOnClickListener(this);
+        feedNowFragment = new FeedNowFragment();
+        feedReserveFragment = new FeedReserveFragment();
 
-        feedFrag = new FeedFrag();
-        temperatureFragment = new TemperatureFragment();
-        waterFragment = new WaterFragment();
         setFrag(0);
 
         feedSettingDone = (Button) findViewById(R.id.feedSettingDone);
@@ -76,21 +59,18 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.activity_frag;
+        return R.layout.activity_feed_frag;
     }
 
     //프레그먼트 클릭
     @Override
     public void onClick(View v){
         switch (v.getId()){
-            case R.id.btn_frag_feed:
+            case R.id.btn_feed_frag_now:
                 setFrag(0);
                 break;
-            case R.id.btn_frag_temperature:
+            case R.id.btn_feed_frag_reserve:
                 setFrag(1);
-                break;
-            case R.id.btn_frag_water:
-                setFrag(2);
                 break;
         }
     }
@@ -100,21 +80,17 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
         tran = fm.beginTransaction();
         switch (n){
             case 0:
-                tran.replace(R.id.frag_frame, feedFrag);
+                tran.replace(R.id.frag_frame, feedNowFragment);
                 tran.commit();
                 break;
             case 1:
-                tran.replace(R.id.frag_frame, temperatureFragment);
-                tran.commit();
-                break;
-            case 2:
-                tran.replace(R.id.frag_frame, waterFragment);
+                tran.replace(R.id.frag_frame, feedReserveFragment);
                 tran.commit();
                 break;
         }
     }
 
-    /* Feed 프래그먼트 */
+    /* FeedReserveFragment 기능 */
     public void buttonClick(View v) {
         //버튼의 아이디로 버튼 구분
         switch (v.getId()) {
@@ -122,28 +98,28 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
                 socket.emit("reqData", "StartServo");
                 break;
             case R.id.btn_feedtimer_8h:
-                feedFrag.selectTimer(R.id.btn_feedtimer_8h);
-                timerValue = 8 * 60 * 60;
+                feedReserveFragment.selectTimer(R.id.btn_feedtimer_8h);
+                timerFeed = 8 * 60 * 60;
                 break;
             case R.id.btn_feedtimer_12h:
-                feedFrag.selectTimer(R.id.btn_feedtimer_12h);
-                timerValue = 12 * 60 * 60;
+                feedReserveFragment.selectTimer(R.id.btn_feedtimer_12h);
+                timerFeed = 12 * 60 * 60;
                 break;
             case R.id.btn_feedtimer_24h:
-                feedFrag.selectTimer(R.id.btn_feedtimer_24h);
-                timerValue = 24 * 60 * 60;
+                feedReserveFragment.selectTimer(R.id.btn_feedtimer_24h);
+                timerFeed = 24 * 60 * 60;
                 break;
             case R.id.feed1:
-                feedFrag.selectCircle(R.id.feed1);
-                circleValue = 1;
+                feedReserveFragment.selectCircle(R.id.feed1);
+                circleFeed = 1;
                 break;
             case R.id.feed2:
-                feedFrag.selectCircle(R.id.feed2);
-                circleValue = 2;
+                feedReserveFragment.selectCircle(R.id.feed2);
+                circleFeed = 2;
                 break;
             case R.id.feed3:
-                feedFrag.selectCircle(R.id.feed3);
-                circleValue = 3;
+                feedReserveFragment.selectCircle(R.id.feed3);
+                circleFeed = 3;
                 break;
         }
     }
@@ -154,10 +130,10 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
         feedUserSettingTimerDialog.setFeedUserSettingTimerListener(new FeedUserSettingTimer.FeedUserSettingTimerListener() {
             @Override
             public void onOkClicked(int year, int month, int day, int hour, int minute) {
-                Toast.makeText(FragActivity.this, "설정된 날짜: " + year + "/" + month + "/"  + day + "\n" + "설정된 시간: " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
-                timerValue = hour * minute * 60;
-                feedFrag.selectTimer(R.id.btn_feedtimer_userSetting);
-                feedFrag.userSettingFeedButton.setText(hour + "H " + minute + "M");
+                Toast.makeText(FeedFragActivity.this, "설정된 날짜: " + year + "/" + month + "/"  + day + "\n" + "설정된 시간: " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
+                timerFeed = (hour*3600) + (minute*60);
+                feedReserveFragment.selectTimer(R.id.btn_feedtimer_userSetting);
+                feedReserveFragment.userSettingFeedButton.setText(hour + "H " + minute + "M");
             }
         });
         feedUserSettingTimerDialog.show();
@@ -172,7 +148,7 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
 
     /* 먹이값 저장취소 */
     public void savefeedButton(View v) {
-        socket.emit("insertFeed", timerValue, circleValue);
+        socket.emit("insertFeed", timerFeed, circleFeed);
         socket.disconnect();
         Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
         finish();
@@ -183,35 +159,9 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
         finish();
     }
 
-    /* 온도 저장취소 */
-
-    public void saveTemperPHButton(View v) {
-        socket.emit("insertTemper", temperatureFragment.minTemper, temperatureFragment.maxTemper);
-        socket.emit("insertPH", temperatureFragment.minPH, temperatureFragment.maxPH);
-        socket.disconnect();
-        Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
     public void cancelTemperPHButton(View v) {
         socket.disconnect();
         finish();
-    }
-
-    public void saveWaterButton(View v) {
-
-        int yearWater, monthWater, dayWater, hourWater, minunteWater;
-        int timerWater;
-        yearWater = waterFragment.datePickerWater.getYear();
-        monthWater = waterFragment.datePickerWater.getMonth()+1;
-        dayWater = waterFragment.datePickerWater.getDayOfMonth();
-        hourWater = waterFragment.timePickerWater.getHour();
-        minunteWater = waterFragment.timePickerWater.getMinute();
-        Toast.makeText(getApplicationContext(), yearWater + "년" + monthWater + "월" + dayWater + "일\n"
-                + hourWater + ":" + minunteWater, Toast.LENGTH_LONG).show();
-        timerWaterValue =
-        socket.emit("insertWater", timerWater);
-        socket.disconnect();
     }
 
     @Override
