@@ -48,6 +48,15 @@
                     android:id="@+id/btn_frag_temperature"
                     android:background="@drawable/btn_border"
                     android:layout_weight="1"/>
+                <Button
+                    android:theme="@style/FlatButton"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="환수"
+                    android:id="@+id/btn_frag_water"
+                    android:background="@drawable/btn_border"
+                    android:layout_weight="1"/>
             </LinearLayout>
             <FrameLayout
                 android:id="@+id/frag_frame"

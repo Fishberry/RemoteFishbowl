@@ -122,4 +122,5 @@ abstract public class BaseActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

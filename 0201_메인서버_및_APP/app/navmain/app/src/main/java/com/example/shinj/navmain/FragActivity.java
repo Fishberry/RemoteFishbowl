@@ -5,9 +5,15 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.media.VolumeProviderCompat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.sql.Time;
+import java.util.Date;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -15,11 +21,12 @@ import io.socket.client.Socket;
 
 public class FragActivity extends BaseActivity implements View.OnClickListener{
 
-    Button bt1,bt2;
+    Button bt1,bt2,bt3;
     FragmentManager fm;
     FragmentTransaction tran;
     FeedFrag feedFrag;
     TemperatureFragment temperatureFragment;
+    WaterFragment waterFragment;
     int timerValue = 0;
     int circleValue = 0;
 //    int minTemper = 0;
@@ -40,16 +47,21 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Intent extraIntent = getIntent();
         address = extraIntent.getStringExtra("address");
 
         bt1 = (Button) findViewById(R.id.btn_frag_feed);
         bt2 = (Button) findViewById(R.id.btn_frag_temperature);
+        bt3 = (Button) findViewById(R.id.btn_frag_water);
 
         bt1.setOnClickListener(this);
         bt2.setOnClickListener(this);
+        bt3.setOnClickListener(this);
+
         feedFrag = new FeedFrag();
         temperatureFragment = new TemperatureFragment();
+        waterFragment = new WaterFragment();
         setFrag(0);
 
         feedSettingDone = (Button) findViewById(R.id.feedSettingDone);
@@ -77,6 +89,9 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
             case R.id.btn_frag_temperature:
                 setFrag(1);
                 break;
+            case R.id.btn_frag_water:
+                setFrag(2);
+                break;
         }
     }
 
@@ -90,6 +105,10 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case 1:
                 tran.replace(R.id.frag_frame, temperatureFragment);
+                tran.commit();
+                break;
+            case 2:
+                tran.replace(R.id.frag_frame, waterFragment);
                 tran.commit();
                 break;
         }
@@ -177,6 +196,22 @@ public class FragActivity extends BaseActivity implements View.OnClickListener{
     public void cancelTemperPHButton(View v) {
         socket.disconnect();
         finish();
+    }
+
+    public void saveWaterButton(View v) {
+
+        int yearWater, monthWater, dayWater, hourWater, minunteWater;
+        int timerWater;
+        yearWater = waterFragment.datePickerWater.getYear();
+        monthWater = waterFragment.datePickerWater.getMonth()+1;
+        dayWater = waterFragment.datePickerWater.getDayOfMonth();
+        hourWater = waterFragment.timePickerWater.getHour();
+        minunteWater = waterFragment.timePickerWater.getMinute();
+        Toast.makeText(getApplicationContext(), yearWater + "년" + monthWater + "월" + dayWater + "일\n"
+                + hourWater + ":" + minunteWater, Toast.LENGTH_LONG).show();
+        timerWaterValue =
+        socket.emit("insertWater", timerWater);
+        socket.disconnect();
     }
 
     @Override
