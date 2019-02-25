@@ -36,6 +36,28 @@ exports.insertFeed = function(timer, circle, save_time) {
 	});
 };
 
+exports.insertExchange = function(t1, t2, save_time) {
+	connection.query('update ExchangeSetting set exTimer1='+t1+', exTimer2='+t2+', exTime_save='+save_time, (error, results) => {
+		if(error)
+			console.log(error);
+		else
+			console.log(results);
+	});
+};
+
+exports.confirmPassword = function(password) {
+	connection.query('select * from passwordSetting', (error, results, fields) => {
+		if(error)
+			console.log(error);
+		else {
+			console.log('database : ' + results[0].password);
+			if(password == results[0].password)
+				return "OK"
+			else
+				return "NO"
+		}
+	});
+};
 exports.confirmPassword = function(password) {
 	connection.query('select * from passwordSetting', (error, results, fields) => {
 		if(error)

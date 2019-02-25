@@ -21,7 +21,7 @@ let tty = '';
 fs.readdir('/dev', (err, data) => {
     if(err) { return done(err); }
     data.forEach((file) => {
-	if(file === 'ttyACM0' || file === 'ttyACM1') {
+	if(file === 'ttyACM0' || file === 'ttyACM1' || file === 'ttyACM2') {
 	    tty = '/dev/'+file;
 	    console.log('connect tty : ', tty);
 	    arduinoPort = new serialPort(tty, {
@@ -145,7 +145,8 @@ router.get('/main/StartServo', (req, res) => {
 		res.status(200).render('passwordPage.ejs');
 	else {
 		console.log('서보모터 동작');
-		arduinoPort.write('StartServo');
+		//arduinoPort.write('StartServo1');
+		arduinoPort.write('StartServo1');
 		res.status(200).send('Serial Controll OK!!');
 	}
 });
@@ -182,7 +183,7 @@ router.get('/inputFeedValue', (req, res) => {
 		const _url = req.url;
 		const queryData = url.parse(_url, true).query;
 		let setTime = (parseInt(queryData.feedTimerHour)*3600) + (parseInt(queryData.feedTimerMinute)*60);
-		db.insertFeed(setTime, queryData.feedcnt);
+		db.insertFeed(setTime, queryData.feedcnt, setTime);
 		res.send('<script type="text/javascript">alert("설정값이 저장되었습니다."); history.back();</script>');
 	}
 });
