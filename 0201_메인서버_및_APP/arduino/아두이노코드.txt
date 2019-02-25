@@ -1,4 +1,4 @@
-﻿#include <Servo.h>
+#include <Servo.h>
 #include <Wire.h>
 #include "RTClib.h"
  
@@ -85,6 +85,7 @@ void loop() {
       setMode(1);
     }
     else if(nodeData == "pHWN")
+<<<<<<< HEAD
     {
       setMode(2);
     }
@@ -95,6 +96,14 @@ void loop() {
     else if(nodeData == "BothWN")
     {
       setMode(4);
+=======
+    {
+      setMode(2);
+    }
+    else if(nodeData == "NotTWN")
+    {
+      setMode(3);
+>>>>>>> 4775635c8cab15c64fb67786f4b075af6a473c92
     }
   }
 
@@ -119,11 +128,14 @@ void setMode(int mode) {
     digitalWrite(GLED, HIGH);
     digitalWrite(BLED, LOW);
   }
+<<<<<<< HEAD
   else if(mode == 4) {
     digitalWrite(RLED, HIGH);
     digitalWrite(GLED, HIGH);
     digitalWrite(BLED, HIGH);
   }
+=======
+>>>>>>> 4775635c8cab15c64fb67786f4b075af6a473c92
 }
 
 void getTime() {

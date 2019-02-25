@@ -1,12 +1,10 @@
 package com.example.shinj.navmain;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -51,7 +49,7 @@ abstract public class BaseActivity extends AppCompatActivity {
                 Intent intent;
                 int id = menuItem.getItemId();
                 switch (id) {
-                    //  네비게이션바 - 스트리밍
+                    //  네비게이션바 - 내 어항
                     case R.id.navigation_item_streaming:
                         intent = new Intent(getApplicationContext(), StreamingActivity.class);
                         intent.putExtra("address", address);
@@ -59,22 +57,28 @@ abstract public class BaseActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
-                    // 네비게이션바 - 설정
-                    case R.id.navigation_item_settings:
-                        intent = new Intent(getApplicationContext(), FragActivity.class);
+                    // 네비게이션바 - 먹이급여
+                    case R.id.navigation_item_feed:
+                        intent = new Intent(getApplicationContext(), FeedFragActivity.class);
                         intent.putExtra("address", address);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
-                    // 네비게이션바 - 알람
-                    case R.id.navigation_item_alarm:
+                    // 네비게이션바 - 환수
+                    case R.id.navigation_item_water:
+                        intent = new Intent(getApplicationContext(), WaterFragActivity.class);
+                        intent.putExtra("address", address);
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
-                    case R.id.nav_sub_menu_item01:
-                        break;
-
-                    case R.id.nav_sub_menu_item02:
+                     // 네비게이션바 - 온도/pH
+                    case R.id.navigation_item_temperPh:
+                        intent = new Intent(getApplicationContext(), TemperatureActivity.class);
+                        intent.putExtra("address", address);
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
                 }
@@ -122,4 +126,5 @@ abstract public class BaseActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

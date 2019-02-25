@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <TextView
+        android:id="@+id/reserveWater"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="환수날짜"
+        android:textAlignment="center"
+        android:textColor="@color/colorMediumorchid"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"/>
+
+    <DatePicker
+        android:id="@+id/date_picker2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reserveWater"
+        />
+
+    <TextView
+        android:id="@+id/waterTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="환수시간"
+        android:textAlignment="center"
+        android:textColor="@color/colorMediumorchid"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date_picker2"
+        />
+
+    <TimePicker
+        android:id="@+id/time_picker2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:timePickerMode="spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/waterTime">
+    </TimePicker>
+
+    <Button
+        android:id="@+id/waterSaveButton"
+        android:text="저장"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/waterCancelButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        android:onClick="saveWaterButton"/>
+    <Button
+        android:id="@+id/waterCancelButton"
+        android:text="취소"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/waterSaveButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/waterSaveButton"
+        app:layout_constraintBottom_toBottomOf="@id/waterSaveButton"
+        android:onClick="cancelWaterButton"/>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -3,11 +3,14 @@ package com.example.shinj.navmain;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +25,9 @@ public class StreamingActivity extends BaseActivity {
     private TextView tempValue, phValue;
     Intent extraIntent;
     String address;
+    String progressTemp;
+
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,7 @@ public class StreamingActivity extends BaseActivity {
         tempValue = (TextView) findViewById(R.id.TempValue);
         phValue = (TextView) findViewById(R.id.pHValue);
         address = extraIntent.getStringExtra("address");
+        final ProgressBar progressBarTemperature = (ProgressBar) findViewById(R.id.progresBarTemper);
 
         try {
             socket = IO.socket("http://" + address + ":3000/");
@@ -50,8 +57,16 @@ public class StreamingActivity extends BaseActivity {
                         socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
                         }).on("serverMsg", (Object... objects) -> {
                             runOnUiThread(()-> {
-                                tempValue.setText(objects[0].toString());
+                                tempValue.setText(progressTemp = objects[0].toString());
                                 phValue.setText(objects[1].toString());
+                                progressTemp = progressTemp.substring(0, 2);    // 온도계 프로그래스바에 온도표시하려고 할 때 서버에서 objects[0]로 받아오는 온도값이 24.xxx처럼 돼 있어서 int형 부분만 자름
+                                // handler.post는 온도계 프로그래스바에 온도값 표시해주는 메소드
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressBarTemperature.setProgress(Integer.parseInt(progressTemp));
+                                    }
+                                });
                             });
                         });
                         Thread.sleep(5000);

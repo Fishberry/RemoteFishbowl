@@ -60,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("address", ipEdit.getText().toString());
+        startActivity(intent);
     }
 
     @Override
