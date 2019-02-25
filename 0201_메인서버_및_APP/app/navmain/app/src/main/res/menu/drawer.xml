@@ -5,7 +5,7 @@
         <item
             android:id="@+id/navigation_item_streaming"
             android:checked="true"
-            android:icon="@drawable/ic_emoticon"
+            android:icon="@drawable/fishbowl"
             android:title="내 어항" />
         <item
             android:id="@+id/navigation_item_feed"
@@ -13,7 +13,7 @@
             android:title="먹이급여" />
         <item
             android:id="@+id/navigation_item_water"
-            android:icon="@drawable/ic_emoticon"
+            android:icon="@drawable/water"
             android:title="환수" />
         <item
             android:id="@+id/navigation_item_temperPh"

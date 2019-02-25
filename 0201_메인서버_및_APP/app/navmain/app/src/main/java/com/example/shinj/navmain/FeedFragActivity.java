@@ -90,6 +90,10 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+    public void onStartFeedNowButton(View v) {
+        Toast.makeText(getApplicationContext(), "먹이급여를 완료하였습니다.", Toast.LENGTH_SHORT).show();
+    }
+
     /* FeedReserveFragment 기능 */
     public void buttonClick(View v) {
         //버튼의 아이디로 버튼 구분

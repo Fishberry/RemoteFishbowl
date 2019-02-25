@@ -1,6 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBackground">
+
+    <ImageView
+        android:id="@+id/image_shower"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:src="@drawable/shower"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="50dp"
+        />
+
+    <ImageView
+        android:id="@+id/image_fishbowl"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:src="@drawable/fishbowl_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_shower"
+        />
+
+    <Button
+        android:id="@+id/btn_start_water_now"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="환수 시작"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_fishbowl"
+        app:layout_goneMarginTop="20dp"
+        android:onClick="onStartWaterNowButton"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarWater"
+        android:min="0"
+        android:max="100"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/progressbar_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/progressRateWater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="환수 진행률 표시"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_start_water_now"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.shinj.navmain;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -18,6 +19,9 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
     FragmentTransaction tran;
     WaterNowFragment waterNowFragment;
     WaterReserveFragment waterReserveFragment;
+    Handler handler = new Handler(); // Thread 에서 화면에 그리기 위해서 필요
+
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +43,40 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_water_frag;
+    }
+
+    public void onStartWaterNowButton (View view) {
+        Toast.makeText(getApplicationContext(), "지금환수 시작", Toast.LENGTH_SHORT).show();
+        new Thread(){
+            public void run() {
+                count=0;
+                while (count <= 100) {
+                    try {Thread.sleep(100);}catch(Exception e){}
+                    count++;
+                    handler.post(new Runnable() {
+                        public void run(){
+                            WaterNowFragment.progressBarWater.setProgress(count);
+                            if(count < 100) {
+                                WaterNowFragment.progressRateWater.setVisibility(View.VISIBLE);
+                                WaterNowFragment.progressRateWater.setText(count + " %");
+                                WaterNowFragment.btnStartWaterNow.setText("일시중지");
+                            }
+                            else {
+                                Toast.makeText(WaterFragActivity.this, "환수를 완료하였습니다.", Toast.LENGTH_SHORT).show();
+                                WaterNowFragment.btnStartWaterNow.setText("환수시작");
+                                WaterNowFragment.progressRateWater.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    });
+                }
+            }
+        }.start();
     }
 
     @Override
