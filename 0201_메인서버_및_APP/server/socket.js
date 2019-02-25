@@ -21,7 +21,7 @@ let tty = '';
 fs.readdir('/dev', (err, data) => {
     if(err) { return done(err); }
     data.forEach((file) => {
-	if(file === 'ttyACM0' || file === 'ttyACM1' || file === 'ttyACM2') {
+	if(file === 'ttyACM0' || file === 'ttyACM1') {
 	    tty = '/dev/'+file;
 	    console.log('connect tty : ', tty);
 	}
@@ -43,6 +43,7 @@ module.exports = (server, app) => {
 
     let inWaterPercent = 0;
     let outWaterPercent = 0;
+    let totalPercent = inWaterPercent + outWaterPercent;
     let isChanged = false;
     let isBothWarnning = false;
 
@@ -52,15 +53,15 @@ module.exports = (server, app) => {
 	if(results[0].timer <= 0) {
 	    if(results[0].circle == '1') {
 	    	// 여기에 지정된 시간 되면 서보모터 작동되도록 코드추가
-	    	fs.open(tty, 'a', 666, (e, fd) => {
-			fs.write(fd, 'StartServo1', null, null, null, (err) => {
-			    if(err) throw err;
-			    console.log('Servo1');	
-			    fs.close(fd, (err) => {
-	    		        console.log(err);
-	      	      });
+	   	fs.open(tty, 'a', 666, (e, fd) => {
+	  	    fs.write(fd, 'StartServo1', null, null, null, (err) => {
+		    	if(err) throw err;
+		    	console.log('Temperature Warnning!!');	
+		    	fs.close(fd, (err) => {
+	    			console.log(err);
+	      	    	});
 	    	    });
-	   	 });
+	   	});
 	    }
 
 	    else if(results[0].circle == '2') {
@@ -140,13 +141,13 @@ module.exports = (server, app) => {
 				waterTimer1 = results[0].exTimer1 - 1;
 	        		connection.query('update ExchangeSetting set exTimer1='+waterTimer1, () => {});
 				console.log(waterTimer1);
-				outWaterPercent = (1 - (waterTimer1/600))*100;
+				outWaterPercent = (1 - (waterTimer1/600))*50;
 	   		}
 	   		else if(results[0].exTimer1 < 0) {
 				waterTimer2 = results[0].exTimer2 - 1;
 	        		connection.query('update ExchangeSetting set exTimer2='+waterTimer2, () => {});
 				console.log(waterTimer2);
-				inWaterPercent = (1 - (waterTimer1/600))*100;
+				inWaterPercent = (1 - (waterTimer2/600))*50;
 
 				if(results[0].exTimer2 == 599) {
 	    			fs.open(tty, 'a', 666, (e, fd) => {
@@ -191,18 +192,19 @@ module.exports = (server, app) => {
         temperature = `${first}.${second}`;
         console.log("Temperature : " + temperature);
 
-    })}, 5000);
+    })
 
-    setInterval(() => {
     fs.readFile('/home/pi/Desktop/FishberryServer/background/pH_log', 'utf8', (err, data) => {
 
         var text = data;
         var ph = text.substring(0,4);
         phValue = `${ph}`;
         console.log("phValue : " + phValue);
-    })}, 5000);
+    })
+    //}, 5000);
 
-    setInterval(() => {
+	
+    //setInterval(() => {
 	if ((temperature >= maxTemper || temperature <= minTemper) && (phValue >= maxPH || phValue <= minPH)) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
 	  	    fs.write(fd, 'BothWN', null, null, null, (err) => {
@@ -251,7 +253,7 @@ module.exports = (server, app) => {
 	   	});
 	}
 
-    }, 2000);
+    }, 5000);
 
     const io = socketio.listen(server);
     
@@ -294,12 +296,18 @@ module.exports = (server, app) => {
             socket.emit('resTime', getHour, getMinute, getSecond);
         });
 
+        socket.on('reqPercent', (data) => {
+            console.log('app에서 받은 요청 메세지 : ', data);
+            socket.emit('resPercent', totalPercent);
+        });
+
 	//App에서 아두이노를 동작시키기 위한 코드    
-        socket.on('reqData', (data) => {
+        socket.on('reqOper', (data) => {
             console.log('app에서 받은 입력 : ', data);
 	    
-	    if(data == 'StartWater')
-		waterValue = 1;
+	    //if(data == 'StartWater')
+		//waterValue = 1;
+	    if(data == 'StartServo1') {
 
 	    fs.open(tty, 'a', 666, (e, fd) => {
 		fs.write(fd, data, null, null, null, (err) => {
@@ -310,6 +318,7 @@ module.exports = (server, app) => {
 	            });
 	        });
 	    });
+	    }
         });
 
 	socket.on('confirmPassword', (data) => {

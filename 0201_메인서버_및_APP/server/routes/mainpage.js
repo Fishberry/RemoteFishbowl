@@ -21,7 +21,7 @@ let tty = '';
 fs.readdir('/dev', (err, data) => {
     if(err) { return done(err); }
     data.forEach((file) => {
-	if(file === 'ttyACM0' || file === 'ttyACM1' || file === 'ttyACM2') {
+	if(file === 'ttyACM0' || file === 'ttyACM1') {
 	    tty = '/dev/'+file;
 	    console.log('connect tty : ', tty);
 	    arduinoPort = new serialPort(tty, {
@@ -34,6 +34,7 @@ fs.readdir('/dev', (err, data) => {
 	}
     });
 });
+
 router.get('/', (req, res) => {
 	var cookieValue = req.cookies.password;
 	if(cookieValue == null)
@@ -145,7 +146,6 @@ router.get('/main/StartServo', (req, res) => {
 		res.status(200).render('passwordPage.ejs');
 	else {
 		console.log('서보모터 동작');
-		//arduinoPort.write('StartServo1');
 		arduinoPort.write('StartServo1');
 		res.status(200).send('Serial Controll OK!!');
 	}
@@ -157,7 +157,7 @@ router.get('/main/StartWater', (req, res) => {
 		res.status(200).render('passwordPage.ejs');
 	else {
 		console.log('워터펌프  동작');
-		arduinoPort.write('StartWater');
+		arduinoPort.write('StartOUT');
 		res.status(200).send('Serial Controll OK!!');
 	}
 });
