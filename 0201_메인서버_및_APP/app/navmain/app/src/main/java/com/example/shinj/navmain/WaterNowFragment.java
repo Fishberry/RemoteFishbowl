@@ -13,7 +13,7 @@ import android.widget.TextView;
 public class WaterNowFragment extends Fragment {
 
     static ProgressBar progressBarWater;
-    static Button btnStartWaterNow;
+    static Button btnStartWaterNow, btnPauseWaterNow;
     static TextView progressRateWater;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -22,6 +22,7 @@ public class WaterNowFragment extends Fragment {
         progressBarWater = view.findViewById(R.id.progressBarWater);
         progressRateWater = view.findViewById(R.id.progressRateWater);
         btnStartWaterNow = view.findViewById(R.id.btn_start_water_now);
+        btnPauseWaterNow = view.findViewById(R.id.btn_pause_water_now);
 
         return view;
     }

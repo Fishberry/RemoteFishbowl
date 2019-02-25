@@ -5,19 +5,19 @@
         <item
             android:id="@+id/navigation_item_streaming"
             android:checked="true"
-            android:icon="@drawable/fishbowl"
+            android:icon="@drawable/icon_fishbowl"
             android:title="내 어항" />
         <item
             android:id="@+id/navigation_item_feed"
-            android:icon="@drawable/ic_emoticon"
+            android:icon="@drawable/icon_fishfood"
             android:title="먹이급여" />
         <item
             android:id="@+id/navigation_item_water"
-            android:icon="@drawable/water"
+            android:icon="@drawable/icon_water"
             android:title="환수" />
         <item
             android:id="@+id/navigation_item_temperPh"
-            android:icon="@drawable/ic_emoticon"
+            android:icon="@drawable/icon_thermometer"
             android:title="온도/pH" />
     </group>
 

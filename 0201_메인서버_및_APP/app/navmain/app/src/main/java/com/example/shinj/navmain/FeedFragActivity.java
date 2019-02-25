@@ -92,6 +92,8 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
 
     public void onStartFeedNowButton(View v) {
         Toast.makeText(getApplicationContext(), "먹이급여를 완료하였습니다.", Toast.LENGTH_SHORT).show();
+        socket.emit("reqFeedNow", "StartServo1");
+        socket.disconnect();
     }
 
     /* FeedReserveFragment 기능 */
@@ -141,13 +143,6 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
             }
         });
         feedUserSettingTimerDialog.show();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == QUANTITY_OK && resultCode == RESULT_OK) {
-
-        }
     }
 
     /* 먹이값 저장취소 */

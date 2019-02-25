@@ -46,60 +46,75 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
     }
 
+
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_water_frag;
     }
 
-    public void onStartWaterNowButton (View view) {
+    public void onStartWaterNowButton(View v) {
+        socket.emit("reqWaterNow", "StartIN");
         Toast.makeText(getApplicationContext(), "지금환수 시작", Toast.LENGTH_SHORT).show();
-        new Thread(){
+        new Thread() {
             public void run() {
-                count=0;
-                while (count <= 100) {
-                    try {Thread.sleep(100);}catch(Exception e){}
-                    count++;
-                    handler.post(new Runnable() {
-                        public void run(){
-                            WaterNowFragment.progressBarWater.setProgress(count);
-                            if(count < 100) {
-                                WaterNowFragment.progressRateWater.setVisibility(View.VISIBLE);
-                                WaterNowFragment.progressRateWater.setText(count + " %");
-                                WaterNowFragment.btnStartWaterNow.setText("일시중지");
+                while (true) {
+                    try {
+                        socket.emit("reqPercent", "req");
+                        socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
+                        }).on("resPercent", (Object... objects) -> {
+                            count = Integer.parseInt(objects[0].toString());
+                        });
+                        handler.post(new Runnable() {
+                            public void run() {
+                                WaterNowFragment.progressBarWater.setProgress(count);
+                                if (count < 100) {   // 환수 진행중인 상태
+                                    WaterNowFragment.progressRateWater.setVisibility(View.VISIBLE);
+                                    WaterNowFragment.progressRateWater.setText(count + " %");
+                                    WaterNowFragment.btnPauseWaterNow.setVisibility(View.VISIBLE);
+                                } else {  // 환수 끝났을 때
+                                    Toast.makeText(WaterFragActivity.this, "환수를 완료하였습니다.", Toast.LENGTH_SHORT).show();
+                                    WaterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
+                                    WaterNowFragment.progressRateWater.setVisibility(View.INVISIBLE);
+                                }
                             }
-                            else {
-                                Toast.makeText(WaterFragActivity.this, "환수를 완료하였습니다.", Toast.LENGTH_SHORT).show();
-                                WaterNowFragment.btnStartWaterNow.setText("환수시작");
-                                WaterNowFragment.progressRateWater.setVisibility(View.INVISIBLE);
-                            }
-                        }
-                    });
+                        });
+                        Thread.sleep(200);
+                    } catch (Exception e) {
+                    }
                 }
             }
         }.start();
     }
 
+    public void onPauseWaterNowButton(View v) {
+        socket.emit("reqWaterNowPause", "WaterPause");
+        Toast.makeText(getApplicationContext(), "환수 일시 정지", Toast.LENGTH_SHORT).show();
+        WaterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
+    }
+
+
     @Override
-    public void onClick(View v){
-        switch (v.getId()){
-            case R.id.btn_water_frag_now:
-                setFrag(0);
-                break;
-            case R.id.btn_water_frag_reserve:
-                setFrag(1);
-                break;
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.btn_water_frag_now:
+            setFrag(0);
+            break;
+        case R.id.btn_water_frag_reserve:
+            setFrag(1);
+            break;
         }
     }
 
-    public void setFrag(int n){    //프래그먼트를 교체하는 작업을 하는 메소드
+    public void setFrag(int n) {    //프래그먼트를 교체하는 작업을 하는 메소드
         fm = getFragmentManager();
         tran = fm.beginTransaction();
-        switch (n){
+        switch (n) {
             case 0:
                 tran.replace(R.id.frag_frame, waterNowFragment);
                 tran.commit();
                 break;
             case 1:
+
                 tran.replace(R.id.frag_frame, waterReserveFragment);
                 tran.commit();
                 break;
@@ -111,7 +126,7 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         int yearWater, monthWater, dayWater, hourWater, minunteWater;
         String timerWater;
         yearWater = waterReserveFragment.datePickerWater.getYear();
-        monthWater = waterReserveFragment.datePickerWater.getMonth()+1;
+        monthWater = waterReserveFragment.datePickerWater.getMonth() + 1;
         dayWater = waterReserveFragment.datePickerWater.getDayOfMonth();
         hourWater = waterReserveFragment.timePickerWater.getHour();
         minunteWater = waterReserveFragment.timePickerWater.getMinute();
@@ -119,29 +134,29 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         Toast.makeText(getApplicationContext(), yearWater + "년" + monthWater + "월" + dayWater + "일\n"
                 + hourWater + ":" + minunteWater, Toast.LENGTH_LONG).show();
         socket.emit("insertWater", timerWater);
-        socket.disconnect();
+        //socket.disconnect();
     }
 
-    public void cancelWaterButton(View v){
-        socket.disconnect();
+    public void cancelWaterButton(View v) {
+        //socket.disconnect();
         finish();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        socket.disconnect();
+        //socket.disconnect();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        socket.disconnect();
+        //socket.disconnect();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        socket.disconnect();
+        //socket.disconnect();
     }
 }

@@ -40,6 +40,21 @@
         app:layout_goneMarginTop="20dp"
         android:onClick="onStartWaterNowButton"/>
 
+    <Button
+        android:id="@+id/btn_pause_water_now"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="일시 정지"
+        android:visibility="invisible"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_fishbowl"
+        app:layout_goneMarginTop="20dp"
+        android:onClick="onPauseWaterNowButton"/>
+
     <ProgressBar
         android:id="@+id/progressBarWater"
         android:min="0"
@@ -65,5 +80,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_start_water_now"/>
+
+
 
 </android.support.constraint.ConstraintLayout>

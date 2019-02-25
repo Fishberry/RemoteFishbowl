@@ -70,9 +70,7 @@ public class StreamingActivity extends BaseActivity {
                             });
                         });
                         Thread.sleep(5000);
-                    } catch (Exception e) {
-
-                    }
+                    } catch (Exception e) { }
                 }
             }
         });

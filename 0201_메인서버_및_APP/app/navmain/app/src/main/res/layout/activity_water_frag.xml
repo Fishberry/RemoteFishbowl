@@ -32,19 +32,21 @@
 
                 <Button
                     android:theme="@style/FlatButton"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="바로환수"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
                     android:id="@+id/btn_water_frag_now"
                     android:background="@drawable/btn_border"
                     android:layout_weight="1" />
                 <Button
                     android:theme="@style/FlatButton"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="예약환수"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
                     android:id="@+id/btn_water_frag_reserve"
                     android:background="@drawable/btn_border"
                     android:layout_weight="1"/>
