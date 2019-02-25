@@ -8,6 +8,10 @@ const int WaterPumpB1 = 9; // 워터펌프 B의 첫번째핀
 const int WaterPumpB2 = 10; // 워터펌프 B의 두번째핀
 const int SERVO = 8;       // 서보모터 8번핀
 
+const int BLED = 11;
+const int GLED = 12;
+const int RLED = 13;
+
 Servo myServo;  // 서보모터 인스턴스 변수
 RTC_DS1307 RTC; // RTC 인스턴스 변수
 String year, month, day, hour, minute, second, time, date;
@@ -32,12 +36,13 @@ void setup() {
   pinMode(WaterPumpB1, OUTPUT);       // Motor B 방향설정1
   pinMode(WaterPumpB2, OUTPUT);       // Motor B 방향설정2
 
+  pinMode(BLED, OUTPUT);
+  pinMode(GLED, OUTPUT);
+  pinMode(RLED, OUTPUT);
+  setMode(3);
 }
 
 void loop() {
-
-  String userHour = "12"; // 사용자 시간입력 예시변수
-  String userMinute = "34";  // 사용자 시간입력 예시변수
 
   if(Serial.available())    // 시리얼 통신 활성화
   {
@@ -75,73 +80,81 @@ void loop() {
     {
       operateMotor('d');
     }
-    else if(nodeData == "getRTC")
+    else if(nodeData == "TempWN")
     {
-      /* RTC 시간 구하기 */
-      getTime(userHour, userMinute);
+      setMode(1);
+    }
+    else if(nodeData == "pHWN")
+    {
+      setMode(2);
+    }
+    else if(nodeData == "NotWN")
+    {
+      setMode(3);
+    }
+    else if(nodeData == "BothWN")
+    {
+      setMode(4);
     }
   }
 
   /* RTC 시간 구하기 */
-  //getTime(userHour, userMinute);
+  getTime();
   
 }
 
-boolean getTime(String userHour, String userMinute) {
+void setMode(int mode) {
+  if(mode == 1) {
+    digitalWrite(RLED, HIGH);
+    digitalWrite(GLED, LOW);
+    digitalWrite(BLED, LOW);
+  }
+  else if(mode == 2) {
+    analogWrite(RLED, 255);
+    analogWrite(GLED, 0);
+    analogWrite(BLED, 255);
+  }
+  else if(mode == 3) {
+    digitalWrite(RLED, LOW);
+    digitalWrite(GLED, HIGH);
+    digitalWrite(BLED, LOW);
+  }
+  else if(mode == 4) {
+    digitalWrite(RLED, HIGH);
+    digitalWrite(GLED, HIGH);
+    digitalWrite(BLED, HIGH);
+  }
+}
+
+void getTime() {
   
   DateTime now = RTC.now();
+  
   Serial.print(now.year(), DEC);  // 년
   year = String(now.year(), DEC);
-  Serial.print('/');
+  
   Serial.print(now.month(), DEC);  // 월
   month = String(now.month(), DEC);
-  Serial.print('/');
+  
   Serial.print(now.day(), DEC);   // 일
   day = String(now.day(), DEC);
-  Serial.print(' ');
+
   Serial.print(now.hour(), DEC);    // 시간
   hour = String(now.hour(), DEC);
-  Serial.print(':');
+
   Serial.print(now.minute(), DEC);   // 분
   minute = String(now.minute(), DEC);
-  Serial.print(':');
+
   Serial.print(now.second(), DEC);   // 초
   second = String(now.second(), DEC);
-  Serial.print(' ');
+
   Serial.println();
-  
-  //if( hour == userHour && minute == userMinute ) operateMotor();
+  delay(500);
 }
 
 void operateMotor(char sw) {
   
-  if( sw == 'k') {
-  /*모터A 동작*/
-  analogWrite(WaterPumpA1, 255);     // Motor A 방향설정1
-  analogWrite(WaterPumpA2, 0);      // Motor A 방향설정2
-  delay(1000);                   // 1초 동작
-
-  Serial.write("MiddleWater");
-  
-  /*모터A 멈춤*/
-  analogWrite(WaterPumpA1, 0);     // Motor A 정지
-  analogWrite(WaterPumpA2, 0);
-  delay(3000);                   // 3초 대기
-
-  /*모터B 동작*/
-  analogWrite(WaterPumpB1, 255);     // Motor A 방향설정1
-  analogWrite(WaterPumpB2, 0);      // Motor A 방향설정2
-  delay(1000);                   // 1초 동작
-
-  Serial.write("FinishWater");
-  
-   /*모터B 멈춤*/
-  analogWrite(WaterPumpB1, 0);     // Motor A 정지
-  analogWrite(WaterPumpB2, 0);
-  delay(3000);                   // 3초 대기
-  }
-  
-  else if ( sw == 'a') {
+  if ( sw == 'a') {
     digitalWrite(WaterPumpA1, HIGH);
     digitalWrite(WaterPumpA2, LOW);
   }
