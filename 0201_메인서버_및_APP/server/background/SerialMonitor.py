@@ -5,8 +5,6 @@ if os.path.exists("/dev/ttyACM0") :
     tty = "/dev/ttyACM0"
 elif os.path.exists("/dev/ttyACM1") :
     tty = "/dev/ttyACM1"
-elif os.path.exists("/dev/ttyACM2") :
-    tty = "/dev/ttyACM2"
 
 serialFromArduino = serial.Serial(tty, 9600);
 serialFromArduino.flushInput();
