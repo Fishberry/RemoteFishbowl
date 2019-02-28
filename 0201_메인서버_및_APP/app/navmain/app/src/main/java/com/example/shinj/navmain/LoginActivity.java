@@ -50,19 +50,17 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("글자 확인", objects[0].toString());
                 confirm = objects[0].toString();
                 Log.d("확인", confirm);
-
                 if(confirm.equals("OK")) {
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra("address", ipEdit.getText().toString());
                     startActivity(intent);
                 }
             });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("address", ipEdit.getText().toString());
-        startActivity(intent);
+
     }
 
     @Override

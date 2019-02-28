@@ -72,11 +72,9 @@
         android:id="@+id/progressRateWater"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="환수 진행률 표시"
         android:textSize="25sp"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_start_water_now"/>

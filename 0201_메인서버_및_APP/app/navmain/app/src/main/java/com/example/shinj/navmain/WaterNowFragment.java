@@ -10,11 +10,19 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
+
 public class WaterNowFragment extends Fragment {
 
     static ProgressBar progressBarWater;
     static Button btnStartWaterNow, btnPauseWaterNow;
     static TextView progressRateWater;
+    Socket socket;
+    String address;
+    int count = 0;
+    boolean waterFlag;
+
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_water_now, container, false);
@@ -23,6 +31,8 @@ public class WaterNowFragment extends Fragment {
         progressRateWater = view.findViewById(R.id.progressRateWater);
         btnStartWaterNow = view.findViewById(R.id.btn_start_water_now);
         btnPauseWaterNow = view.findViewById(R.id.btn_pause_water_now);
+
+        //address = getArguments().getString("address"); // 전달한 key 값
 
         return view;
     }

@@ -130,6 +130,13 @@
                     app:layout_constraintStart_toStartOf="@id/pHTitle"
                     app:layout_constraintEnd_toEndOf="@id/pHTitle"
                     app:layout_constraintBottom_toBottomOf="@id/TempValue" />
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/ph"
+                    app:layout_constraintStart_toStartOf="@id/pHValue"
+                    app:layout_constraintEnd_toEndOf="@id/pHValue"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
             </android.support.constraint.ConstraintLayout>
 
         </ScrollView>

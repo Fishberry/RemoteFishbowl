@@ -20,6 +20,7 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
     WaterNowFragment waterNowFragment;
     WaterReserveFragment waterReserveFragment;
     Handler handler = new Handler(); // Thread 에서 화면에 그리기 위해서 필요
+    boolean waterFlag;
 
     int count = 0;
 
@@ -44,6 +45,20 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
             e.printStackTrace();
         }
 
+        Bundle bundle = new Bundle(1); // 파라미터는 전달할 데이터 개수
+        bundle.putString("address", address); // key , value
+        waterNowFragment.setArguments(bundle);
+
+        socket.emit("reqChanged", "isChanged");
+        socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
+        }).on("resChanged", (Object... objects) -> {
+            if(objects[0].toString() == "true")
+                waterFlag = true;
+            else
+                waterFlag = false;
+        });
+
+        waterFlag = waterNowFragment.waterFlag;
     }
 
 
@@ -53,28 +68,31 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void onStartWaterNowButton(View v) {
-        socket.emit("reqWaterNow", "StartIN");
+        waterFlag = true;
+        if(count == 0)
+            socket.emit("reqWaterNow", "StartOUT");
+        else
+            socket.emit("reqWaterNowRestart", "reqWaterNowRestart");
         Toast.makeText(getApplicationContext(), "지금환수 시작", Toast.LENGTH_SHORT).show();
         new Thread() {
             public void run() {
                 while (true) {
                     try {
-                        socket.emit("reqPercent", "req");
+                        socket.emit("reqPercent", "reqPercent");
                         socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
                         }).on("resPercent", (Object... objects) -> {
                             count = Integer.parseInt(objects[0].toString());
                         });
                         handler.post(new Runnable() {
                             public void run() {
-                                WaterNowFragment.progressBarWater.setProgress(count);
-                                if (count < 100) {   // 환수 진행중인 상태
-                                    WaterNowFragment.progressRateWater.setVisibility(View.VISIBLE);
-                                    WaterNowFragment.progressRateWater.setText(count + " %");
-                                    WaterNowFragment.btnPauseWaterNow.setVisibility(View.VISIBLE);
-                                } else {  // 환수 끝났을 때
+                                waterNowFragment.progressBarWater.setProgress(count);
+                                if (count < 100 && waterFlag == true) {   // 환수 진행중인 상태
+                                    waterNowFragment.progressRateWater.setText(count + " %");
+                                    waterNowFragment.btnPauseWaterNow.setVisibility(View.VISIBLE);
+                                } else if (count >= 100){  // 환수 끝났을 때
                                     Toast.makeText(WaterFragActivity.this, "환수를 완료하였습니다.", Toast.LENGTH_SHORT).show();
-                                    WaterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
-                                    WaterNowFragment.progressRateWater.setVisibility(View.INVISIBLE);
+                                    waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
+                                    count = 0;
                                 }
                             }
                         });
@@ -87,9 +105,10 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void onPauseWaterNowButton(View v) {
+        waterFlag = false;
         socket.emit("reqWaterNowPause", "WaterPause");
         Toast.makeText(getApplicationContext(), "환수 일시 정지", Toast.LENGTH_SHORT).show();
-        WaterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
+        waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
     }
 
 
