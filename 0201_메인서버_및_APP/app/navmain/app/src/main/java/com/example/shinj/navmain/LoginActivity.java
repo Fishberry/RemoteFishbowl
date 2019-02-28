@@ -13,10 +13,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.Serializable;
+
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements Serializable {
 
     private Socket socket;
     private EditText ipEdit;
@@ -53,7 +55,17 @@ public class LoginActivity extends AppCompatActivity {
                 if(confirm.equals("OK")) {
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra("address", ipEdit.getText().toString());
+                    //intent.putExtra("socket", (Serializable) socket);
                     startActivity(intent);
+                }
+                else {
+                    socket.disconnect();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginActivity.this, "IP 혹은 비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
 

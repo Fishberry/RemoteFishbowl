@@ -10,9 +10,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.io.Serializable;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
