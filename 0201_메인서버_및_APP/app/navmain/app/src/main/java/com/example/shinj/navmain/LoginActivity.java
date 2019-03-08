@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
     private EditText ipEdit;
     private EditText pwEdit;
     private String confirm;
+    IntentData intentData = IntentData.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +55,9 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
                 confirm = objects[0].toString();
                 Log.d("확인", confirm);
                 if(confirm.equals("OK")) {
+                    intentData.setAddress(ipEdit.getText().toString());
+                    intentData.setSocket(socket);
                     Intent intent = new Intent(this, MainActivity.class);
-                    intent.putExtra("address", ipEdit.getText().toString());
-                    //intent.putExtra("socket", (Serializable) socket);
                     startActivity(intent);
                 }
                 else {
@@ -104,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
                 .setPositiveButton("예", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        socket.close();
                         finish();
                     }
                 })

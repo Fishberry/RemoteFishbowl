@@ -15,16 +15,17 @@ import io.socket.client.Socket;
 public class FeedFragActivity extends BaseActivity implements View.OnClickListener{
 
     private Socket socket;
+    String address;
     Button btn_feed_frag_now, btn_feed_frag_reserve, feedSettingDone;
     FragmentManager fm;
     FragmentTransaction tran;
     FeedNowFragment feedNowFragment;
     FeedReserveFragment feedReserveFragment;
+    IntentData intentData = IntentData.getInstance();
     int timerFeed = 0;
     int circleFeed = 0;
 
     public static final int QUANTITY_OK = 1000;
-    String address;
 
 //    /* Temper 프래그먼트 */
 //    private Spinner tempSpinner1, tempSpinner2, phSpinner1, phSpinner2;
@@ -34,8 +35,10 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent extraIntent = getIntent();
-        address = extraIntent.getStringExtra("address");
+//        Intent extraIntent = getIntent();
+//        address = extraIntent.getStringExtra("address");
+        address = intentData.getAddress();
+        socket = intentData.getSocket();
 
         btn_feed_frag_now = (Button) findViewById(R.id.btn_feed_frag_now);
         btn_feed_frag_reserve = (Button) findViewById(R.id.btn_feed_frag_reserve);
@@ -49,12 +52,12 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
 
         feedSettingDone = (Button) findViewById(R.id.feedSettingDone);
 
-        try {
-            socket = IO.socket("http://" + address + ":3000/");
-            socket.connect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            socket = IO.socket("http://" + address + ":3000/");
+//            socket.connect();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -148,36 +151,30 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
     /* 먹이값 저장취소 */
     public void savefeedButton(View v) {
         socket.emit("insertFeed", timerFeed, circleFeed);
-        socket.disconnect();
         Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     public void cancelfeedButton(View v) {
-        socket.disconnect();
         finish();
     }
 
     public void cancelTemperPHButton(View v) {
-        socket.disconnect();
         finish();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        socket.disconnect();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        socket.disconnect();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        socket.disconnect();
     }
 }

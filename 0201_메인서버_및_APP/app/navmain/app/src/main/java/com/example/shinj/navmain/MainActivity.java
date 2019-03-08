@@ -8,23 +8,27 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.net.Socket;
+import java.util.ArrayList;
+
 public class MainActivity extends BaseActivity {
 
     WebView webView;            //웹뷰 객체
     WebSettings webSettings;    //웹뷰 세팅 객체
     String address;
+    IntentData intentData = IntentData.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent extraIntent = getIntent();
-        address = extraIntent.getStringExtra("address");
+        //Intent extraIntent = getIntent();
+        address = intentData.getAddress();
 
         Intent baseIntent = new Intent(this, BaseActivity.class);
-        baseIntent.putExtra("address", address);
+//        baseIntent.putExtra("address", address);
 
         Intent intent = new Intent(getApplicationContext(), StreamingActivity.class);
-        intent.putExtra("address", address);
+//        intent.putExtra("address", address);
         startActivity(intent);
 
         //웹뷰 객체 레이아웃 아이디와 매칭 및 설정

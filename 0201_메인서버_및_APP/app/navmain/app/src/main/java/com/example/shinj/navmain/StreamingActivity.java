@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -21,11 +22,12 @@ public class StreamingActivity extends BaseActivity {
 
     WebView webView;            //웹뷰 객체
     WebSettings webSettings;    //웹뷰 세팅 객체
-    private Socket socket;
+    private static Socket socket;
     private TextView tempValue, phValue;
     Intent extraIntent;
     String address;
     String progressTemp;
+    IntentData intentData = IntentData.getInstance();
 
     private Handler handler = new Handler();
 
@@ -36,15 +38,17 @@ public class StreamingActivity extends BaseActivity {
 
         tempValue = (TextView) findViewById(R.id.TempValue);
         phValue = (TextView) findViewById(R.id.pHValue);
-        address = extraIntent.getStringExtra("address");
+        address = intentData.getAddress();
+        socket = intentData.getSocket();
+
         final ProgressBar progressBarTemperature = (ProgressBar) findViewById(R.id.progresBarTemper);
 
-        try {
-            socket = IO.socket("http://" + address + ":3000/");
-            socket.connect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            socket = IO.socket("http://" + address + ":3000/");
+//            socket.connect();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         Thread t = new Thread(new Runnable() {
 

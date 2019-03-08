@@ -19,6 +19,7 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
     FragmentTransaction tran;
     WaterNowFragment waterNowFragment;
     WaterReserveFragment waterReserveFragment;
+    IntentData intentData = IntentData.getInstance();
     Handler handler = new Handler(); // Thread 에서 화면에 그리기 위해서 필요
     boolean waterFlag;
 
@@ -27,6 +28,9 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        address = intentData.getAddress();
+        socket = intentData.getSocket();
 
         btn_water_frag_now = findViewById(R.id.btn_water_frag_now);
         btn_water_frag_reserve = findViewById(R.id.btn_water_frag_reserve);
@@ -38,12 +42,12 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
         setFrag(0);
 
-        try {
-            socket = IO.socket("http://" + address + ":3000/");
-            socket.connect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            socket = IO.socket("http://" + address + ":3000/");
+//            socket.connect();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         Bundle bundle = new Bundle(1); // 파라미터는 전달할 데이터 개수
         bundle.putString("address", address); // key , value

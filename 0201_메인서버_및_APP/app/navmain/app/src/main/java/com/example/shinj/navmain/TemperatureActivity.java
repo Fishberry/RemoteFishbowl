@@ -18,10 +18,13 @@ public class TemperatureActivity extends BaseActivity {
     Spinner minTemperSpinner, maxTemperSpinner, minPHSpinner, maxPHSpinner;
     int minTemper, maxTemper;
     double minPH, maxPH;
+    IntentData intentData = IntentData.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        socket = intentData.getSocket();
 
         final ArrayList<String> temperList = new ArrayList<>();
         final ArrayList<String> phList = new ArrayList<>();
@@ -95,12 +98,12 @@ public class TemperatureActivity extends BaseActivity {
             }
         });
 
-        try {
-            socket = IO.socket("http://" + address + ":3000/");
-            socket.connect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            socket = IO.socket("http://" + address + ":3000/");
+//            socket.connect();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -118,26 +121,22 @@ public class TemperatureActivity extends BaseActivity {
     }
 
     public void cancelTemperPHButton(View v) {
-        socket.disconnect();
         finish();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        socket.disconnect();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        socket.disconnect();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        socket.disconnect();
     }
 
 }

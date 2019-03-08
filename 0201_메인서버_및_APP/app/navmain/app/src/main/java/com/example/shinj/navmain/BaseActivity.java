@@ -13,18 +13,30 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import io.socket.client.Socket;
+
 abstract public class BaseActivity extends AppCompatActivity {
     public DrawerLayout mDrawerLayout;
     public Toolbar toolbar;
     public ActionBar actionBar;
+    Socket socket;
     String address;
+    IntentData intentData = IntentData.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
         Intent extraIntent = getIntent();
-        address = extraIntent.getStringExtra("address");
+        //address = extraIntent.getStringExtra("address");
+//        IntentData intentData = (IntentData) extraIntent.getSerializableExtra("data");
+//        address = intentData.address;
+//        socket = (Socket) extraIntent.getSerializableExtra("data");
+
+        address = intentData.getAddress();
+        socket = intentData.getSocket();
 
         configureToolbar();
     }
@@ -52,7 +64,6 @@ abstract public class BaseActivity extends AppCompatActivity {
                     //  네비게이션바 - 내 어항
                     case R.id.navigation_item_streaming:
                         intent = new Intent(getApplicationContext(), StreamingActivity.class);
-                        intent.putExtra("address", address);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
@@ -60,7 +71,6 @@ abstract public class BaseActivity extends AppCompatActivity {
                     // 네비게이션바 - 먹이급여
                     case R.id.navigation_item_feed:
                         intent = new Intent(getApplicationContext(), FeedFragActivity.class);
-                        intent.putExtra("address", address);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
@@ -68,7 +78,6 @@ abstract public class BaseActivity extends AppCompatActivity {
                     // 네비게이션바 - 환수
                     case R.id.navigation_item_water:
                         intent = new Intent(getApplicationContext(), WaterFragActivity.class);
-                        intent.putExtra("address", address);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
@@ -76,7 +85,6 @@ abstract public class BaseActivity extends AppCompatActivity {
                      // 네비게이션바 - 온도/pH
                     case R.id.navigation_item_temperPh:
                         intent = new Intent(getApplicationContext(), TemperatureActivity.class);
-                        intent.putExtra("address", address);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
