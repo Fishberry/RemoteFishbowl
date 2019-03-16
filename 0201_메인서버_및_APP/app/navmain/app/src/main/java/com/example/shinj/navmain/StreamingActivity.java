@@ -11,11 +11,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.socket.client.IO;
 import io.socket.client.Socket;
 
 public class StreamingActivity extends BaseActivity {
@@ -28,6 +27,7 @@ public class StreamingActivity extends BaseActivity {
     String address;
     String progressTemp;
     IntentData intentData = IntentData.getInstance();
+    boolean isConnectSensor;
 
     private Handler handler = new Handler();
 
@@ -35,7 +35,6 @@ public class StreamingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         extraIntent = getIntent();
-
         tempValue = (TextView) findViewById(R.id.TempValue);
         phValue = (TextView) findViewById(R.id.pHValue);
         address = intentData.getAddress();
@@ -61,20 +60,32 @@ public class StreamingActivity extends BaseActivity {
                         socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
                         }).on("serverMsg", (Object... objects) -> {
                             runOnUiThread(()-> {
-                                tempValue.setText(progressTemp = objects[0].toString());
-                                phValue.setText(objects[1].toString());
-                                progressTemp = progressTemp.substring(0, 2);    // 온도계 프로그래스바에 온도표시하려고 할 때 서버에서 objects[0]로 받아오는 온도값이 24.xxx처럼 돼 있어서 int형 부분만 자름
-                                // handler.post는 온도계 프로그래스바에 온도값 표시해주는 메소드
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressBarTemperature.setProgress(Integer.parseInt(progressTemp));
-                                    }
-                                });
+                                if (!(objects[0].toString().equals("0")) || !(objects[1].toString().equals("0"))) {
+                                    setWhetherSensor(true);
+                                    tempValue.setText(progressTemp = objects[0].toString());
+                                    phValue.setText(objects[1].toString());
+                                    progressTemp = progressTemp.substring(0, 2);    // 온도계 프로그래스바에 온도표시하려고 할 때 서버에서 objects[0]로 받아오는 온도값이 24.xxx처럼 돼 있어서 int형 부분만 자름
+                                    // handler.post는 온도계 프로그래스바에 온도값 표시해주는 메소드
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            progressBarTemperature.setProgress(Integer.parseInt(progressTemp));
+                                        }
+                                    });
+                                }
+                                else {
+                                    Toast.makeText(StreamingActivity.this, "온도센서 혹은 수질센서에서 값을 받아 올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                                }
                             });
                         });
-                        Thread.sleep(1000);
-                    } catch (Exception e) { }
+                        Thread.sleep(3000);
+                    } catch (Exception e) {
+                        Toast.makeText(StreamingActivity.this, "온도센서 혹은 수질센서의 연결에 이상이 생겼습니다.", Toast.LENGTH_SHORT).show();
+                        setWhetherSensor(false);
+                    }
+
+                    if (isConnectSensor == false)
+                        break;
                 }
             }
         });
@@ -121,6 +132,10 @@ public class StreamingActivity extends BaseActivity {
         //원하는 URL 됨.
         webView.loadUrl("http://" + address + ":8080/?action=stream");
 
+    }
+
+    void setWhetherSensor(boolean sensorBooleanValue) {
+        isConnectSensor = sensorBooleanValue;
     }
 
     @Override

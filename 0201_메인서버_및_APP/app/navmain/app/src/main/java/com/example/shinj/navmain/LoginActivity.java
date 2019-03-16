@@ -13,8 +13,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -26,6 +29,8 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
     private EditText pwEdit;
     private String confirm;
     IntentData intentData = IntentData.getInstance();
+    FileWriter fw = null;
+    BufferedWriter bw = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,30 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
                 confirm = objects[0].toString();
                 Log.d("확인", confirm);
                 if(confirm.equals("OK")) {
+                    File file = new File("ipInfor.txt");
+                    if(file.exists())
+                        file.delete();
+
+                    try {
+                        fw = new FileWriter(file);
+                        bw = new BufferedWriter(fw);
+                        bw.write(ipEdit.getText().toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        if(bw != null)
+                            bw.close();
+                        if(fw != null)
+                            fw.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Intent serviceIntent = new Intent(this, NotificationService.class);
+                    startService(serviceIntent);
+
                     intentData.setAddress(ipEdit.getText().toString());
                     intentData.setSocket(socket);
                     Intent intent = new Intent(this, MainActivity.class);
