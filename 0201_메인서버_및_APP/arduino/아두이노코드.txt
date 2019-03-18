@@ -13,6 +13,7 @@ const int RLED = 13;
 Servo myServo;  // 서보모터 인스턴스 변수
 RTC_DS1307 RTC; // RTC 인스턴스 변수
 String year, month, day, hour, minute, second, time, date;
+int count = 1;
 
 void setup() {
   
@@ -46,59 +47,62 @@ void loop() {
   {
     String nodeData = Serial.readString(); // 시리얼통신 사용자 입력
     
-    if(nodeData == "StartServo1")
+    switch(nodeData)
     {
-      operateServo(1);
-    }
-    else if(nodeData == "StartServo2")
-    {
-      operateServo(2);
-    }
-    else if(nodeData == "StartServo3")
-    {
-      operateServo(3);
-    }
-    else if(nodeData == "StartWater")
-    {
-      operateMotor('k');
-    }
-    else if(nodeData == "StartIN")
-    {
-      operateMotor('a');
-    }
-    else if(nodeData == "StopIN")
-    {
-      operateMotor('b');
-    }
-    else if(nodeData == "StartOUT")
-    {
-      operateMotor('c');
-    }
-    else if(nodeData == "StopOUT")
-    {
-      operateMotor('d');
-    }
-    else if(nodeData == "TempWN")
-    {
-      setMode(1);
-    }
-    else if(nodeData == "pHWN")
-    {
-      setMode(2);
-    }
-    else if(nodeData == "NotWN")
-    {
-      setMode(3);
-    }
-    else if(nodeData == "BothWN")
-    {
-      setMode(4);
+      case "StartServo1":
+        operateServo(1);
+        break;
+        
+      case "StartServo2":
+        operateServo(2);
+        break;
+        
+      case "StartServo3":
+        operateServo(3);
+        break;
+        
+      case "StartIN":
+        operateMotor('a');
+        break;
+        
+      case "StopIN":
+        operateMotor('b');
+        break;
+        
+      case "StartOUT":
+        operateMotor('c');
+        break;
+        
+      case "StopOUT":
+        operateMotor('d');
+        break;
+      
+      case "TempWN":
+        setMode(1);
+        break;
+        
+      case "pHWN":
+        setMode(2);
+        break;
+        
+      case "NotWN":
+        setMode(3);
+        break;
+        
+      case "BothWN":
+        setMode(4);
+        break;
+      
+      default:
+        break;
     }
   }
 
   /* RTC 시간 구하기 */
-  getTime();
+  if(count == 60) getTime();
   
+  count++;
+  delay(1000);
 }
 
 void setMode(int mode) {
@@ -147,30 +151,34 @@ void getTime() {
   second = String(now.second(), DEC);
 
   Serial.println();
-  delay(1000);
+  count = 1;
 }
 
 void operateMotor(char sw) {
-  
-  if ( sw == 'a') {
-    digitalWrite(WaterPumpA, LOW);
-  }
-  
-  else if ( sw == 'b') {
-    digitalWrite(WaterPumpA, HIGH);
-  }
-  
-  else if ( sw == 'c') {
-    digitalWrite(WaterPumpB, LOW);
-  }
-  
-  else if ( sw == 'd') {
-    digitalWrite(WaterPumpB, HIGH);
-  }
-  
-  else {
-    digitalWrite(WaterPumpA, HIGH);
-    digitalWrite(WaterPumpB, HIGH);
+
+  switch(sw)
+  {
+    case 'a':
+      digitalWrite(WaterPumpA, LOW);
+      break;
+    
+    case 'b':
+      digitalWrite(WaterPumpA, HIGH);
+      break;
+    
+    case 'c':
+      digitalWrite(WaterPumpB, LOW);
+      break;
+    
+    case 'd':
+      digitalWrite(WaterPumpB, HIGH);
+      break;
+    
+    default:
+      digitalWrite(WaterPumpA, HIGH);
+      digitalWrite(WaterPumpB, HIGH);
+      break;
+    
   }
 }
 
