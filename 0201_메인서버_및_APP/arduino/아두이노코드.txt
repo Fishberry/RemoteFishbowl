@@ -1,11 +1,9 @@
-﻿#include <Servo.h>
+#include <Servo.h>
 #include <Wire.h>
 #include "RTClib.h"
- 
-const int WaterPumpA1 = 2; // 워터펌프 A의 첫번째핀
-const int WaterPumpA2 = 3; // 워터펌프 A의 두번째핀
-const int WaterPumpB1 = 9; // 워터펌프 B의 첫번째핀
-const int WaterPumpB2 = 10; // 워터펌프 B의 두번째핀
+
+const int WaterPumpA = 9; // 워터펌프 A
+const int WaterPumpB = 10; // 워터펌프 B
 const int SERVO = 8;       // 서보모터 8번핀
 
 const int BLED = 11;
@@ -31,10 +29,10 @@ void setup() {
   RTC.adjust(DateTime(__DATE__, __TIME__));
 
   /* 워터펌프 */
-  pinMode(WaterPumpA1, OUTPUT);       // Motor A 방향설정1
-  pinMode(WaterPumpA2, OUTPUT);       // Motor A 방향설정2
-  pinMode(WaterPumpB1, OUTPUT);       // Motor B 방향설정1
-  pinMode(WaterPumpB2, OUTPUT);       // Motor B 방향설정2
+  pinMode(WaterPumpA, OUTPUT);       // Motor A 
+  pinMode(WaterPumpB, OUTPUT);       // Motor B
+  digitalWrite(WaterPumpA, HIGH);    // 모터 A,B 둘 다 정지
+  digitalWrite(WaterPumpB, HIGH); 
 
   pinMode(BLED, OUTPUT);
   pinMode(GLED, OUTPUT);
@@ -149,44 +147,36 @@ void getTime() {
   second = String(now.second(), DEC);
 
   Serial.println();
-  delay(500);
+  delay(1000);
 }
 
 void operateMotor(char sw) {
   
   if ( sw == 'a') {
-    digitalWrite(WaterPumpA1, HIGH);
-    digitalWrite(WaterPumpA2, LOW);
+    digitalWrite(WaterPumpA, LOW);
   }
   
   else if ( sw == 'b') {
-    digitalWrite(WaterPumpA1, LOW);
-    digitalWrite(WaterPumpA2, LOW);
+    digitalWrite(WaterPumpA, HIGH);
   }
   
   else if ( sw == 'c') {
-    digitalWrite(WaterPumpB1, HIGH);
-    digitalWrite(WaterPumpB2, LOW);
+    digitalWrite(WaterPumpB, LOW);
   }
   
   else if ( sw == 'd') {
-    digitalWrite(WaterPumpB1, LOW);
-    digitalWrite(WaterPumpB2, LOW);
+    digitalWrite(WaterPumpB, HIGH);
   }
   
   else {
-    digitalWrite(WaterPumpA1, LOW);
-    digitalWrite(WaterPumpA2, LOW);
-    digitalWrite(WaterPumpB1, LOW);
-    digitalWrite(WaterPumpB2, LOW);
+    digitalWrite(WaterPumpA, HIGH);
+    digitalWrite(WaterPumpB, HIGH);
   }
 }
 
 void operateServo(int circle)
 {
   for(int k=0; k<circle; k++) {
-    myServo.write(0); // 처음에 0도로 초기화
-    delay(500);
     /* 서보모터 170도 회전 */
     for(int i=0; i<170; i++) {
       myServo.write(i); // 서보모터 이동
@@ -194,11 +184,9 @@ void operateServo(int circle)
     }
     delay(500);
   
-    for(int i=170; i>=0; i--) {
+    for(int i=170; i>0; i--) {
       myServo.write(i); // 서보모터 이동
-      delay(10); // 서보모터 이동이 끝날 때까지 잠깐 대기
+      delay(15); // 서보모터 이동이 끝날 때까지 잠깐 대기
     }
-  
-    delay(1000);
   }
 }
