@@ -3,6 +3,7 @@ package com.example.shinj.navmain;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,8 +16,11 @@ import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
 
 import io.socket.client.IO;
@@ -29,8 +33,11 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
     private EditText pwEdit;
     private String confirm;
     IntentData intentData = IntentData.getInstance();
-    FileWriter fw = null;
+    FileOutputStream fos = null;
     BufferedWriter bw = null;
+    final static String folderName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/connectInfor";
+    final static String fileName = "infor.txt";
+    final DBHelper dbHelper = new DBHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,26 +67,11 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
                 confirm = objects[0].toString();
                 Log.d("확인", confirm);
                 if(confirm.equals("OK")) {
-                    File file = new File("ipInfor.txt");
-                    if(file.exists())
-                        file.delete();
-
-                    try {
-                        fw = new FileWriter(file);
-                        bw = new BufferedWriter(fw);
-                        bw.write(ipEdit.getText().toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if(bw != null)
-                            bw.close();
-                        if(fw != null)
-                            fw.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    String dbValue = dbHelper.getResult();
+                    if (dbValue.equals("NoValue"))
+                        dbHelper.insert(ipEdit.getText().toString());
+                    else
+                        dbHelper.update(ipEdit.getText().toString());
 
                     Intent serviceIntent = new Intent(this, NotificationService.class);
                     startService(serviceIntent);

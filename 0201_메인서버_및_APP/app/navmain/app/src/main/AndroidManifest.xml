@@ -19,6 +19,8 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+        <service android:name=".NotificationService"
+            android:enabled="true"/>
         <activity android:name=".TemperatureActivity"/>
         <activity android:name=".WaterFragActivity" />
         <activity android:name=".BaseActivity" />

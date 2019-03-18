@@ -153,7 +153,7 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         dayWater = waterReserveFragment.datePickerWater.getDayOfMonth();
         hourWater = waterReserveFragment.timePickerWater.getHour();
         minunteWater = waterReserveFragment.timePickerWater.getMinute();
-        timerWater = Integer.toString(yearWater) + Integer.toString(monthWater) + Integer.toString(dayWater) + Integer.toString(hourWater) + Integer.toString(minunteWater) + "00";
+        timerWater = Integer.toString(yearWater) + Integer.toString(monthWater) + Integer.toString(dayWater) + Integer.toString(hourWater) + Integer.toString(minunteWater) + "0";
         Toast.makeText(getApplicationContext(), yearWater + "년" + monthWater + "월" + dayWater + "일\n"
                 + hourWater + ":" + minunteWater, Toast.LENGTH_LONG).show();
         socket.emit("insertWater", timerWater);

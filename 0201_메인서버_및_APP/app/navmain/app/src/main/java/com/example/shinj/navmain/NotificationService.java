@@ -7,18 +7,16 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.FileInputStream;
 import java.net.URISyntaxException;
 
 import io.socket.client.IO;
@@ -28,13 +26,13 @@ public class NotificationService extends Service {
 
     boolean mQuit;
     String address;
-    File file = null;
-    FileReader fr = null;
+    FileInputStream fis = null;
     BufferedReader br = null;
     String ip;
     NotificationManager notificationManager = null;
     NotificationChannel notificationChannel = null;
     PendingIntent pendingIntent = null;
+    final DBHelper dbHelper = new DBHelper(this);
 
 
     @Override
@@ -63,27 +61,17 @@ public class NotificationService extends Service {
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.d("서비스", "onConfigurationChanged()");
+        android.os.Debug.waitForDebugger();
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        file = new File("ipInfor.txt");
-
-        if(!(file.exists()))
-            onDestroy();
-
-        try {
-            fr = new FileReader(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        br = new BufferedReader(fr);
-
-        try {
-            ip = br.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ip = dbHelper.getResult();
 
         mQuit = false;
         NotificationThread thread = new NotificationThread(this);

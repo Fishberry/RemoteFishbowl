@@ -69,7 +69,8 @@ public class StreamingActivity extends BaseActivity {
                                     handler.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            progressBarTemperature.setProgress(Integer.parseInt(progressTemp));
+                                            if (-40 < Integer.parseInt(progressTemp))
+                                                progressBarTemperature.setProgress(Integer.parseInt(progressTemp));
                                         }
                                     });
                                 }
