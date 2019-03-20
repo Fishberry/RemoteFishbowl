@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -15,7 +16,6 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
     private Socket socket;
     Button btn_water_frag_now, btn_water_frag_reserve;
-    View view_water_frag_now, view_water_frag_reserve;
     FragmentManager fm;
     FragmentTransaction tran;
     WaterNowFragment waterNowFragment;
@@ -37,9 +37,6 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         btn_water_frag_reserve = findViewById(R.id.btn_water_frag_reserve);
         btn_water_frag_now.setOnClickListener(this);
         btn_water_frag_reserve.setOnClickListener(this);
-
-        view_water_frag_now = (View) findViewById(R.id.view_water_frag_now);
-        view_water_frag_reserve = (View) findViewById(R.id.view_water_frag_reserve);
 
         waterNowFragment = new WaterNowFragment();
         waterReserveFragment = new WaterReserveFragment();
@@ -86,15 +83,17 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
                         });
                         handler.post(new Runnable() {
                             public void run() {
-                                waterNowFragment.progressBarWater.setProgress(count);
-                                if (count < 100 && waterFlag == true) {   // 환수 진행중인 상태
+                                if (count == 100 && waterFlag ){  // 환수 끝났을 때
+                                    waterNowFragment.progressRateWater.setText(count + " %");
+                                    Toast.makeText(WaterFragActivity.this, "환수를 완료하였습니다.", Toast.LENGTH_SHORT).show();
+                                    waterNowFragment.progressRateWater.setText("");
+                                    waterNowFragment.progressBarWater.setProgress(0);
+                                    waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
+                                    waterFlag = false;
+                                } else if ( waterFlag ) {   // 환수 진행중인 상태
+                                    waterNowFragment.progressBarWater.setProgress(count);
                                     waterNowFragment.progressRateWater.setText(count + " %");
                                     waterNowFragment.btnPauseWaterNow.setVisibility(View.VISIBLE);
-                                } else if (count >= 100){  // 환수 끝났을 때
-                                    Toast.makeText(WaterFragActivity.this, "환수를 완료하였습니다.", Toast.LENGTH_SHORT).show();
-                                    waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
-                                    count = 0;
-                                    waterFlag = false;
                                 }
                             }
                         });
@@ -117,18 +116,12 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.btn_water_frag_now:
-            setFrag(0);
-            view_water_frag_now.setBackgroundResource(R.color.colorBlack);
-            view_water_frag_reserve.setBackgroundResource(R.color.white);
-            break;
-        case R.id.btn_water_frag_reserve:
-            setFrag(1);
-//            view_feed_frag_now.setBackgroundResource(R.color.colorBlack);
-//            view_feed_frag_reserve.setBackgroundResource(R.color.white);
-            view_water_frag_reserve.setBackgroundResource(R.color.colorBlack);
-            view_water_frag_now.setBackgroundResource(R.color.white);
-            break;
+            case R.id.btn_water_frag_now:
+                setFrag(0);
+                break;
+            case R.id.btn_water_frag_reserve:
+                setFrag(1);
+                break;
         }
     }
 
