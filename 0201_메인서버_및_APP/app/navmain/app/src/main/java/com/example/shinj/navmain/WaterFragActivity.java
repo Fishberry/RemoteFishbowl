@@ -42,13 +42,6 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
         setFrag(0);
 
-//        try {
-//            socket = IO.socket("http://" + address + ":3000/");
-//            socket.connect();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         Bundle bundle = new Bundle(1); // 파라미터는 전달할 데이터 개수
         bundle.putString("address", address); // key , value
         waterNowFragment.setArguments(bundle);
@@ -97,6 +90,7 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
                                     Toast.makeText(WaterFragActivity.this, "환수를 완료하였습니다.", Toast.LENGTH_SHORT).show();
                                     waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
                                     count = 0;
+                                    waterFlag = false;
                                 }
                             }
                         });
@@ -157,29 +151,24 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         Toast.makeText(getApplicationContext(), yearWater + "년" + monthWater + "월" + dayWater + "일\n"
                 + hourWater + ":" + minunteWater, Toast.LENGTH_LONG).show();
         socket.emit("insertWater", timerWater);
-        //socket.disconnect();
     }
 
     public void cancelWaterButton(View v) {
-        //socket.disconnect();
         finish();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //socket.disconnect();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //socket.disconnect();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //socket.disconnect();
     }
 }

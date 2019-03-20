@@ -21,14 +21,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Intent extraIntent = getIntent();
         address = intentData.getAddress();
 
-        Intent baseIntent = new Intent(this, BaseActivity.class);
-//        baseIntent.putExtra("address", address);
-
         Intent intent = new Intent(getApplicationContext(), StreamingActivity.class);
-//        intent.putExtra("address", address);
         startActivity(intent);
 
         //웹뷰 객체 레이아웃 아이디와 매칭 및 설정

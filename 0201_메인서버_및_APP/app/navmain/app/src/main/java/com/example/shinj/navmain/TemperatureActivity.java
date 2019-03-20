@@ -98,12 +98,6 @@ public class TemperatureActivity extends BaseActivity {
             }
         });
 
-//        try {
-//            socket = IO.socket("http://" + address + ":3000/");
-//            socket.connect();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Override

@@ -38,8 +38,6 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
     final static String folderName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/connectInfor";
     final static String fileName = "infor.txt";
     final DBHelper dbHelper = new DBHelper(this);
-    private Intent notificationServiceIntent;
-    private NotificationService notificationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +73,8 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
                     else
                         dbHelper.update(ipEdit.getText().toString());
 
-                    notificationService = new NotificationService(getApplicationContext());
-                    notificationServiceIntent = new Intent(getApplicationContext(), notificationService.getClass());
-
-                    if (!BootReceiver.isServiceRunning(this, notificationService.getClass()))
-                        startService(notificationServiceIntent);
+                    Intent serviceIntent = new Intent(this, NotificationService.class);
+                    startService(serviceIntent);
 
                     intentData.setAddress(ipEdit.getText().toString());
                     intentData.setSocket(socket);

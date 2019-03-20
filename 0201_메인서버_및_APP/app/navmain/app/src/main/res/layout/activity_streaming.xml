@@ -131,12 +131,43 @@
                     app:layout_constraintEnd_toEndOf="@id/pHTitle"
                     app:layout_constraintBottom_toBottomOf="@id/TempValue" />
                 <ImageView
+                    android:id="@+id/img_themometer"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:src="@drawable/ph"
                     app:layout_constraintStart_toStartOf="@id/pHValue"
                     app:layout_constraintEnd_toEndOf="@id/pHValue"
                     app:layout_constraintBottom_toBottomOf="parent"/>
+                <TextView
+                    android:id="@+id/feedTimer"
+                    android:text="feedTimer"
+                    android:textSize="25sp"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+                <TextView
+                    android:id="@+id/waterTimer"
+                    android:text="waterTimer"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/webView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/TempTitle" />
+                <TextView
+                    android:id="@+id/settingTemperPh"
+                    android:text="settingTemperPh"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/webView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/webView" />
             </android.support.constraint.ConstraintLayout>
 
         </ScrollView>

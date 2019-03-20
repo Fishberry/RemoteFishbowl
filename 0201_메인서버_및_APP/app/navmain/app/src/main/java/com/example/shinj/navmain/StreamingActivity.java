@@ -22,7 +22,7 @@ public class StreamingActivity extends BaseActivity {
     WebView webView;            //웹뷰 객체
     WebSettings webSettings;    //웹뷰 세팅 객체
     private static Socket socket;
-    private TextView tempValue, phValue;
+    private TextView tempValue, phValue, feedTimer, waterTimer, settingTemperPh;
     Intent extraIntent;
     String address;
     String progressTemp;
@@ -35,22 +35,49 @@ public class StreamingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         extraIntent = getIntent();
+        feedTimer = findViewById(R.id.feedTimer);
+        waterTimer = findViewById(R.id.waterTimer);
+        settingTemperPh = findViewById(R.id.settingTemperPh);
         tempValue = (TextView) findViewById(R.id.TempValue);
         phValue = (TextView) findViewById(R.id.pHValue);
         address = intentData.getAddress();
         socket = intentData.getSocket();
-
         final ProgressBar progressBarTemperature = (ProgressBar) findViewById(R.id.progresBarTemper);
 
-//        try {
-//            socket = IO.socket("http://" + address + ":3000/");
-//            socket.connect();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        /* 서버DB에서 환수설정시간을 받아와서 출력 */
+        socket.emit("reqTimerWater", "DB의 TimerWater값 요청");
+        socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
+        }).on("resTimerWater", (Object... objects) -> {
+            waterTimer.setText("환수시간: " + objects[0].toString());
+        });
+        /* 서버DB에서 먹이급여예약시간을 받아와서 1초에 한번씩 출력하는 쓰레드 */
+        Thread thread_feed = new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        Thread t = new Thread(new Runnable() {
+                while (true) {
+                    try {
+                        socket.emit("reqTimerFeed", "DB의 TimerFeed값 요청");
+                        socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
+                        }).on("resTimerFeed", (Object... objects) -> {
+                            runOnUiThread(()-> {
+                                if (!(objects[0].toString().equals("0")) || !(objects[1].toString().equals("0"))) {
+                                    feedTimer.setText("남은시간(초): " + objects[1].toString() + " 회전수: " + objects[0].toString() );
+                                }
+                            });
+                        });
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        Toast.makeText(StreamingActivity.this, "먹이급여시간 오류", Toast.LENGTH_SHORT).show();
+                        setWhetherSensor(false);
+                    }
+                }
+            }
+        });
+        thread_feed.start();
 
+        /* 온도랑 pH값 5초마다 서버에서 받아와서 5초에 한번씩 출력하는 쓰레드 */
+        Thread thread_temper = new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -62,6 +89,10 @@ public class StreamingActivity extends BaseActivity {
                             runOnUiThread(()-> {
                                 if (!(objects[0].toString().equals("0")) || !(objects[1].toString().equals("0"))) {
                                     setWhetherSensor(true);
+                                    /* 서버DB에서 온도,pH 위험설정값을 받아와서 출력 */
+                                    settingTemperPh.setText("온도설정: " + objects[2].toString() + " ~ " + objects[3].toString() + "\n"
+                                            + "pH설정: " + objects[4].toString() + " ~ " + objects[5].toString());
+                                    //
                                     tempValue.setText(progressTemp = objects[0].toString());
                                     phValue.setText(objects[1].toString());
                                     progressTemp = progressTemp.substring(0, 2);    // 온도계 프로그래스바에 온도표시하려고 할 때 서버에서 objects[0]로 받아오는 온도값이 24.xxx처럼 돼 있어서 int형 부분만 자름
@@ -79,7 +110,7 @@ public class StreamingActivity extends BaseActivity {
                                 }
                             });
                         });
-                        Thread.sleep(3000);
+                        Thread.sleep(5000);
                     } catch (Exception e) {
                         Toast.makeText(StreamingActivity.this, "온도센서 혹은 수질센서의 연결에 이상이 생겼습니다.", Toast.LENGTH_SHORT).show();
                         setWhetherSensor(false);
@@ -90,7 +121,7 @@ public class StreamingActivity extends BaseActivity {
                 }
             }
         });
-        t.start();
+        thread_temper.start();
 
         //웹뷰 객체 레이아웃 아이디와 매칭 및 설정
         webView = (WebView) findViewById(R.id.webView);

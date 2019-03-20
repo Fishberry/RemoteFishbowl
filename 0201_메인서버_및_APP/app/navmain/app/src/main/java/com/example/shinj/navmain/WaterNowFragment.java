@@ -18,9 +18,6 @@ public class WaterNowFragment extends Fragment {
     static ProgressBar progressBarWater;
     static Button btnStartWaterNow, btnPauseWaterNow;
     static TextView progressRateWater;
-    Socket socket;
-    String address;
-    int count = 0;
     boolean waterFlag;
 
 
@@ -31,8 +28,6 @@ public class WaterNowFragment extends Fragment {
         progressRateWater = view.findViewById(R.id.progressRateWater);
         btnStartWaterNow = view.findViewById(R.id.btn_start_water_now);
         btnPauseWaterNow = view.findViewById(R.id.btn_pause_water_now);
-
-        //address = getArguments().getString("address"); // 전달한 key 값
 
         return view;
     }

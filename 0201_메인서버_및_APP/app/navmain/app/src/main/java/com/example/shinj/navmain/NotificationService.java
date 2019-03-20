@@ -1,6 +1,5 @@
 package com.example.shinj.navmain;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,7 +11,6 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,8 +18,6 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.net.URISyntaxException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -37,22 +33,11 @@ public class NotificationService extends Service {
     NotificationChannel notificationChannel = null;
     PendingIntent pendingIntent = null;
     final DBHelper dbHelper = new DBHelper(this);
-    private Context context = null;
-
-    public NotificationService() {}
-    public NotificationService(Context applicationContext) {
-        super();
-        context = applicationContext;
-    }
 
 
     @Override
     public void onCreate() {
-
-        Log.d("TAG", "Service Create");
         super.onCreate();
-
-        //startForeground(1, new Notification());
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -69,13 +54,7 @@ public class NotificationService extends Service {
 
     @Override
     public void onDestroy() {
-
-        Log.d("TAG", "Service Destroy");
         super.onDestroy();
-
-        Intent broadcastIntent = new Intent("fishberry.example.com.NotificationService");
-        sendBroadcast(broadcastIntent);
-        stoptimertask();
 
         Toast.makeText(this, "알림 서비스가 종료되었습니다.", Toast.LENGTH_SHORT).show();
         mQuit = true;
@@ -93,7 +72,6 @@ public class NotificationService extends Service {
         super.onStartCommand(intent, flags, startId);
 
         ip = dbHelper.getResult();
-        startTimer();
 
         mQuit = false;
         NotificationThread thread = new NotificationThread(this);
@@ -185,42 +163,7 @@ public class NotificationService extends Service {
                 } catch (Exception e) { }
             }
         }
-    }
 
-    private Timer timer;
-    private TimerTask timerTask;
-    long oldTime = 0;
 
-    public void startTimer() {
-        timer = new Timer();
-        initializeTimerTast();
-        timer.schedule(timerTask, 1000, 1000);
-    }
-
-    public void initializeTimerTast() {
-        timerTask = new TimerTask() {
-            @Override
-            public void run() {
-
-            }
-        };
-    }
-
-    public void stoptimertask() {
-        if(timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-    }
-
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        Log.d("TAG", "NotificationService.onTaskRemoved");
-
-        Intent intent = new Intent(getApplicationContext(), NotificationService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 5000, pendingIntent);
-        super.onTaskRemoved(rootIntent);
     }
 }

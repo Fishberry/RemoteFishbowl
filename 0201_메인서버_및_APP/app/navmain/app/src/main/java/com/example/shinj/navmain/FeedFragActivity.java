@@ -25,18 +25,10 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
     int timerFeed = 0;
     int circleFeed = 0;
 
-    public static final int QUANTITY_OK = 1000;
-
-//    /* Temper 프래그먼트 */
-//    private Spinner tempSpinner1, tempSpinner2, phSpinner1, phSpinner2;
-//    private String tempNnumber, phNumber;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Intent extraIntent = getIntent();
-//        address = extraIntent.getStringExtra("address");
         address = intentData.getAddress();
         socket = intentData.getSocket();
 
@@ -52,12 +44,6 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
 
         feedSettingDone = (Button) findViewById(R.id.feedSettingDone);
 
-//        try {
-//            socket = IO.socket("http://" + address + ":3000/");
-//            socket.connect();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Override
@@ -96,7 +82,6 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
     public void onStartFeedNowButton(View v) {
         Toast.makeText(getApplicationContext(), "먹이급여를 완료하였습니다.", Toast.LENGTH_SHORT).show();
         socket.emit("reqFeedNow", "StartServo1");
-        socket.disconnect();
     }
 
     /* FeedReserveFragment 기능 */
