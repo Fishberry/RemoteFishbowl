@@ -25,9 +25,6 @@ import io.socket.client.Socket;
 public class NotificationService extends Service {
 
     boolean mQuit;
-    String address;
-    FileInputStream fis = null;
-    BufferedReader br = null;
     String ip;
     NotificationManager notificationManager = null;
     NotificationChannel notificationChannel = null;

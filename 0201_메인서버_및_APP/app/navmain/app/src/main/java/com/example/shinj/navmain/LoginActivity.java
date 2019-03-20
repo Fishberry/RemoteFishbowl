@@ -15,12 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.Serializable;
 
 import io.socket.client.IO;
@@ -33,10 +28,6 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
     private EditText pwEdit;
     private String confirm;
     IntentData intentData = IntentData.getInstance();
-    FileOutputStream fos = null;
-    BufferedWriter bw = null;
-    final static String folderName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/connectInfor";
-    final static String fileName = "infor.txt";
     final DBHelper dbHelper = new DBHelper(this);
 
     @Override

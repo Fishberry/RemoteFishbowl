@@ -10,9 +10,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import io.socket.client.IO;
-import io.socket.client.Socket;
-
 public class WaterNowFragment extends Fragment {
 
     static ProgressBar progressBarWater;

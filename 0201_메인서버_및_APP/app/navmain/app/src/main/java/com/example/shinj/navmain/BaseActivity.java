@@ -13,8 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import io.socket.client.Socket;
 
 abstract public class BaseActivity extends AppCompatActivity {
@@ -29,11 +27,6 @@ abstract public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
-        Intent extraIntent = getIntent();
-        //address = extraIntent.getStringExtra("address");
-//        IntentData intentData = (IntentData) extraIntent.getSerializableExtra("data");
-//        address = intentData.address;
-//        socket = (Socket) extraIntent.getSerializableExtra("data");
 
         address = intentData.getAddress();
         socket = intentData.getSocket();

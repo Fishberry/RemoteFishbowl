@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:text="예약환수"
                     android:textStyle="bold"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorGray"
                     android:id="@+id/btn_water_frag_reserve"
                     android:background="@drawable/custom_ripple_effect"
                     android:layout_weight="1"/>

@@ -13,8 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import io.socket.client.Socket;
 
 public class StreamingActivity extends BaseActivity {
@@ -178,18 +176,15 @@ public class StreamingActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        socket.connect();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        socket.connect();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        socket.disconnect();
     }
 }

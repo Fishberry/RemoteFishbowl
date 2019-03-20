@@ -8,9 +8,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import java.net.Socket;
-import java.util.ArrayList;
-
 public class MainActivity extends BaseActivity {
 
     WebView webView;            //웹뷰 객체
