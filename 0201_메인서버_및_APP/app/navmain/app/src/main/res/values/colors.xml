@@ -11,4 +11,5 @@
     <color name="colorMyYellow">#ffff00</color>
     <color name="colorBlack">#000000</color>
     <color name="colorGray">#808080</color>
+    <color name="colorLightGray">#C0C0C0</color>
 </resources>

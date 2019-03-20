@@ -60,7 +60,11 @@ public class StreamingActivity extends BaseActivity {
                         }).on("resTimerFeed", (Object... objects) -> {
                             runOnUiThread(()-> {
                                 if (!(objects[0].toString().equals("0")) || !(objects[1].toString().equals("0"))) {
-                                    feedTimer.setText("남은시간(초): " + objects[1].toString() + " 회전수: " + objects[0].toString() );
+                                    feedTimer.setText("다음 먹이급여까지" +
+                                            Integer.parseInt(objects[1].toString())/60/60 + "시간"
+                                            + Integer.parseInt(objects[1].toString())/60%60 + "분"
+                                            + Integer.parseInt(objects[1].toString())%60 + "초 남았습니다."
+                                            + " 회전수: " + objects[0].toString() );
                                 }
                             });
                         });
