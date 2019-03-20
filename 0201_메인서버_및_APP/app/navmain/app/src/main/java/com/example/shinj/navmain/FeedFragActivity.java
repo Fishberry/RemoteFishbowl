@@ -3,6 +3,7 @@ package com.example.shinj.navmain;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
     private Socket socket;
     String address;
     Button btn_feed_frag_now, btn_feed_frag_reserve, feedSettingDone;
+    View view_feed_frag_now, view_feed_frag_reserve;
     FragmentManager fm;
     FragmentTransaction tran;
     FeedNowFragment feedNowFragment;
@@ -36,6 +38,9 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
         btn_feed_frag_reserve = (Button) findViewById(R.id.btn_feed_frag_reserve);
         btn_feed_frag_now.setOnClickListener(this);
         btn_feed_frag_reserve.setOnClickListener(this);
+
+        view_feed_frag_now = (View) findViewById(R.id.view_feed_frag_now);
+        view_feed_frag_reserve = (View) findViewById(R.id.view_feed_frag_reserve);
 
         feedNowFragment = new FeedNowFragment();
         feedReserveFragment = new FeedReserveFragment();
@@ -57,9 +62,13 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()){
             case R.id.btn_feed_frag_now:
                 setFrag(0);
+                view_feed_frag_now.setBackgroundResource(R.color.colorBlack);
+                view_feed_frag_reserve.setBackgroundResource(R.color.white);
                 break;
             case R.id.btn_feed_frag_reserve:
                 setFrag(1);
+                view_feed_frag_reserve.setBackgroundResource(R.color.colorBlack);
+                view_feed_frag_now.setBackgroundResource(R.color.white);
                 break;
         }
     }

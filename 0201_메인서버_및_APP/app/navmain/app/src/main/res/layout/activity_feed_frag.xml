@@ -25,6 +25,8 @@
             android:orientation="vertical"
             tools:context=".FeedFragActivity">
             <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -36,9 +38,9 @@
                     android:layout_height="wrap_content"
                     android:text="바로먹이지급"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorBlack"
                     android:id="@+id/btn_feed_frag_now"
-                    android:background="@drawable/btn_border"
+                    android:background="@drawable/custom_ripple_effect"
                     android:layout_weight="1" />
                 <Button
                     android:theme="@style/FlatButton"
@@ -46,10 +48,41 @@
                     android:layout_height="wrap_content"
                     android:text="예약먹이지급"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorBlack"
                     android:id="@+id/btn_feed_frag_reserve"
-                    android:background="@drawable/btn_border"
+                    android:background="@drawable/custom_ripple_effect"
                     android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <View
+                    android:id="@+id/view_feed_frag_now"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorBlack"/>
+                <View
+                    android:id="@+id/view_feed_frag_reserve"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGray"/>
+
             </LinearLayout>
             <FrameLayout
                 android:id="@+id/frag_frame"

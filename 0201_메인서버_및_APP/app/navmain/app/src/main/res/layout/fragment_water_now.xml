@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorBackground">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/image_shower"
@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="환수 시작"
-        android:textColor="@color/white"
+        android:textColor="@color/colorBlack"
         android:textStyle="bold"
         android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:text="일시 정지"
         android:visibility="invisible"
-        android:textColor="@color/white"
+        android:textColor="@color/colorBlack"
         android:textStyle="bold"
         android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:textColor="@color/white"
+        android:textColor="@color/colorBlack"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

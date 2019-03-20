@@ -9,4 +9,6 @@
     <color name="colorMyPeach">#f8a055</color>
     <color name="colorMyRed">#ff5f70</color>
     <color name="colorMyYellow">#ffff00</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#808080</color>
 </resources>

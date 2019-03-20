@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/ManualTitle"
         android:text="FishBerry Manual"
         android:textSize="30dp"
-        android:textColor="@color/white"
+        android:textColor="@color/colorBlack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +23,7 @@
         android:id="@+id/ManualText"
         android:text="@string/manualText"
         android:textSize="20dp"
-        android:textColor="@color/white"
+        android:textColor="@color/colorBlack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/ManualTitle"
