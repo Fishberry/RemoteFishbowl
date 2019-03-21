@@ -23,7 +23,7 @@ fs.readdir('/dev', (err, data) => {
     data.forEach((file) => {
 	if(file === 'ttyACM0' || file === 'ttyACM1') {
 	    tty = '/dev/'+file;
-	    console.log('connect tty : ', tty);
+	    //console.log('connect tty : ', tty);
 	    arduinoPort = new serialPort(tty, {
 		baudRate: 9600,
 		dataBits: 8,
@@ -151,13 +151,24 @@ router.get('/main/StartServo', (req, res) => {
 	}
 });
 
-router.get('/main/StartWater', (req, res) => {
+router.get('/main/StartIN', (req, res) => {
 	var cookieValue = req.cookies.password;
 	if(cookieValue == null)
 		res.status(200).render('passwordPage.ejs');
 	else {
 		console.log('워터펌프  동작');
 		arduinoPort.write('StartIN');
+		res.status(200).send('Serial Controll OK!!');
+	}
+});
+
+router.get('/main/StartOUT', (req, res) => {
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else {
+		console.log('워터펌프  동작');
+		arduinoPort.write('StartOUT');
 		res.status(200).send('Serial Controll OK!!');
 	}
 });
@@ -180,6 +191,17 @@ router.get('/main/StopOUT', (req, res) => {
 	else {
 		console.log('워터펌프  동작');
 		arduinoPort.write('StopOUT');
+		res.status(200).send('Serial Controll OK!!');
+	}
+});
+
+router.get('/main/getTime', (req, res) => {
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else {
+		console.log('워터펌프  동작');
+		arduinoPort.write('getTime');
 		res.status(200).send('Serial Controll OK!!');
 	}
 });
@@ -218,7 +240,7 @@ router.get('/inputExValue', (req, res) => {
 		const _url = req.url;
 		const queryData = url.parse(_url, true).query;
 		let setTime = String(queryData.ex_year) + String(queryData.ex_month) + String(queryData.ex_day) + String(queryData.ex_hour) + String(queryData.ex_minute) + '0';
-		db.insertExchange(600, 600, String(setTime));
+		db.insertExchange(52, 52, String(setTime));
 		res.send('<script type="text/javascript">alert("설정값이 저장되었습니다."); history.back();</script>');
 	}
 });

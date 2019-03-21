@@ -17,11 +17,28 @@ print('Reading MCP3008 values, press Ctrl-C to quit...')
 
 # Main program loop.
 while True:
+    print(mcp.read_adc(0), mcp.read_adc(1), mcp.read_adc(2), mcp.read_adc(3), mcp.read_adc(4), mcp.read_adc(5), mcp.read_adc(6), mcp.read_adc(7))
     readValue = mcp.read_adc(0) # PH센서의 입력값이 디지털신호로 바뀐 값을 받아서 저장. 아래 값은 계산
-    voltage = readValue*5.0/1024
-    pHValue = 3.5*voltage
+
+    buf = []
+
+    for i in range(0, 50):
+        buf.append(mcp.read_adc(0))
+        time.sleep(0.01)
+
+    buf.sort()
+
+    avgValue = 0
+    for i in range(10, 40):
+        avgValue += buf[i]
+    
+    sensorValue = avgValue/30
+    #phph = 7-1000*(sensorValue-365)*4.95/59.16/1023.2
+
+    voltage = sensorValue*5.0/1024
+    pHValue = 3.5*voltage - 2
     print("Read Value : {0}".format(readValue))
-    print("Voltage : %0.5fV"%(voltage))
+    print("Voltage : %0.5fmV"%(voltage))
     print("pH Value : %0.2f"%(pHValue))
     print("-")*20
 

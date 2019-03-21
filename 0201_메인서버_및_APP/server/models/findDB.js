@@ -37,7 +37,7 @@ exports.insertFeed = function(timer, circle, save_time) {
 };
 
 exports.insertExchange = function(t1, t2, save_time) {
-	connection.query('update ExchangeSetting set exTimer1='+t1+', exTimer2='+t2+', exTime_save='+save_time, (error, results) => {
+	connection.query('update ExchangeSetting set exTimer1='+t1+', exTimer2='+t2+', exTime_save='+ save_time, (error, results) => {
 		if(error)
 			console.log(error);
 		else
