@@ -8,12 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(Context context) {
-        super(context, "IP.db", null, 1 );
+        super(context, "Noti.db", null, 1 );
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE IpInformation (ip TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE NotificationInformation (ip TEXT, loop INT, watchElement INT, isChecking INT)");
     }
 
     @Override
@@ -21,42 +21,46 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insert(String ip) {
+    public void insert(String ip, int isChecking) {
         SQLiteDatabase db = getWritableDatabase();
 
-        db.execSQL("INSERT INTO IpInformation values('" + ip + "');");
+        db.execSQL("INSERT INTO NotificationInformation(ip, isChecking) VALUES ('" + ip + "', " + isChecking + ")");
         db.close();
     }
 
     public void update(String ip) {
         SQLiteDatabase db = getWritableDatabase();
 
-        db.execSQL("DELETE FROM IpInformation");
-        db.execSQL("INSERT INTO IpInformation values('" + ip + "');");
+        db.execSQL("UPDATE NotificationInformation SET ip='" + ip + "'");
         db.close();
     }
 
     public void delete() {
         SQLiteDatabase db = getWritableDatabase();
 
-        db.execSQL("DELETE FROM IpInformation");
+        db.execSQL("DELETE FROM NotificationInformation");
         db.close();
     }
 
-    public String getResult() {
+    public DBElement getResult() {
         SQLiteDatabase db = getReadableDatabase();
-        String result = "";
+        DBElement dbElement = new DBElement();
         final String Nothing = "NoValue";
 
-        Cursor cursor = db.rawQuery("SELECT * FROM IpInformation", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM NotificationInformation", null);
 
-        while (cursor.moveToNext()) {
-            result += cursor.getString(0);
+        try {
+            dbElement.setIp(cursor.getString(0));
+            dbElement.setLoop(cursor.getInt(1));
+            dbElement.setWatchElement(cursor.getInt(2));
+            dbElement.setIsRememberIP(cursor.getInt(3));
+        } catch (Exception e) {}
+
+        if (dbElement.getIp().equals("")) {
+            dbElement.setIp("NoValue");
+            return dbElement;
         }
 
-        if (result.equals(""))
-            return Nothing;
-
-        return result;
+        return dbElement;
     }
 }

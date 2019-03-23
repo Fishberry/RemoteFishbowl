@@ -6,7 +6,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import java.util.ArrayList;
+
+import io.socket.client.IO;
 import io.socket.client.Socket;
 
 public class TemperatureActivity extends BaseActivity {
@@ -106,6 +109,7 @@ public class TemperatureActivity extends BaseActivity {
     public void saveTemperPHButton(View v) {
         socket.emit("insertTemper", minTemper, maxTemper);
         socket.emit("insertPH", minPH, maxPH);
+        socket.disconnect();
         Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
         finish();
     }

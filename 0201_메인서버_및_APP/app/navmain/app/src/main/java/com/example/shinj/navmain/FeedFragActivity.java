@@ -2,11 +2,14 @@ package com.example.shinj.navmain;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import io.socket.client.IO;
 import io.socket.client.Socket;
 
 
@@ -44,7 +47,7 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
 
         setFrag(0);
 
-        feedSettingDone = (Button) findViewById(R.id.feedSettingDone);
+//        feedSettingDone = (Button) findViewById(R.id.feedSettingDone);
     }
 
     @Override
@@ -97,9 +100,9 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
     public void buttonClick(View v) {
         //버튼의 아이디로 버튼 구분
         switch (v.getId()) {
-            case R.id.feedSettingDone:
-                socket.emit("reqData", "StartServo");
-                break;
+//            case R.id.feedSettingDone:
+//                socket.emit("reqData", "StartServo");
+//                break;
             case R.id.btn_feedtimer_8h:
                 feedReserveFragment.selectTimer(R.id.btn_feedtimer_8h);
                 timerFeed = 8 * 60 * 60;

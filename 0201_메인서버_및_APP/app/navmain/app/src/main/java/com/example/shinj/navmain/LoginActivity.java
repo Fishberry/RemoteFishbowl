@@ -11,12 +11,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -27,8 +34,11 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
     private EditText ipEdit;
     private EditText pwEdit;
     private String confirm;
+    private CheckBox checkBox;
+    private int isChecking = 0;
     IntentData intentData = IntentData.getInstance();
     final DBHelper dbHelper = new DBHelper(this);
+    DBElement dbElement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +46,26 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_login);
         ipEdit = (EditText) findViewById(R.id.ipEdit);
         pwEdit = (EditText) findViewById(R.id.pwEdit);
+        checkBox = (CheckBox) findViewById(R.id.remember_login_checkbox);
+
+        dbElement = dbHelper.getResult();
 
         startSplash();
+
+        if(dbElement.getIsRememberIP() == 1) {
+            try {
+                socket = IO.socket("http://" + dbElement.getIp() + "3000/");
+                socket.connect();
+                intentData.setAddress(dbElement.getIp());
+                intentData.setSocket(socket);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     private void startSplash() {
@@ -58,9 +86,15 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
                 confirm = objects[0].toString();
                 Log.d("확인", confirm);
                 if(confirm.equals("OK")) {
-                    String dbValue = dbHelper.getResult();
-                    if (dbValue.equals("NoValue"))
-                        dbHelper.insert(ipEdit.getText().toString());
+                    if (checkBox.isChecked() == true)
+                        isChecking = 1;
+                    else
+                        isChecking = 0;
+
+                    dbElement = dbHelper.getResult();
+
+                    if (dbElement.getIp().equals("NoValue"))
+                        dbHelper.insert(ipEdit.getText().toString(), isChecking);
                     else
                         dbHelper.update(ipEdit.getText().toString());
 
@@ -86,7 +120,6 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -118,7 +151,6 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
                 .setPositiveButton("예", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        socket.close();
                         finish();
                     }
                 })

@@ -8,6 +8,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.net.Socket;
+import java.util.ArrayList;
+
 public class MainActivity extends BaseActivity {
 
     WebView webView;            //웹뷰 객체
@@ -47,6 +50,7 @@ public class MainActivity extends BaseActivity {
                 .setPositiveButton("예", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        socket.close();
                         finish();
                     }
                 })

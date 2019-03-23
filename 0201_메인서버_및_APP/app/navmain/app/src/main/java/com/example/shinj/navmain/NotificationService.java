@@ -25,7 +25,7 @@ import io.socket.client.Socket;
 public class NotificationService extends Service {
 
     boolean mQuit;
-    String ip;
+    DBElement dbElement;
     NotificationManager notificationManager = null;
     NotificationChannel notificationChannel = null;
     PendingIntent pendingIntent = null;
@@ -68,7 +68,7 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        ip = dbHelper.getResult();
+        dbElement = dbHelper.getResult();
 
         mQuit = false;
         NotificationThread thread = new NotificationThread(this);
@@ -98,13 +98,13 @@ public class NotificationService extends Service {
         public void run() {
 
             try {
-                socket = IO.socket("http://" + ip + ":3000/");
+                socket = IO.socket("http://" + dbElement.getIp() + ":3000/");
                 socket.connect();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
 
-            while (true) {
+            while (dbElement.watchElement > 0) {
                 try {
                     socket.emit("reqMsg", "App에서 측정값 받아갑니다");
                     socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
@@ -117,7 +117,7 @@ public class NotificationService extends Service {
                         minPH = Double.parseDouble(objects[4].toString());
                         maxPH = Double.parseDouble(objects[5].toString());
 
-                        if(temperValue < minTemper || temperValue > maxTemper) {
+                        if((temperValue < minTemper || temperValue > maxTemper) && dbElement.watchElement == 1) {
                             //온도 Notification 알림
                             pendingIntent = PendingIntent.getActivity(NotificationService.this, 0, new Intent(getApplicationContext(), TemperatureActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -136,7 +136,7 @@ public class NotificationService extends Service {
                             }
                             notificationManager.notify(0, builder.build());
                         }
-                        if(pHValue < minPH || pHValue > maxPH) {
+                        else if((pHValue < minPH || pHValue > maxPH) && dbElement.watchElement == 2) {
                             //수질 Notification 알림
                             pendingIntent = PendingIntent.getActivity(NotificationService.this, 0, new Intent(getApplicationContext(), WaterFragActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -155,8 +155,27 @@ public class NotificationService extends Service {
                             }
                             notificationManager.notify(0, builder.build());
                         }
+                        else if ((pHValue < minPH || pHValue > maxPH) && (temperValue < minTemper || temperValue > maxTemper) && dbElement.watchElement == 3) {
+                            //수질 Notification 알림
+                            pendingIntent = PendingIntent.getActivity(NotificationService.this, 0, new Intent(getApplicationContext(), WaterFragActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+                            Notification.Builder builder = new Notification.Builder(NotificationService.this)
+                                    .setContentTitle("온도 & 수질 경고!")
+                                    .setContentText("설정한 온도와 수질을 벗어났습니다! / 현재 온도 : " + objects[0].toString() + " / 현재 수질 : " + objects[1].toString())
+                                    .setSmallIcon(R.drawable.splash_fish)
+                                    .setContentIntent(pendingIntent)
+                                    .setAutoCancel(true);
+
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                builder.setChannelId("notification");
+                            }
+                            else {
+                                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                            }
+                            notificationManager.notify(0, builder.build());
+                        }
                     });
-                    Thread.sleep(30000);
+                    Thread.sleep(dbElement.loop);
                 } catch (Exception e) { }
             }
         }

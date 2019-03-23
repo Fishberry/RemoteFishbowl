@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class FeedReserveFragment extends Fragment {
 
     Button eightHourButton, twelveHourButton, twentyfourHourButton, userSettingFeedButton;
     Button oneCircleButton, twoCircleButton, threeCircleButton;
+    TextView timerText;
 
     @Nullable
     @Override
@@ -24,6 +26,7 @@ public class FeedReserveFragment extends Fragment {
         oneCircleButton = (Button) view.findViewById(R.id.feed1);
         twoCircleButton = (Button) view.findViewById(R.id.feed2);
         threeCircleButton = (Button) view.findViewById(R.id.feed3);
+        timerText = (TextView) view.findViewById(R.id.timerText);
 
         return view;
     }
@@ -32,28 +35,28 @@ public class FeedReserveFragment extends Fragment {
 
         switch(id) {
             case R.id.btn_feedtimer_8h:
-                eightHourButton.setBackgroundResource(R.color.colorMyYellow);
-                twelveHourButton.setBackgroundResource(R.color.colorAccent);
-                twentyfourHourButton.setBackgroundResource(R.color.colorAccent);
-                userSettingFeedButton.setBackgroundResource(R.color.colorAccent);
+                eightHourButton.setBackgroundResource(R.drawable.enable_button_shape);
+                twelveHourButton.setBackgroundResource(R.drawable.disable_button_shape);
+                twentyfourHourButton.setBackgroundResource(R.drawable.disable_button_shape);
+                userSettingFeedButton.setBackgroundResource(R.drawable.disable_button_shape);
                 break;
             case R.id.btn_feedtimer_12h:
-                eightHourButton.setBackgroundResource(R.color.colorAccent);
-                twelveHourButton.setBackgroundResource(R.color.colorMyYellow);
-                twentyfourHourButton.setBackgroundResource(R.color.colorAccent);
-                userSettingFeedButton.setBackgroundResource(R.color.colorAccent);
+                eightHourButton.setBackgroundResource(R.drawable.disable_button_shape);
+                twelveHourButton.setBackgroundResource(R.drawable.enable_button_shape);
+                twentyfourHourButton.setBackgroundResource(R.drawable.disable_button_shape);
+                userSettingFeedButton.setBackgroundResource(R.drawable.disable_button_shape);
                 break;
             case R.id.btn_feedtimer_24h:
-                eightHourButton.setBackgroundResource(R.color.colorAccent);
-                twelveHourButton.setBackgroundResource(R.color.colorAccent);
-                twentyfourHourButton.setBackgroundResource(R.color.colorMyYellow);
-                userSettingFeedButton.setBackgroundResource(R.color.colorAccent);
+                eightHourButton.setBackgroundResource(R.drawable.disable_button_shape);
+                twelveHourButton.setBackgroundResource(R.drawable.disable_button_shape);
+                twentyfourHourButton.setBackgroundResource(R.drawable.enable_button_shape);
+                userSettingFeedButton.setBackgroundResource(R.drawable.disable_button_shape);
                 break;
             case R.id.btn_feedtimer_userSetting:
-                eightHourButton.setBackgroundResource(R.color.colorAccent);
-                twelveHourButton.setBackgroundResource(R.color.colorAccent);
-                twentyfourHourButton.setBackgroundResource(R.color.colorAccent);
-                userSettingFeedButton.setBackgroundResource(R.color.colorMyYellow);
+                eightHourButton.setBackgroundResource(R.drawable.disable_button_shape);
+                twelveHourButton.setBackgroundResource(R.drawable.disable_button_shape);
+                twentyfourHourButton.setBackgroundResource(R.drawable.disable_button_shape);
+                userSettingFeedButton.setBackgroundResource(R.drawable.enable_button_shape);
                 break;
         }
     }
@@ -62,19 +65,19 @@ public class FeedReserveFragment extends Fragment {
 
         switch(id) {
             case R.id.feed1:
-                oneCircleButton.setBackgroundResource(R.color.colorMyYellow);
-                twoCircleButton.setBackgroundResource(R.color.colorAccent);
-                threeCircleButton.setBackgroundResource(R.color.colorAccent);
+                oneCircleButton.setBackgroundResource(R.drawable.enable_button_shape);
+                twoCircleButton.setBackgroundResource(R.drawable.disable_button_shape);
+                threeCircleButton.setBackgroundResource(R.drawable.disable_button_shape);
                 break;
             case R.id.feed2:
-                oneCircleButton.setBackgroundResource(R.color.colorAccent);
-                twoCircleButton.setBackgroundResource(R.color.colorMyYellow);
-                threeCircleButton.setBackgroundResource(R.color.colorAccent);
+                oneCircleButton.setBackgroundResource(R.drawable.disable_button_shape);
+                twoCircleButton.setBackgroundResource(R.drawable.enable_button_shape);
+                threeCircleButton.setBackgroundResource(R.drawable.disable_button_shape);
                 break;
             case R.id.feed3:
-                oneCircleButton.setBackgroundResource(R.color.colorAccent);
-                twoCircleButton.setBackgroundResource(R.color.colorAccent);
-                threeCircleButton.setBackgroundResource(R.color.colorMyYellow);
+                oneCircleButton.setBackgroundResource(R.drawable.disable_button_shape);
+                twoCircleButton.setBackgroundResource(R.drawable.disable_button_shape);
+                threeCircleButton.setBackgroundResource(R.drawable.enable_button_shape);
                 break;
         }
     }

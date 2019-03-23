@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import io.socket.client.IO;
 import io.socket.client.Socket;
 
 public class WaterFragActivity extends BaseActivity implements View.OnClickListener {
@@ -116,20 +118,20 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_water_frag_now:
-                setFrag(0);
-                view_water_frag_now.setBackgroundResource(R.color.colorBlack);
-                view_water_frag_reserve.setBackgroundResource(R.color.white);
-                btn_water_frag_now.setTextColor(Color.BLACK);
-                btn_water_frag_reserve.setTextColor(Color.GRAY);
-                break;
-            case R.id.btn_water_frag_reserve:
-                setFrag(1);
-                view_water_frag_reserve.setBackgroundResource(R.color.colorBlack);
-                view_water_frag_now.setBackgroundResource(R.color.white);
-                btn_water_frag_reserve.setTextColor(Color.BLACK);
-                btn_water_frag_now.setTextColor(Color.GRAY);
-                break;
+        case R.id.btn_water_frag_now:
+            setFrag(0);
+            view_water_frag_now.setBackgroundResource(R.color.colorBlack);
+            view_water_frag_reserve.setBackgroundResource(R.color.white);
+            btn_water_frag_now.setTextColor(Color.BLACK);
+            btn_water_frag_reserve.setTextColor(Color.GRAY);
+            break;
+        case R.id.btn_water_frag_reserve:
+            setFrag(1);
+            view_water_frag_reserve.setBackgroundResource(R.color.colorBlack);
+            view_water_frag_now.setBackgroundResource(R.color.white);
+            btn_water_frag_reserve.setTextColor(Color.BLACK);
+            btn_water_frag_now.setTextColor(Color.GRAY);
+            break;
         }
     }
 
@@ -151,19 +153,16 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
     public void saveWaterButton(View v) {
 
-        String yearWater, monthWater, dayWater, hourWater, minunteWater;
+        int yearWater, monthWater, dayWater, hourWater, minunteWater;
         String timerWater;
-        yearWater = Integer.toString(waterReserveFragment.datePickerWater.getYear());
-        monthWater = Integer.toString(waterReserveFragment.datePickerWater.getMonth() + 1);
-        dayWater = Integer.toString(waterReserveFragment.datePickerWater.getDayOfMonth());
-        hourWater = Integer.toString(waterReserveFragment.timePickerWater.getHour());
-        minunteWater = Integer.toString(waterReserveFragment.timePickerWater.getMinute());
-
-        timerWater = "\"" + yearWater + "/" + monthWater + "/" + dayWater + "/" + hourWater + "/" + minunteWater + "/0\"";
-
+        yearWater = waterReserveFragment.datePickerWater.getYear();
+        monthWater = waterReserveFragment.datePickerWater.getMonth() + 1;
+        dayWater = waterReserveFragment.datePickerWater.getDayOfMonth();
+        hourWater = waterReserveFragment.timePickerWater.getHour();
+        minunteWater = waterReserveFragment.timePickerWater.getMinute();
+        timerWater = Integer.toString(yearWater) + Integer.toString(monthWater) + Integer.toString(dayWater) + Integer.toString(hourWater) + Integer.toString(minunteWater) + "0";
         Toast.makeText(getApplicationContext(), yearWater + "년" + monthWater + "월" + dayWater + "일\n"
-                + hourWater + ":" + minunteWater
-                + "\n테스트:" + timerWater, Toast.LENGTH_LONG).show();
+                + hourWater + ":" + minunteWater, Toast.LENGTH_LONG).show();
         socket.emit("insertWater", timerWater);
     }
 

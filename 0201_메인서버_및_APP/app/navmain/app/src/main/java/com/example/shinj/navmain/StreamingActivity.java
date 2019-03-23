@@ -9,9 +9,13 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.socket.client.Socket;
 
@@ -42,11 +46,16 @@ public class StreamingActivity extends BaseActivity {
         socket = intentData.getSocket();
         final ProgressBar progressBarTemperature = (ProgressBar) findViewById(R.id.progresBarTemper);
 
+
         /* 서버DB에서 환수설정시간을 받아와서 출력 */
         socket.emit("reqTimerWater", "DB의 TimerWater값 요청");
         socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
         }).on("resTimerWater", (Object... objects) -> {
-            waterTimer.setText("환수시간: " + objects[0].toString());
+            try {
+                waterTimer.setText("환수시간: " + objects[0].toString());
+            } catch (Exception e) {
+
+            }
         });
         /* 서버DB에서 먹이급여예약시간을 받아와서 1초에 한번씩 출력하는 쓰레드 */
         Thread thread_feed = new Thread(new Runnable() {
@@ -60,11 +69,7 @@ public class StreamingActivity extends BaseActivity {
                         }).on("resTimerFeed", (Object... objects) -> {
                             runOnUiThread(()-> {
                                 if (!(objects[0].toString().equals("0")) || !(objects[1].toString().equals("0"))) {
-                                    feedTimer.setText("다음 먹이급여까지" +
-                                            Integer.parseInt(objects[1].toString())/60/60 + "시간"
-                                            + Integer.parseInt(objects[1].toString())/60%60 + "분"
-                                            + Integer.parseInt(objects[1].toString())%60 + "초 남았습니다."
-                                            + " 회전수: " + objects[0].toString() );
+                                    feedTimer.setText("남은시간(초): " + objects[1].toString() + " 회전수: " + objects[0].toString() );
                                 }
                             });
                         });
@@ -175,20 +180,5 @@ public class StreamingActivity extends BaseActivity {
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_streaming;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }
