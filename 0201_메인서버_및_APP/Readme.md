@@ -15,3 +15,16 @@
 forever 명령어는 서버를 자동으로 재시작해주는 nodemon 모듈과 비슷하며,   
 start / stop / restart 처럼 프로세스를 관리해 줄 수 있다.  
 http://todactodac.blogspot.com/2016/06/nodejs-forever.html 페이지를 참고  
+
+### 서버의 용량이 100%로 꽉 찼을 때 해결방법  
+
+df -h명령어로 /dev/root의 Use%가 100% 꽉차서 용량을 더이상 못 사용할 때  
+[1] su 명령어로 관리자 모드로 들어간다.  
+[2] sudo du -h --max-depth=1 / 명령어로 꽉차보이는 디렉토리를 찾는다  
+[3] 만약 /var/log 폴더가 1기가 이상으로 꽉찼다면, 비워주러 간다  
+[4] /var/log 디렉토리로 가서 ls -alh 명령으로 어떤 파일이 200Mbyte 이상인지 확인한다  
+[5] 만약 daemon.log 파일이 200M 이상이라면 아래와 같은 명령어로 0M를 만들며 파일은 지우지 않도록 한다. (rm 사용금지- 파일 뻑남)  
+[5-1] cat /dev/null > /var/log/daemon.log (관리자 모드에서 해야함)  
+[5-2] 나머지 200M 이상인 로그!!들만 비운다.   
+https://sisiblog.tistory.com/24 <- 로그에 대한 정보  
+[6] 로그가 아니라면 다른 꽉찬 부분을 확인 후 비워준다.  
