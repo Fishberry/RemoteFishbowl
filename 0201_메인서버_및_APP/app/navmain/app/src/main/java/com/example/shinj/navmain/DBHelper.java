@@ -50,6 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM NotificationInformation", null);
 
         try {
+            cursor.moveToNext();
             dbElement.setIp(cursor.getString(0));
             dbElement.setLoop(cursor.getInt(1));
             dbElement.setWatchElement(cursor.getInt(2));

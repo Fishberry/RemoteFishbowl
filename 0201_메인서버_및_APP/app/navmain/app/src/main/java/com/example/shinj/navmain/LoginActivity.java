@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
 
         if(dbElement.getIsRememberIP() == 1) {
             try {
-                socket = IO.socket("http://" + dbElement.getIp() + "3000/");
+                socket = IO.socket("http://" + dbElement.getIp() + ":3000/");
                 socket.connect();
                 intentData.setAddress(dbElement.getIp());
                 intentData.setSocket(socket);

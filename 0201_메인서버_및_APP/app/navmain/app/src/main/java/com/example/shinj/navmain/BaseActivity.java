@@ -30,10 +30,6 @@ abstract public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
         Intent extraIntent = getIntent();
-        //address = extraIntent.getStringExtra("address");
-//        IntentData intentData = (IntentData) extraIntent.getSerializableExtra("data");
-//        address = intentData.address;
-//        socket = (Socket) extraIntent.getSerializableExtra("data");
 
         address = intentData.getAddress();
         socket = intentData.getSocket();
@@ -89,6 +85,14 @@ abstract public class BaseActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
+                        //네비게이션바 - 로그아웃
+                    case R.id.nav_sub_menu_item01:
+                        final DBHelper dbHelper = new DBHelper(getApplicationContext());
+                        dbHelper.delete();
+                        intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        break;
                 }
 
                 return true;
