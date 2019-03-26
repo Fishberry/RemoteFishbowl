@@ -153,17 +153,21 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
     public void saveWaterButton(View v) {
 
-        int yearWater, monthWater, dayWater, hourWater, minunteWater;
+        String yearWater, monthWater, dayWater, hourWater, minunteWater;
         String timerWater;
-        yearWater = waterReserveFragment.datePickerWater.getYear();
-        monthWater = waterReserveFragment.datePickerWater.getMonth() + 1;
-        dayWater = waterReserveFragment.datePickerWater.getDayOfMonth();
-        hourWater = waterReserveFragment.timePickerWater.getHour();
-        minunteWater = waterReserveFragment.timePickerWater.getMinute();
-        timerWater = Integer.toString(yearWater) + Integer.toString(monthWater) + Integer.toString(dayWater) + Integer.toString(hourWater) + Integer.toString(minunteWater) + "0";
+        yearWater = Integer.toString(waterReserveFragment.datePickerWater.getYear());
+        monthWater = Integer.toString(waterReserveFragment.datePickerWater.getMonth() + 1);
+        dayWater = Integer.toString(waterReserveFragment.datePickerWater.getDayOfMonth());
+        hourWater = Integer.toString(waterReserveFragment.timePickerWater.getHour());
+        minunteWater = Integer.toString(waterReserveFragment.timePickerWater.getMinute());
+
+        timerWater = "\"" + yearWater + "/" + monthWater + "/" + dayWater + "/" + hourWater + "/" + minunteWater + "/0\"";
+
         Toast.makeText(getApplicationContext(), yearWater + "년" + monthWater + "월" + dayWater + "일\n"
-                + hourWater + ":" + minunteWater, Toast.LENGTH_LONG).show();
+                + hourWater + ":" + minunteWater
+                + "\n테스트:" + timerWater, Toast.LENGTH_LONG).show();
         socket.emit("insertWater", timerWater);
+        finish();
     }
 
     public void cancelWaterButton(View v) {

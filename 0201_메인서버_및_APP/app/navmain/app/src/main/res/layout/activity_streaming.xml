@@ -19,12 +19,12 @@
 
         <!-- streaming 관련은 여기 -->
         <!--<ScrollView-->
-            <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="@color/colorBackground">-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/colorBackground">-->
 
-            <!---->
+        <!---->
 
         <!--</ScrollView>-->
 
@@ -78,7 +78,7 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_margin="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -164,15 +164,6 @@
                     app:layout_constraintEnd_toEndOf="@id/pHValue"
                     app:layout_constraintTop_toBottomOf="@id/pHValue" />
 
-                <View
-                    android:id="@+id/middleLayoutLine"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/img_themometer"
-                    android:layout_marginTop="20dp"/>
-
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
@@ -181,7 +172,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/bottomLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="132dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/round_layout_shape"
                 android:elevation="3dp"
@@ -194,10 +185,10 @@
                     android:id="@+id/feedTimer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="20dp"
                     android:text="feedTimer"
                     android:textColor="@color/colorBlack"
-                    android:textSize="25sp"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/bottomLayout" />
