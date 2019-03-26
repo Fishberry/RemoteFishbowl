@@ -195,13 +195,13 @@ router.get('/main/StopOUT', (req, res) => {
 	}
 });
 
-router.get('/main/getTime', (req, res) => {
+router.get('/main/TempWN', (req, res) => {
 	var cookieValue = req.cookies.password;
 	if(cookieValue == null)
 		res.status(200).render('passwordPage.ejs');
 	else {
-		console.log('워터펌프  동작');
-		arduinoPort.write('getTime');
+		console.log('경고 동작');
+		arduinoPort.write('TempWN');
 		res.status(200).send('Serial Controll OK!!');
 	}
 });
@@ -239,8 +239,8 @@ router.get('/inputExValue', (req, res) => {
 	else {
 		const _url = req.url;
 		const queryData = url.parse(_url, true).query;
-		let setTime = String(queryData.ex_year) + String(queryData.ex_month) + String(queryData.ex_day) + String(queryData.ex_hour) + String(queryData.ex_minute) + '0';
-		db.insertExchange(52, 52, String(setTime));
+		let setTime = "\"" +queryData.ex_year + '/' + queryData.ex_month + '/' + queryData.ex_day + '/' + queryData.ex_hour + '/' + queryData.ex_minute + '/' + '0' + "\"";
+		db.insertExchange(32, 32, String(setTime));
 		res.send('<script type="text/javascript">alert("설정값이 저장되었습니다."); history.back();</script>');
 	}
 });

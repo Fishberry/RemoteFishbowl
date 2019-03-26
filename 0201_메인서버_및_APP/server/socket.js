@@ -105,6 +105,7 @@ module.exports = (server, app) => {
     	    getMinute = parseInt(servoTimer/60%60);
     	    getSecond = parseInt(servoTimer%60);
     	    console.log(getHour+"시간 "+getMinute+"분 "+getSecond+"초 뒤 먹이급여 시작");
+	    console.log(maxTemper + " " + minTemper + " " + maxPH + " " + minPH);
 	}
     });
     }, 1000);
@@ -117,8 +118,12 @@ module.exports = (server, app) => {
 
 		if(!isChanged) {
     			fs.readFile('/home/pi/Desktop/FishberryServer/background/arduino_log', 'utf8', (err, data) => {
-				var text = data.substring(0, 11);
-				if(text===results[0].exTime_save) isChanged = true;
+				var text = data.replace(/[^0-9/]/g,"");
+				if(text===results[0].exTime_save) 
+				{
+					isChanged = true;
+				}
+				//console.log("ttt : ", text, results[0].exTime_save, text.length, results[0].exTime_save.length);
 			});
 		}
 
@@ -126,7 +131,7 @@ module.exports = (server, app) => {
 		if(isChanged) {
 			console.log('totalPercent : ' + totalPercent);
 	   		if(results[0].exTimer1 > 0) {
-				if(results[0].exTimer1 === 50) {
+				if(results[0].exTimer1 === 30) {
 	    			fs.open(tty, 'a', 666, (e, fd) => {
 					fs.write(fd, 'StartOUT', null, null, null, (err) => {
 					    if(err) throw err;
@@ -152,10 +157,10 @@ module.exports = (server, app) => {
 
 				waterTimer1 = results[0].exTimer1 - 1;
 	        		connection.query('update ExchangeSetting set exTimer1='+waterTimer1, () => {});
-				totalPercent = parseInt((1 - (waterTimer1/52))*50);
+				totalPercent = parseInt((1 - (waterTimer1/32))*50);
 	   		}
 	   		else {
-				if(results[0].exTimer2 === 50) {
+				if(results[0].exTimer2 === 30) {
 	    				fs.open(tty, 'a', 666, (e, fd) => {
 						fs.write(fd, 'StartIN', null, null, null, (err) => {
 						    if(err) throw err;
@@ -178,17 +183,17 @@ module.exports = (server, app) => {
 	      			 	    	});
 	    				    });
 	   				});
-		    			waterTimer1 = 52;
-		    			waterTimer2 = 52;
-	        			connection.query('update ExchangeSetting set exTimer1='+waterTimer1+', exTimer2='+waterTimer2, () => {});
 					totalPercent = 0;
+		    			waterTimer1 = 32;
+		    			waterTimer2 = 32;
+	        			connection.query('update ExchangeSetting set exTimer1='+waterTimer1+', exTimer2='+waterTimer2, () => {});
 					isChanged = false;
 				}
 
 				else {
 					waterTimer2 = results[0].exTimer2 - 1;
 	        			connection.query('update ExchangeSetting set exTimer2='+waterTimer2, () => {});
-					totalPercent = 50 + parseInt((1 - (waterTimer2/52))*50);
+					totalPercent = 50 + parseInt((1 - (waterTimer2/32))*50);
 				}
 	   		}
 		}
@@ -231,7 +236,7 @@ module.exports = (server, app) => {
         });
 
 	// 수온 및 수질에 따른 아두이노 LED 제어
-	// 수온과 수질 전부 이상이 있을 때
+	// 수온과 수질 전부 이상이 있을 때 하얀색
 	if ((temperature >= maxTemper || temperature <= minTemper) && (phValue >= maxPH || phValue <= minPH)) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
 	  	    fs.write(fd, 'BothWN', null, null, null, (err) => {
@@ -244,7 +249,7 @@ module.exports = (server, app) => {
 	   	});
 	}
 
-	// 수질만 이상 있을 때
+	// 수질만 이상 있을 때 보라색
 	else if ((phValue >= maxPH || phValue <= minPH) && (temperature < maxTemper && temperature > minTemper)) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
 	  	    fs.write(fd, 'pHWN', null, null, null, (err) => {
@@ -257,7 +262,7 @@ module.exports = (server, app) => {
 	   	});
 	}
 
-	// 수온만 이상 있을 때
+	// 수온만 이상 있을 때 빨간색
 	else if ((temperature >= maxTemper || temperature <= minTemper) && (phValue < maxPH && phValue > minPH)) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
 	  	    fs.write(fd, 'TempWN', null, null, null, (err) => {
@@ -270,7 +275,7 @@ module.exports = (server, app) => {
 	   	});
 	}
 
-	// 이상이 없을 때
+	// 이상이 없을 때 초록색
 	else if (temperature > minTemper && temperature < maxTemper && phValue > minPH && phValue < maxPH) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
 	  	    fs.write(fd, 'NotWN', null, null, null, (err) => {
@@ -283,15 +288,17 @@ module.exports = (server, app) => {
 	   	});
 	}
 
-	fs.open(tty, 'a', 666, (e, fd) => {
-	    fs.write(fd, 'getTime', null, null, null, (err) => {
-		if(err) throw err;
-	    	console.log('Get RTC Time');	
-	    	fs.close(fd, (err) => {
-	  	    console.log(err);
-	         });
-	    });
-	});
+	else {
+	   	fs.open(tty, 'a', 666, (e, fd) => {
+	  	    fs.write(fd, 'NotWN', null, null, null, (err) => {
+		    	if(err) throw err;
+		    	console.log('Not Warnning!!');	
+		    	fs.close(fd, (err) => {
+	    		    console.log(err);
+	      	    	});
+	    	    });
+	   	});
+	}
 
     }, 5000);
 
@@ -495,7 +502,7 @@ module.exports = (server, app) => {
 	socket.on('insertWater', (timerWater) => {
 		console.log('timerWater : ' + timerWater);
 
-		db.insertExchange(52, 52, timerWater);
+		db.insertExchange(32, 32, timerWater);
 	});
 	
 	// App에서 nodejs로의 연결 해제
