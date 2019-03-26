@@ -135,8 +135,8 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
         FeedUserSettingTimer feedUserSettingTimerDialog = new FeedUserSettingTimer(this);
         feedUserSettingTimerDialog.setFeedUserSettingTimerListener(new FeedUserSettingTimer.FeedUserSettingTimerListener() {
             @Override
-            public void onOkClicked(int year, int month, int day, int hour, int minute) {
-                Toast.makeText(FeedFragActivity.this, "설정된 날짜: " + year + "/" + month + "/"  + day + "\n" + "설정된 시간: " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
+            public void onOkClicked(int hour, int minute) {
+                //Toast.makeText(FeedFragActivity.this, "설정된 날짜: " + year + "/" + month + "/"  + day + "\n" + "설정된 시간: " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
                 timerFeed = (hour*3600) + (minute*60);
                 feedReserveFragment.selectTimer(R.id.btn_feedtimer_userSetting);
                 feedReserveFragment.userSettingFeedButton.setText(hour + "H " + minute + "M");

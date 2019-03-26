@@ -7,21 +7,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="먹이급여날짜"
-        android:textAlignment="center"
-        android:textColor="@color/colorMediumorchid"
-        />
-    <DatePicker
-        android:id="@+id/date_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="먹이급여시간"
         android:textAlignment="center"
         android:textColor="@color/colorMediumorchid"
@@ -39,30 +24,29 @@
         android:gravity="end"
         android:orientation="horizontal"
         android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:weightSum="10">
+        android:paddingBottom="4dp">
 
-        <TextView
-            android:id="@+id/feedUserSettingCancel"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center"
-            android:text="취소"
-            android:textColor="@color/colorAccent"
-            android:textSize="16sp"
-            />
         <TextView
             android:id="@+id/feedUserSettingOk"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="완료"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            />
+        <TextView
+            android:id="@+id/feedUserSettingCancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="취소"
             android:textColor="@color/colorAccent"
             android:textSize="16sp"
             />

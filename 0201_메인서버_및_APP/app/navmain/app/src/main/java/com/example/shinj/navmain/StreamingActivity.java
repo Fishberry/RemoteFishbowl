@@ -173,6 +173,28 @@ public class StreamingActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("종료")
+                .setMessage("Fishberry를 종료하시겠습니까?")
+                .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finishAffinity();           //해당 앱의 루트 액티비티 종료
+                        System.runFinalization();   //현재 작업중인 쓰레드가 다 종료되면, 종료하라는 메소드
+                        System.exit(0);     //현재 액티비티 종료
+                    }
+                })
+                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+        builder.show();
+    }
+
     void setWhetherSensor(boolean sensorBooleanValue) {
         isConnectSensor = sensorBooleanValue;
     }
