@@ -42,11 +42,14 @@
                 android:text="FishBerry Streaming"
                 android:textSize="15sp"
                 android:textColor="@color/colorBlack"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp" />
 
             <WebView
@@ -72,6 +75,21 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="180dp"/>
 
+            <TextView
+                android:id="@+id/fishbowl_title"
+                android:text="어항 상태"
+                android:textSize="15sp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/webViewLine"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="3dp" />
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/middleLayout"
                 xmlns:android="http://schemas.android.com/apk/res/android"
@@ -79,11 +97,13 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="3dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/webViewLine"
-                app:layout_constraintBottom_toTopOf="@id/bottomLayout"
+                app:layout_constraintTop_toBottomOf="@+id/fishbowl_title"
+
                 android:background="@drawable/round_layout_shape"
                 android:elevation="3dp">
 
@@ -121,14 +141,14 @@
 
                     <ImageView
                         android:id="@+id/img_temper"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:src="@drawable/themometer" />
                     <ProgressBar
                         android:id="@+id/progresBarTemper"
-                        android:layout_width="150dp"
-                        android:layout_height="90dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_width="75dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
                         android:min="0"
                         android:max="35"
                         style="@android:style/Widget.ProgressBar.Horizontal"
@@ -156,8 +176,8 @@
                     app:layout_constraintBottom_toBottomOf="@id/TempValue" />
                 <ImageView
                     android:id="@+id/img_themometer"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
                     android:src="@drawable/ph"
                     android:layout_marginTop="11dp"
                     app:layout_constraintStart_toStartOf="@id/pHValue"
@@ -166,20 +186,36 @@
 
             </android.support.constraint.ConstraintLayout>
 
+            <TextView
+                android:id="@+id/reseve_title"
+                android:text="예약 관리"
+                android:textSize="15sp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/middleLayout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="3dp" />
             <android.support.constraint.ConstraintLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/bottomLayout"
                 android:layout_width="match_parent"
-                android:layout_height="132dp"
-                android:layout_margin="10dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="3dp"
                 android:background="@drawable/round_layout_shape"
                 android:elevation="3dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/middleLayout">
+                app:layout_constraintTop_toBottomOf="@id/reseve_title">
 
                 <TextView
                     android:id="@+id/feedTimer"
@@ -211,6 +247,7 @@
                     android:text="waterTimer"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
+                    app:layout_constraintTop_toBottomOf="@+id/feedTimerLine"
                     app:layout_constraintBottom_toTopOf="@id/settingTemperPh"
                     app:layout_constraintEnd_toEndOf="@id/bottomLayout"
                     app:layout_constraintStart_toStartOf="@id/bottomLayout" />
@@ -232,6 +269,7 @@
                     android:text="settingTemperPh"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
+                    app:layout_constraintTop_toBottomOf="@id/waterTimerLine"
                     app:layout_constraintBottom_toBottomOf="@id/bottomLayout"
                     app:layout_constraintEnd_toEndOf="@id/bottomLayout"
                     app:layout_constraintStart_toStartOf="@id/bottomLayout" />
