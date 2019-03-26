@@ -13,21 +13,21 @@ const int RLED = 13;
 Servo myServo;  // 서보모터 인스턴스 변수
 RTC_DS1307 RTC; // RTC 인스턴스 변수
 String year, month, day, hour, minute, second, time, date;
-int count = 1;
 
 void setup() {
   
   Serial.begin(9600);
   /* 서보모터 */
   myServo.attach(SERVO);
-  myServo.write(0); // 처음에 0도로 초기화
+  //myServo.write(0); // 처음에 0도로 초기화
   
   /* RTC */
   // I^2C버스와 RTC 모두 시작
   Wire.begin();
   RTC.begin();
-  // RTC에 컴퓨터 시간으로 설정
-  RTC.adjust(DateTime(__DATE__, __TIME__));
+  // RTC에 컴퓨터 시간으로 설정(시간설정이 안되어 있을때만 주석해제)
+  // 시간 설정이 되면 다시 주석을 꼭 해주어야 시간유지 됨.
+  //RTC.adjust(DateTime(__DATE__, __TIME__));
 
   /* 워터펌프 */
   pinMode(WaterPumpA, OUTPUT);       // Motor A 
@@ -94,9 +94,8 @@ void loop() {
   }
 
   /* RTC 시간 구하기 */
-  //if(count == 60) getTime();
-  //count++;
-  //delay(1000);
+  getTime();
+  delay(10);
 }
 
 void setMode(int mode) {
@@ -128,24 +127,28 @@ void getTime() {
   
   Serial.print(now.year(), DEC);  // 년
   year = String(now.year(), DEC);
+  Serial.print("/");
   
   Serial.print(now.month(), DEC);  // 월
   month = String(now.month(), DEC);
+  Serial.print("/");
   
   Serial.print(now.day(), DEC);   // 일
   day = String(now.day(), DEC);
+  Serial.print("/");
 
-  Serial.print(now.hour(), DEC);    // 시간
+  Serial.print(now.hour(), DEC);  // 시간
   hour = String(now.hour(), DEC);
+  Serial.print("/");
 
   Serial.print(now.minute(), DEC);   // 분
   minute = String(now.minute(), DEC);
+  Serial.print("/");
 
   Serial.print(now.second(), DEC);   // 초
   second = String(now.second(), DEC);
-
+  
   Serial.println();
-  count = 1;
 }
 
 void operateMotor(char sw) {
