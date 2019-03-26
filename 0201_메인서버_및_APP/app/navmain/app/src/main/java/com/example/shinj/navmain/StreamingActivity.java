@@ -9,13 +9,9 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.socket.client.Socket;
 
@@ -25,6 +21,8 @@ public class StreamingActivity extends BaseActivity {
     WebSettings webSettings;    //웹뷰 세팅 객체
     private static Socket socket;
     private TextView tempValue, phValue, feedTimer, waterTimer, settingTemperPh;
+    private int feedTimeRemain;
+    private String waterTimeRemain;
     Intent extraIntent;
     String address;
     String progressTemp;
@@ -52,7 +50,12 @@ public class StreamingActivity extends BaseActivity {
         socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
         }).on("resTimerWater", (Object... objects) -> {
             try {
-                waterTimer.setText("환수시간: " + objects[0].toString());
+                waterTimeRemain = objects[0].toString();
+                waterTimer.setText("환수시간: " + waterTimeRemain.split("/")[0] + "년"
+                + waterTimeRemain.split("/")[1] + "월"
+                + waterTimeRemain.split("/")[2] + "일"
+                + waterTimeRemain.split("/")[3] + "시"
+                + waterTimeRemain.split("/")[4] + "분");
             } catch (Exception e) {
 
             }
@@ -69,7 +72,11 @@ public class StreamingActivity extends BaseActivity {
                         }).on("resTimerFeed", (Object... objects) -> {
                             runOnUiThread(()-> {
                                 if (!(objects[0].toString().equals("0")) || !(objects[1].toString().equals("0"))) {
-                                    feedTimer.setText("남은시간(초): " + objects[1].toString() + " 회전수: " + objects[0].toString() );
+                                    feedTimeRemain = Integer.parseInt(objects[1].toString());
+                                    feedTimer.setText("먹이급여: " + feedTimeRemain/60/60 + "시간 "
+                                            + feedTimeRemain/60%60 + "분 " +
+                                            + feedTimeRemain%60 + "초 "
+                                            + " 회전수: " + objects[0].toString() );
                                 }
                             });
                         });
