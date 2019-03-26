@@ -8,8 +8,6 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import io.socket.client.IO;
 import io.socket.client.Socket;
 
 public class WaterFragActivity extends BaseActivity implements View.OnClickListener {
@@ -91,9 +89,9 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
                                 if (count < 100 && waterFlag == true) {   // 환수 진행중인 상태
                                     waterNowFragment.progressRateWater.setText(count + " %");
                                     waterNowFragment.btnPauseWaterNow.setVisibility(View.VISIBLE);
-                                } else if (count >= 100){  // 환수 끝났을 때
-                                    Toast.makeText(WaterFragActivity.this, "환수를 완료하였습니다.", Toast.LENGTH_SHORT).show();
+                                } else if (count >= 100) {  // 환수 끝났을 때
                                     waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
+                                    waterNowFragment.progressRateWater.setText("환수 완료^-^");
                                     count = 0;
                                     waterFlag = false;
                                 }
@@ -118,20 +116,20 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.btn_water_frag_now:
-            setFrag(0);
-            view_water_frag_now.setBackgroundResource(R.color.colorBlack);
-            view_water_frag_reserve.setBackgroundResource(R.color.white);
-            btn_water_frag_now.setTextColor(Color.BLACK);
-            btn_water_frag_reserve.setTextColor(Color.GRAY);
-            break;
-        case R.id.btn_water_frag_reserve:
-            setFrag(1);
-            view_water_frag_reserve.setBackgroundResource(R.color.colorBlack);
-            view_water_frag_now.setBackgroundResource(R.color.white);
-            btn_water_frag_reserve.setTextColor(Color.BLACK);
-            btn_water_frag_now.setTextColor(Color.GRAY);
-            break;
+            case R.id.btn_water_frag_now:
+                setFrag(0);
+                view_water_frag_now.setBackgroundResource(R.color.colorBlack);
+                view_water_frag_reserve.setBackgroundResource(R.color.white);
+                btn_water_frag_now.setTextColor(Color.BLACK);
+                btn_water_frag_reserve.setTextColor(Color.GRAY);
+                break;
+            case R.id.btn_water_frag_reserve:
+                setFrag(1);
+                view_water_frag_reserve.setBackgroundResource(R.color.colorBlack);
+                view_water_frag_now.setBackgroundResource(R.color.white);
+                btn_water_frag_reserve.setTextColor(Color.BLACK);
+                btn_water_frag_now.setTextColor(Color.GRAY);
+                break;
         }
     }
 
