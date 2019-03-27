@@ -5,7 +5,6 @@ const fs = require('fs');
 const mysql = require('mysql');
 const crypto = require('crypto');
 const db = require('./models/findDB');
-//const confirmPW = require('./confirmPassword');
 const router = express.Router();
 
 const connection = mysql.createConnection({
@@ -39,7 +38,6 @@ module.exports = (server, app) => {
 
     let servoTimer = 0;
     let servoCircle = 0;
-    let waterTimer = 0;
     let waterTimer1 = 0;
     let waterTimer2 = 0;
 
@@ -52,7 +50,7 @@ module.exports = (server, app) => {
     // 자동 먹이지급 관련 제어코드
     setInterval(() => {
 
-    connection.query('select * from FeedSetting', (error, results, fields) => {
+      connection.query('select * from FeedSetting', (error, results, fields) => {
 	if(results[0].timer <= 0) {
 	    // 1회전으로 설정시 동작
 	    if(results[0].circle == '1') {
@@ -76,6 +74,7 @@ module.exports = (server, app) => {
 		        fs.close(fd, (err) => {
 	                    console.log(err);
 	      	        });
+				//console.log("ttt : ", text, results[0].exTime_save, text.length, results[0].exTime_save.length);
 	    	    });
 	   	 });
 	    }
@@ -105,54 +104,51 @@ module.exports = (server, app) => {
     	    getMinute = parseInt(servoTimer/60%60);
     	    getSecond = parseInt(servoTimer%60);
     	    console.log(getHour+"시간 "+getMinute+"분 "+getSecond+"초 뒤 먹이급여 시작");
-	    console.log(maxTemper + " " + minTemper + " " + maxPH + " " + minPH);
+	    //console.log(maxTemper + " " + minTemper + " " + maxPH + " " + minPH);
 	}
-    });
+      });
     }, 1000);
 
     // 부분환수 관련 제어코드
     setInterval(() => {
 	
     	connection.query('select * from ExchangeSetting', (error, results, fields) => {
-		waterTimer = results[0].exTime_save;
 
 		if(!isChanged) {
     			fs.readFile('/home/pi/Desktop/FishberryServer/background/arduino_log', 'utf8', (err, data) => {
-				var text = data.replace(/[^0-9/]/g,"");
+				if(err) throw err;
+				var text = data.replace(/[^0-9/]/g, "");
 				if(text===results[0].exTime_save) 
 				{
 					isChanged = true;
 				}
-				//console.log("ttt : ", text, results[0].exTime_save, text.length, results[0].exTime_save.length);
 			});
 		}
 
-		//if(true) { // 테스트용 코드.
 		if(isChanged) {
+	    	    fs.open(tty, 'a', 666, (e, fd) => {
 			console.log('totalPercent : ' + totalPercent);
 	   		if(results[0].exTimer1 > 0) {
 				if(results[0].exTimer1 === 30) {
-	    			fs.open(tty, 'a', 666, (e, fd) => {
+	    			//fs.open(tty, 'a', 666, (e, fd) => {
 					fs.write(fd, 'StartOUT', null, null, null, (err) => {
-					    if(err) throw err;
 					    console.log('StartOUT');	
 					    fs.close(fd, (err) => {
 	    				        console.log(err);
 	      			      });
 	    			    });
-	   			});
+	   			//});
 				}
 
-				else if(results[0].exTimer1 === 1) {
-	    			fs.open(tty, 'a', 666, (e, fd) => {
+				else if(results[0].exTimer1 === 2) {
+	    			//fs.open(tty, 'a', 666, (e, fd) => {
 					fs.write(fd, 'StopOUT', null, null, null, (err) => {
-					    if(err) throw err;
 					    console.log('StopOUT');	
 					    fs.close(fd, (err) => {
 	    				        console.log(err);
 	      			      });
 	    			    });
-	   			});
+	   			//});
 				}
 
 				waterTimer1 = results[0].exTimer1 - 1;
@@ -161,28 +157,26 @@ module.exports = (server, app) => {
 	   		}
 	   		else {
 				if(results[0].exTimer2 === 30) {
-	    				fs.open(tty, 'a', 666, (e, fd) => {
+	    				//fs.open(tty, 'a', 666, (e, fd) => {
 						fs.write(fd, 'StartIN', null, null, null, (err) => {
-						    if(err) throw err;
 						    console.log('StartIN');	
 						    fs.close(fd, (err) => {
 	    					        console.log(err);
 	      				      	    });
 	    				    	});
-	   				});
+	   				//});
 					waterTimer2 = results[0].exTimer2 - 1;
 	        			connection.query('update ExchangeSetting set exTimer2='+waterTimer2, () => {});
 				}
-				else if(results[0].exTimer2 <= 0) {
-	    				fs.open(tty, 'a', 666, (e, fd) => {
+				else if(results[0].exTimer2 === 0) {
+	    				//fs.open(tty, 'a', 666, (e, fd) => {
 				  	    fs.write(fd, 'StopIN', null, null, null, (err) => {
-					    	if(err) throw err;
 					    	console.log('StopIN');	
 					    	fs.close(fd, (err) => {
 	    						console.log(err);
 	      			 	    	});
 	    				    });
-	   				});
+	   				//});
 					totalPercent = 0;
 		    			waterTimer1 = 32;
 		    			waterTimer2 = 32;
@@ -196,6 +190,7 @@ module.exports = (server, app) => {
 					totalPercent = 50 + parseInt((1 - (waterTimer2/32))*50);
 				}
 	   		}
+		    });
 		}
     	});
 	
@@ -215,7 +210,7 @@ module.exports = (server, app) => {
 
                     //console.log('읽어온 온도 : ', data); // 전체 파일의 내용을 로그찍음
 
-	    	    if(err) console.log(err);
+	    	    if(err) throw err;
                     var text = data;
                     var first = text.substring(69,71);
                     var second = text.substring(71,72);
@@ -239,11 +234,13 @@ module.exports = (server, app) => {
 	// 수온과 수질 전부 이상이 있을 때 하얀색
 	if ((temperature >= maxTemper || temperature <= minTemper) && (phValue >= maxPH || phValue <= minPH)) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
+		    if(e) throw e;
 	  	    fs.write(fd, 'BothWN', null, null, null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Temperature&pH Warnning!!');	
 		    	fs.close(fd, (err) => {
-	    		    console.log(err);
+		    	    if(err) throw err;
+	    		    //console.log(err);
 	      	    	});
 	    	    });
 	   	});
@@ -252,11 +249,13 @@ module.exports = (server, app) => {
 	// 수질만 이상 있을 때 보라색
 	else if ((phValue >= maxPH || phValue <= minPH) && (temperature < maxTemper && temperature > minTemper)) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
+		    if(e) throw e;
 	  	    fs.write(fd, 'pHWN', null, null, null, (err) => {
 		    	if(err) throw err;
 		    	console.log('pH Warnning!!');	
 		    	fs.close(fd, (err) => {
-	    		    console.log(err);
+		    	    if(err) throw err;
+	    		    //console.log(err);
 	      	    	});
 	    	    });
 	   	});
@@ -265,11 +264,13 @@ module.exports = (server, app) => {
 	// 수온만 이상 있을 때 빨간색
 	else if ((temperature >= maxTemper || temperature <= minTemper) && (phValue < maxPH && phValue > minPH)) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
+		    if(e) throw e;
 	  	    fs.write(fd, 'TempWN', null, null, null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Temperature Warnning!!');	
 		    	fs.close(fd, (err) => {
-	    		    console.log(err);
+		    	    if(err) throw err;
+	    		    //console.log(err);
 	      	    	});
 	    	    });
 	   	});
@@ -278,11 +279,13 @@ module.exports = (server, app) => {
 	// 이상이 없을 때 초록색
 	else if (temperature > minTemper && temperature < maxTemper && phValue > minPH && phValue < maxPH) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
+		    if(e) throw e;
 	  	    fs.write(fd, 'NotWN', null, null, null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Not Warnning!!');	
 		    	fs.close(fd, (err) => {
-	    		    console.log(err);
+		    	    if(err) throw err;
+	    		    //console.log(err);
 	      	    	});
 	    	    });
 	   	});
@@ -290,11 +293,13 @@ module.exports = (server, app) => {
 
 	else {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
+		    if(e) throw e;
 	  	    fs.write(fd, 'NotWN', null, null, null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Not Warnning!!');	
 		    	fs.close(fd, (err) => {
-	    		    console.log(err);
+		    	    if(err) throw err;
+	    		    //console.log(err);
 	      	    	});
 	    	    });
 	   	});
@@ -339,7 +344,8 @@ module.exports = (server, app) => {
 	    socket.emit('serverMsg', temperature, phValue, minTemper, maxTemper, minPH, maxPH);
         });
 
-        socket.on('reqTime', (data) => {
+        socket.on('reqTime', (data, err) => {
+	    if(err) throw err;
             console.log('app에서 받은 시간요청 메세지 : ', data);
             socket.emit('resTime', getHour, getMinute, getSecond);
         });
@@ -360,18 +366,21 @@ module.exports = (server, app) => {
         });
 
 	// App에 먹이지급 타이머와 회전수를 전송
-	socket.on('reqTimerFeed', (data) => {
+	socket.on('reqTimerFeed', (data, err) => {
+	    if(err) throw err;
 	    console.log('app에서 받은 입력 : ', data);
 	    socket.emit('resTimerFeed', servoCircle, servoTimer);
 	});
 
 	// App에 환수예약시간을 전송
-	socket.on('reqTimerWater', (data) => {
+	socket.on('reqTimerWater', (data, err) => {
+	    if(err) throw err;
 	    console.log('app에서 받은 입력 : ', data);
 	    socket.emit('resTimerWater', waterTimer);
 	});
 
-	socket.on('reqChanged', (data) => {
+	socket.on('reqChanged', (data, err) => {
+	    if(err) throw err;
 	    console.log('app에서 받은 입력 : ', data);
 	    socket.emit('resChanged', isChanged);
 	});
@@ -459,9 +468,10 @@ module.exports = (server, app) => {
 		
 		connection.query('select * from passwordSetting', (error, results, fields) => {
 
-			if(error) console.log(error);
+			if(error) throw error;
 
-			else {
+			else 
+			{
 				console.log(results);
 
 				var decipher = crypto.createDecipher('aes256', 'password');
