@@ -149,7 +149,9 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
     public void savefeedButton(View v) {
         socket.emit("insertFeed", timerFeed, circleFeed);
         Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
-        finish();
+        Intent intent = new Intent(this, StreamingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void cancelfeedButton(View v) {

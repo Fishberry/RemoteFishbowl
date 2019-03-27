@@ -57,24 +57,28 @@ abstract public class BaseActivity extends AppCompatActivity {
                     //  네비게이션바 - 내 어항
                     case R.id.navigation_item_streaming:
                         intent = new Intent(getApplicationContext(), StreamingActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
 
                     // 네비게이션바 - 먹이급여
                     case R.id.navigation_item_feed:
                         intent = new Intent(getApplicationContext(), FeedFragActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
 
                     // 네비게이션바 - 환수
                     case R.id.navigation_item_water:
                         intent = new Intent(getApplicationContext(), WaterFragActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
 
                      // 네비게이션바 - 온도/pH
                     case R.id.navigation_item_temperPh:
                         intent = new Intent(getApplicationContext(), TemperatureActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
 

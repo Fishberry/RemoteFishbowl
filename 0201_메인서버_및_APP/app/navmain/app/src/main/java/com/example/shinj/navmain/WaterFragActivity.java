@@ -2,6 +2,7 @@ package com.example.shinj.navmain;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -161,11 +162,10 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
         timerWater = "\"" + yearWater + "/" + monthWater + "/" + dayWater + "/" + hourWater + "/" + minunteWater + "/0\"";
 
-        Toast.makeText(getApplicationContext(), yearWater + "년" + monthWater + "월" + dayWater + "일\n"
-                + hourWater + ":" + minunteWater
-                + "\n테스트:" + timerWater, Toast.LENGTH_LONG).show();
         socket.emit("insertWater", timerWater);
-        finish();
+        Intent intent = new Intent(this, StreamingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void cancelWaterButton(View v) {

@@ -1,5 +1,6 @@
 package com.example.shinj.navmain;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -109,9 +110,9 @@ public class TemperatureActivity extends BaseActivity {
     public void saveTemperPHButton(View v) {
         socket.emit("insertTemper", minTemper, maxTemper);
         socket.emit("insertPH", minPH, maxPH);
-        socket.disconnect();
-        Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
-        finish();
+        Intent intent = new Intent(this, StreamingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void cancelTemperPHButton(View v) {

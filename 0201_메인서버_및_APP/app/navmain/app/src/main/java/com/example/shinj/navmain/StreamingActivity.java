@@ -44,22 +44,20 @@ public class StreamingActivity extends BaseActivity {
         socket = intentData.getSocket();
         final ProgressBar progressBarTemperature = (ProgressBar) findViewById(R.id.progresBarTemper);
 
-
-        /* 서버DB에서 환수설정시간을 받아와서 출력 */
-        socket.emit("reqTimerWater", "DB의 TimerWater값 요청");
-        socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
-        }).on("resTimerWater", (Object... objects) -> {
-            try {
-                waterTimeRemain = objects[0].toString();
-                waterTimer.setText("환수시간: " + waterTimeRemain.split("/")[0] + "년"
-                + waterTimeRemain.split("/")[1] + "월"
-                + waterTimeRemain.split("/")[2] + "일"
-                + waterTimeRemain.split("/")[3] + "시"
-                + waterTimeRemain.split("/")[4] + "분");
-            } catch (Exception e) {
-
-            }
-        });
+//        socket.emit("reqTimerWater", "DB의 TimerWater값 요청");
+//        socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
+//        }).on("resTimerWater", (Object... objects) -> {
+//            try {
+//                waterTimeRemain = objects[0].toString();
+//                waterTimer.setText("환수시간: " + waterTimeRemain.split("/")[0] + "년"
+//                + waterTimeRemain.split("/")[1] + "월"
+//                + waterTimeRemain.split("/")[2] + "일"
+//                + waterTimeRemain.split("/")[3] + "시"
+//                + waterTimeRemain.split("/")[4] + "분");
+//            } catch (Exception e) {
+//
+//            }
+//        });
         /* 서버DB에서 먹이급여예약시간을 받아와서 1초에 한번씩 출력하는 쓰레드 */
         Thread thread_feed = new Thread(new Runnable() {
             @Override
@@ -90,7 +88,36 @@ public class StreamingActivity extends BaseActivity {
         });
         thread_feed.start();
 
-        /* 온도랑 pH값 5초마다 서버에서 받아와서 5초에 한번씩 출력하는 쓰레드 */
+        /* 서버DB에서 환수설정시간을 받아와서 1초에 한번씩 출력하는 쓰레드 */
+        Thread thread_water = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        socket.emit("reqTimerWater", "DB의 TimerWater값 요청");
+                        socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
+                        }).on("resTimerWater", (Object... objects) -> {
+                        try {
+                            waterTimeRemain = objects[0].toString();
+                            waterTimer.setText("환수시간: " + waterTimeRemain.split("/")[0] + "년"
+                            + waterTimeRemain.split("/")[1] + "월"
+                            + waterTimeRemain.split("/")[2] + "일"
+                            + waterTimeRemain.split("/")[3] + "시"
+                            + waterTimeRemain.split("/")[4] + "분");
+                        } catch (Exception e) {
+                        }
+                    });
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        Toast.makeText(StreamingActivity.this, "환수예약시간 오류", Toast.LENGTH_SHORT).show();
+                        setWhetherSensor(false);
+                    }
+                }
+            }
+        });
+        thread_water.start();
+
+        /* 온도랑 pH값 5초마다 서버에서 받아와서 1초에 한번씩 출력하는 쓰레드 */
         Thread thread_temper = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -124,7 +151,7 @@ public class StreamingActivity extends BaseActivity {
                                 }
                             });
                         });
-                        Thread.sleep(5000);
+                        Thread.sleep(1000);
                     } catch (Exception e) {
                         Toast.makeText(StreamingActivity.this, "온도센서 혹은 수질센서의 연결에 이상이 생겼습니다.", Toast.LENGTH_SHORT).show();
                         setWhetherSensor(false);
