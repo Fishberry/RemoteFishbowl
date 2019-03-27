@@ -1,7 +1,9 @@
 package com.example.shinj.navmain;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,7 +19,7 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
 
     private Socket socket;
     String address;
-    Button btn_feed_frag_now, btn_feed_frag_reserve, feedSettingDone;
+    Button btn_feed_frag_now, btn_feed_frag_reserve;
     View view_feed_frag_now, view_feed_frag_reserve;
     FragmentManager fm;
     FragmentTransaction tran;
@@ -34,8 +36,8 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
         address = intentData.getAddress();
         socket = intentData.getSocket();
 
-        btn_feed_frag_now = (Button) findViewById(R.id.btn_feed_frag_now);
-        btn_feed_frag_reserve = (Button) findViewById(R.id.btn_feed_frag_reserve);
+        btn_feed_frag_now =  findViewById(R.id.btn_feed_frag_now);
+        btn_feed_frag_reserve = findViewById(R.id.btn_feed_frag_reserve);
         btn_feed_frag_now.setOnClickListener(this);
         btn_feed_frag_reserve.setOnClickListener(this);
 
@@ -47,7 +49,6 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
 
         setFrag(0);
 
-//        feedSettingDone = (Button) findViewById(R.id.feedSettingDone);
     }
 
     @Override
@@ -100,9 +101,6 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
     public void buttonClick(View v) {
         //버튼의 아이디로 버튼 구분
         switch (v.getId()) {
-//            case R.id.feedSettingDone:
-//                socket.emit("reqData", "StartServo");
-//                break;
             case R.id.btn_feedtimer_8h:
                 feedReserveFragment.selectTimer(R.id.btn_feedtimer_8h);
                 timerFeed = 8 * 60 * 60;
@@ -145,7 +143,7 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
         feedUserSettingTimerDialog.show();
     }
 
-    /* 먹이값 저장취소 */
+    /* 먹이값 저장 */
     public void savefeedButton(View v) {
         socket.emit("insertFeed", timerFeed, circleFeed);
         Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
@@ -154,6 +152,35 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
         startActivity(intent);
     }
 
+    /* 먹이값 초기화 */
+    public void resetfeedButton(View view) {
+        show();
+    }
+    void show() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("먹이급여 초기화");
+        builder.setMessage("초기화하면 먹이급여예약이 초기화됩니다. 진행하시겠습니까?");
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        timerFeed = -1;
+                        circleFeed = -1;
+                        Toast.makeText(getApplicationContext(), "먹이급여예약을 초기화하였습니다.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), StreamingActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
+        builder.show();
+    }
+
+    /* 먹이값 취소 */
     public void cancelfeedButton(View v) {
         finish();
     }

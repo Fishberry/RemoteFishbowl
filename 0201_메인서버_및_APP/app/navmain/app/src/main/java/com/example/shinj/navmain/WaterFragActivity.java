@@ -1,7 +1,9 @@
 package com.example.shinj.navmain;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -150,6 +152,7 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    /* 환수예약 저장 */
     public void saveWaterButton(View v) {
 
         String yearWater, monthWater, dayWater, hourWater, minunteWater;
@@ -166,6 +169,34 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         Intent intent = new Intent(this, StreamingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    /* 환수예약 초기화 */
+    public void resetWaterButton(View view) {
+        show();
+    }
+    void show() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("환수예약 초기화");
+        builder.setMessage("초기화하면 환수예약이 초기화됩니다. 진행하시겠습니까?");
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String timerWater = "\"" + -1 + "\"";
+                        socket.emit("insertWater", timerWater);
+                        Toast.makeText(getApplicationContext(), "환수예약을 초기화하였습니다.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), StreamingActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
+        builder.show();
     }
 
     public void cancelWaterButton(View v) {

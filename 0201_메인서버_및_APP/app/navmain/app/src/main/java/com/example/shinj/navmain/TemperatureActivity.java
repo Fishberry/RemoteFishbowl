@@ -1,22 +1,17 @@
 package com.example.shinj.navmain;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
-import io.socket.client.IO;
 import io.socket.client.Socket;
 
 public class TemperatureActivity extends BaseActivity {
 
     private Socket socket;
-    Spinner minTemperSpinner, maxTemperSpinner, minPHSpinner, maxPHSpinner;
     int minTemper, maxTemper;
     double minPH, maxPH;
     IntentData intentData = IntentData.getInstance();
@@ -27,77 +22,6 @@ public class TemperatureActivity extends BaseActivity {
 
         socket = intentData.getSocket();
 
-        final ArrayList<String> temperList = new ArrayList<>();
-        final ArrayList<String> phList = new ArrayList<>();
-
-        for(int i = 0; i <= 50; i++)
-            temperList.add(String.valueOf(i));
-
-        for(int i = 0; i <= 13; i++) {
-            for(int j = 0; j <= 9; j++)
-                phList.add(String.valueOf(i + "." + j));
-        }
-
-        minTemperSpinner = (Spinner) findViewById(R.id.tempRange1);
-        maxTemperSpinner = (Spinner) findViewById(R.id.tempRange2);
-        minPHSpinner = (Spinner) findViewById(R.id.pHRange1);
-        maxPHSpinner = (Spinner) findViewById(R.id.pHRange2);
-
-        ArrayAdapter temperAdapter = new ArrayAdapter(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, temperList);
-        ArrayAdapter phAdapter = new ArrayAdapter(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, phList);
-
-        minTemperSpinner.setAdapter(temperAdapter);
-        maxTemperSpinner.setAdapter(temperAdapter);
-        minPHSpinner.setAdapter(phAdapter);
-        maxPHSpinner.setAdapter(phAdapter);
-
-        minTemperSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                minTemper = Integer.parseInt(temperList.get(i));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        maxTemperSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                maxTemper = Integer.parseInt(temperList.get(i));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        minPHSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                minPH = Double.parseDouble(phList.get(i));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        maxPHSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                maxPH = Double.parseDouble(phList.get(i));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
     }
 
@@ -106,7 +30,7 @@ public class TemperatureActivity extends BaseActivity {
         return R.layout.activity_temperature;
     }
 
-    /* 온도 저장/취소 */
+    /* 온도, pH 설정값 저장 */
     public void saveTemperPHButton(View v) {
         socket.emit("insertTemper", minTemper, maxTemper);
         socket.emit("insertPH", minPH, maxPH);
@@ -115,6 +39,38 @@ public class TemperatureActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    /* 온도, pH 설정값 초기화*/
+
+    public void resetTemperPHButton(View view) {
+        show();
+    }
+    void show() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("경고범위 초기화");
+        builder.setMessage("초기화하면 경고범위가 초기화됩니다. 진행하시겠습니까?");
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        minTemper = -1;
+                        maxTemper = -1;
+                        socket.emit("insertTemper", minTemper, maxTemper);
+                        socket.emit("insertPH", minPH, maxPH);
+                        Toast.makeText(getApplicationContext(), "경고범위를 초기화하였습니다.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), StreamingActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
+        builder.show();
+    }
+
+    /* 온도, pH 설정값 취소 */
     public void cancelTemperPHButton(View v) {
         finish();
     }

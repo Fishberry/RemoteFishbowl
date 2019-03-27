@@ -4,210 +4,309 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/colorLightGray">
+
+    <ImageView
+        android:id="@+id/img_feed_clock"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/clock"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/timerTitle"
-        android:text="자동 먹이급여 타이머"
-        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="먹이지급시간"
+        android:textColor="@color/colorBlack"
+        android:textSize="15sp"
         android:textStyle="bold"
-        android:textColor="@color/colorBlack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="50dp"/>
-    <TextView
-        android:id="@+id/timerText"
-        android:text="타이머 돌아간다"
-        android:textSize="25sp"
-        android:textColor="@color/colorBlack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timerTitle"
-        android:layout_marginTop="10dp"/>
-    <Button
-        android:id="@+id/btn_feedtimer_8h"
-        android:text="8H"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_feedtimer_12h"
-        app:layout_constraintTop_toBottomOf="@id/timerText"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        android:onClick="buttonClick"/>
-    <Button
-        android:id="@+id/btn_feedtimer_12h"
-        android:text="12H"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintStart_toEndOf="@id/btn_feedtimer_8h"
-        app:layout_constraintEnd_toStartOf="@id/btn_feedtimer_24h"
-        app:layout_constraintTop_toTopOf="@id/btn_feedtimer_8h"
-        app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_8h"
-        android:onClick="buttonClick"/>
-    <Button
-        android:id="@+id/btn_feedtimer_24h"
-        android:text="24H"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintStart_toEndOf="@id/btn_feedtimer_12h"
-        app:layout_constraintEnd_toStartOf="@id/btn_feedtimer_userSetting"
-        app:layout_constraintTop_toTopOf="@id/btn_feedtimer_8h"
-        app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_8h"
-        android:onClick="buttonClick"/>
+        app:layout_constraintStart_toEndOf="@id/img_feed_clock"
+        app:layout_constraintTop_toTopOf="@id/img_feed_clock"
+        app:layout_constraintBottom_toBottomOf="@id/img_feed_clock" />
 
-    <Button
-        android:id="@+id/btn_feedtimer_userSetting"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/feed_layout_1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="userSettingFeedTimer"
-        android:text="사용자 설정"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_8h"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/round_layout_shape"
+        android:elevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_feedtimer_24h"
-        app:layout_constraintTop_toTopOf="@id/btn_feedtimer_8h" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timerTitle">
+
+        <TextView
+            android:id="@+id/btn_feedtimer_8h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="buttonClick"
+            android:text="8시간"
+            android:background="@drawable/custom_ripple_effect"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_feedtimer_12h"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/feedTimer_8h_line"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/colorGray"
+            app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_8h"
+            app:layout_constraintEnd_toEndOf="@id/btn_feedtimer_12h"
+            app:layout_constraintStart_toStartOf="@id/btn_feedtimer_8h"
+            app:layout_constraintTop_toTopOf="@id/btn_feedtimer_8h" />
+
+        <TextView
+            android:id="@+id/btn_feedtimer_12h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="buttonClick"
+            android:text="12시간"
+            android:background="@drawable/custom_ripple_effect"
+            app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_8h"
+            app:layout_constraintEnd_toStartOf="@id/btn_feedtimer_24h"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/btn_feedtimer_8h"
+            app:layout_constraintTop_toTopOf="@id/btn_feedtimer_8h" />
+
+        <View
+            android:id="@+id/feedTimer_12h_line"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/colorGray"
+            app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_12h"
+            app:layout_constraintEnd_toStartOf="@id/btn_feedtimer_24h"
+            app:layout_constraintStart_toEndOf="@id/btn_feedtimer_12h"
+            app:layout_constraintTop_toTopOf="@id/btn_feedtimer_12h" />
+
+        <TextView
+            android:id="@+id/btn_feedtimer_24h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="buttonClick"
+            android:text="24시간"
+            android:background="@drawable/custom_ripple_effect"
+            app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_12h"
+            app:layout_constraintEnd_toStartOf="@id/btn_feedtimer_userSetting"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/btn_feedtimer_12h"
+            app:layout_constraintTop_toTopOf="@id/btn_feedtimer_12h" />
+
+        <View
+            android:id="@+id/feedTimer_24h_line"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/colorGray"
+            app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_24h"
+            app:layout_constraintEnd_toStartOf="@id/btn_feedtimer_userSetting"
+            app:layout_constraintStart_toEndOf="@id/btn_feedtimer_24h"
+            app:layout_constraintTop_toTopOf="@id/btn_feedtimer_24h" />
+
+        <TextView
+            android:id="@+id/btn_feedtimer_userSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="userSettingFeedTimer"
+            android:text="사용자 설정"
+            android:background="@drawable/custom_ripple_effect"
+            app:layout_constraintBottom_toBottomOf="@id/btn_feedtimer_8h"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/btn_feedtimer_24h"
+            app:layout_constraintTop_toTopOf="@id/btn_feedtimer_8h" />
+    </android.support.constraint.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/img_feed_rotation"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/rotation"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/feed_layout_1" />
+
     <TextView
         android:id="@+id/feedTitle"
-        android:text="먹이 급여량 설정"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="먹이 급여량"
         android:textColor="@color/colorBlack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_feedtimer_8h"
-        android:layout_marginTop="50dp"/>
-    <Button
-        android:id="@+id/feed1"
-        android:text="1회전"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/feed2"
-        app:layout_constraintTop_toBottomOf="@id/feedTitle"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        android:onClick="buttonClick"/>
-    <Button
-        android:id="@+id/feed2"
-        android:text="2회전"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintStart_toEndOf="@id/feed1"
-        app:layout_constraintEnd_toStartOf="@id/feed3"
-        app:layout_constraintTop_toTopOf="@id/feed1"
-        app:layout_constraintBottom_toBottomOf="@id/feed1"
-        android:onClick="buttonClick"/>
-    <Button
-        android:id="@+id/feed3"
-        android:text="3회전"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        app:layout_constraintStart_toEndOf="@id/feed2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/feed1"
-        app:layout_constraintBottom_toBottomOf="@id/feed1"
-        android:onClick="buttonClick"/>
-    <!--<Button-->
-        <!--android:id="@+id/feedSettingDone"-->
-        <!--android:text="수동 먹이급여 설정"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@drawable/buttonshape"-->
-        <!--android:shadowColor="#A8A8A8"-->
-        <!--android:shadowDx="0"-->
-        <!--android:shadowDy="0"-->
-        <!--android:shadowRadius="5"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--android:layout_marginBottom="150dp"-->
-        <!--android:onClick="buttonClick"/>-->
-    <Button
-        android:id="@+id/feedSaveButton"
-        android:text="저장"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/feedCancelButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="75dp"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        android:onClick="savefeedButton"/>
-    <Button
-        android:id="@+id/feedCancelButton"
-        android:text="취소"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        app:layout_constraintStart_toEndOf="@id/feedSaveButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/feedSaveButton"
-        app:layout_constraintBottom_toBottomOf="@id/feedSaveButton"
-        android:onClick="cancelfeedButton"/>
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/img_feed_rotation"
+        app:layout_constraintTop_toTopOf="@id/img_feed_rotation"
+        app:layout_constraintBottom_toBottomOf="@id/img_feed_rotation" />
 
-    <TextView
-        android:text="@string/version"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/feed_layout_2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/round_layout_shape"
+        android:elevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="15dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feedTitle">
+
+        <TextView
+            android:id="@+id/feed1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="buttonClick"
+            android:text="1회전"
+            android:background="@drawable/custom_ripple_effect"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/feed2"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/feed1_line"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/colorGray"
+            app:layout_constraintBottom_toBottomOf="@id/feed1"
+            app:layout_constraintEnd_toStartOf="@id/feed2"
+            app:layout_constraintStart_toEndOf="@id/feed1"
+            app:layout_constraintTop_toTopOf="@id/feed1" />
+
+        <TextView
+            android:id="@+id/feed2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="buttonClick"
+            android:text="2회전"
+            android:background="@drawable/custom_ripple_effect"
+            app:layout_constraintBottom_toBottomOf="@id/feed1"
+            app:layout_constraintEnd_toStartOf="@id/feed3"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/feed1"
+            app:layout_constraintTop_toTopOf="@id/feed1" />
+
+        <View
+            android:id="@+id/feed2_line"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/colorGray"
+            app:layout_constraintBottom_toBottomOf="@id/feed2"
+            app:layout_constraintEnd_toStartOf="@id/feed3"
+            app:layout_constraintStart_toEndOf="@id/feed2"
+            app:layout_constraintTop_toTopOf="@id/feed2" />
+
+        <TextView
+            android:id="@+id/feed3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="buttonClick"
+            android:text="3회전"
+            android:background="@drawable/custom_ripple_effect"
+            app:layout_constraintBottom_toBottomOf="@id/feed1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/feed2"
+            app:layout_constraintTop_toTopOf="@id/feed1" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/feed_bottom_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:id="@+id/feedSaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:onClick="savefeedButton"
+            android:text="저장"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/feedResetButton"
+            app:layout_constraintHorizontal_chainStyle="spread" />
+
+        <View
+            android:id="@+id/feedSaveButton_line"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/feedSaveButton"
+            app:layout_constraintEnd_toStartOf="@id/feedResetButton"
+            app:layout_constraintStart_toEndOf="@id/feedSaveButton"
+            app:layout_constraintTop_toTopOf="@id/feedSaveButton" />
+
+        <TextView
+            android:id="@+id/feedResetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:onClick="resetfeedButton"
+            android:text="초기화"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/feedSaveButton"
+            app:layout_constraintEnd_toStartOf="@id/feedCancelButton"
+            app:layout_constraintTop_toTopOf="@id/feedSaveButton"
+            app:layout_constraintBottom_toBottomOf="@id/feedSaveButton" />
+
+        <View
+            android:id="@+id/feedResetButton_line"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/feedSaveButton"
+            app:layout_constraintEnd_toStartOf="@id/feedCancelButton"
+            app:layout_constraintStart_toEndOf="@id/feedResetButton"
+            app:layout_constraintTop_toTopOf="@id/feedSaveButton" />
+
+        <TextView
+            android:id="@+id/feedCancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:onClick="cancelfeedButton"
+            android:text="취소"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/feedResetButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/feedSaveButton"
+            app:layout_constraintBottom_toBottomOf="@id/feedSaveButton" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

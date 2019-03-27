@@ -17,17 +17,6 @@
             android:layout_height="wrap_content"
             layout="@layout/toolbar" />
 
-        <!-- streaming 관련은 여기 -->
-        <!--<ScrollView-->
-        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@color/colorBackground">-->
-
-        <!---->
-
-        <!--</ScrollView>-->
-
         <android.support.constraint.ConstraintLayout
             android:id="@+id/mainLayout"
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,20 +26,28 @@
             android:layout_height="match_parent"
             android:background="@color/colorLightGray">
 
+            <ImageView
+                android:id="@+id/img_streaming_live"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/live"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/StreamingTitle"
-                android:text="FishBerry Streaming"
+                android:text="스트리밍"
                 android:textSize="15sp"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp" />
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toEndOf="@id/img_streaming_live"
+                app:layout_constraintTop_toTopOf="@id/img_streaming_live"
+                app:layout_constraintBottom_toBottomOf="@id/img_streaming_live"/>
 
             <WebView
                 android:elevation="3dp"
@@ -62,7 +59,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/StreamingTitle"
                 app:layout_constraintBottom_toTopOf="@id/webViewLine"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
 
             </WebView>
 
@@ -75,20 +73,28 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="180dp"/>
 
+            <ImageView
+                android:id="@+id/img_streaming_status"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/smile"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/webViewLine" />
+
             <TextView
                 android:id="@+id/fishbowl_title"
-                android:text="어항 상태"
+                android:text="어항상태"
                 android:textSize="15sp"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/webViewLine"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="3dp" />
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toEndOf="@id/img_streaming_status"
+                app:layout_constraintTop_toTopOf="@id/img_streaming_status"
+                app:layout_constraintBottom_toBottomOf="@id/img_streaming_status"/>
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/middleLayout"
@@ -99,11 +105,10 @@
                 android:layout_height="0dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fishbowl_title"
-
+                app:layout_constraintTop_toBottomOf="@id/img_streaming_status"
                 android:background="@drawable/round_layout_shape"
                 android:elevation="3dp">
 
@@ -186,20 +191,29 @@
 
             </android.support.constraint.ConstraintLayout>
 
+            <ImageView
+                android:id="@+id/img_streaming_reserve"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/alarm"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/middleLayout" />
+
             <TextView
                 android:id="@+id/reseve_title"
-                android:text="예약 관리"
+                android:text="예약관리"
                 android:textSize="15sp"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/middleLayout"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="3dp" />
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toEndOf="@id/img_streaming_reserve"
+                app:layout_constraintTop_toTopOf="@id/img_streaming_reserve"
+                app:layout_constraintBottom_toBottomOf="@id/img_streaming_reserve"/>
+
             <android.support.constraint.ConstraintLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -209,13 +223,14 @@
                 android:layout_height="0dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/round_layout_shape"
                 android:elevation="3dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/reseve_title">
+                app:layout_constraintTop_toBottomOf="@id/img_streaming_reserve">
 
                 <TextView
                     android:id="@+id/feedTimer"
