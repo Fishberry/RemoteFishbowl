@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE NotificationInformation (ip TEXT, loop INT, watchElement INT, isChecking INT)");
+        sqLiteDatabase.execSQL("CREATE TABLE NotificationInformation (ip TEXT, isChecking INT, watchElement INT, temperLoopTime INT, pHLoopTime INT);");
     }
 
     @Override
@@ -24,14 +24,21 @@ public class DBHelper extends SQLiteOpenHelper {
     public void insert(String ip, int isChecking) {
         SQLiteDatabase db = getWritableDatabase();
 
-        db.execSQL("INSERT INTO NotificationInformation(ip, isChecking) VALUES ('" + ip + "', " + isChecking + ")");
+        db.execSQL("INSERT INTO NotificationInformation VALUES ('" + ip + "', " + isChecking + ", 0, 0, 0);");
         db.close();
     }
 
-    public void update(String ip) {
+    public void update(String ip, int isChecking) {
         SQLiteDatabase db = getWritableDatabase();
 
-        db.execSQL("UPDATE NotificationInformation SET ip='" + ip + "'");
+        db.execSQL("UPDATE NotificationInformation SET ip='" + ip + "', isChecking=" + isChecking + ";");
+        db.close();
+    }
+
+    public void updateNotification(int watchElement, int temperLoopTime, int pHLoopTime) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.execSQL("UPDATE NotificationInformation SET watchElement=" + watchElement + ", temperLoopTime=" + temperLoopTime + ", pHLoopTime=" + pHLoopTime + ";");
         db.close();
     }
 
@@ -52,9 +59,10 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             cursor.moveToNext();
             dbElement.setIp(cursor.getString(0));
-            dbElement.setLoop(cursor.getInt(1));
+            dbElement.setIsRememberIP(cursor.getInt(1));
             dbElement.setWatchElement(cursor.getInt(2));
-            dbElement.setIsRememberIP(cursor.getInt(3));
+            dbElement.setTemperLoopTime(cursor.getInt(3));
+            dbElement.setpHLoopTime(cursor.getInt(4));
         } catch (Exception e) {}
 
         if (dbElement.getIp().equals("")) {

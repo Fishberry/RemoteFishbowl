@@ -14,13 +14,24 @@
         android:theme="@style/AppTheme">
         <receiver android:name=".BootReceiver"
             android:enabled="true"
-            android:exported="false">
+            android:exported="false"
+            android:label="BOOTReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+        <receiver android:name=".RestartService"
+            android:enabled="true"
+            android:exported="false"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="fishberry.example.com.NotificationService"/>
+            </intent-filter>
+        </receiver>
         <service android:name=".NotificationService"
-            android:enabled="true"/>
+            android:enabled="true"
+            android:stopWithTask="false"/>
+        <activity android:name=".NotificationSetting.NotificationSettingActivity"/>
         <activity android:name=".TemperatureActivity"/>
         <activity android:name=".WaterFragActivity" />
         <activity android:name=".BaseActivity" />
