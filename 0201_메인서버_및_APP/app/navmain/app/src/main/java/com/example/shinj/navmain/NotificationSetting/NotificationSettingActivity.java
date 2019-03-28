@@ -31,7 +31,7 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
     EditText setLoopTemperTimeEdit, setLoopPHTimeEdit;
     TextView setNotificationText, setTemperText, setPHText, setLoopTemperTimeText, secondTemperText, setLoopPHTimeText, secondPHText;
     View setNotificationLine, setTemperLine, setPHLine, setLoopTemperTimeLine, setLoopPHTimeLine;
-    Button saveButton, cancelButton;
+    TextView saveButton, cancelButton, initButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +55,37 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
         setPHLine = (View) findViewById(R.id.set_pH_line);
         setLoopTemperTimeLine = (View) findViewById(R.id.set_loop_temper_time_line);
         setLoopPHTimeLine = (View) findViewById(R.id.set_loop_pH_time_line);
-        saveButton = (Button) findViewById(R.id.notification_setting_save_button);
-        cancelButton = (Button) findViewById(R.id.notification_setting_cancel_button);
+        saveButton = (TextView) findViewById(R.id.notification_setting_save_button);
+        cancelButton = (TextView) findViewById(R.id.notification_setting_cancel_button);
+        initButton = (TextView) findViewById(R.id.notification_setting_init_button);
 
         notificationSettingPresenterImpl.getDBElement(dbHelper);
+
+        initButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTemperText.setVisibility(View.GONE);
+                setTemperSwitch.setVisibility(View.GONE);
+                setTemperLine.setVisibility(View.GONE);
+                setPHText.setVisibility(View.GONE);
+                setPHSwitch.setVisibility(View.GONE);
+                setPHLine.setVisibility(View.GONE);
+                setLoopTemperTimeText.setVisibility(View.GONE);
+                setLoopTemperTimeEdit.setVisibility(View.GONE);
+                secondTemperText.setVisibility(View.GONE);
+                setLoopTemperTimeLine.setVisibility(View.GONE);
+                setLoopPHTimeText.setVisibility(View.GONE);
+                setLoopPHTimeEdit.setVisibility(View.GONE);
+                secondPHText.setVisibility(View.GONE);
+                setLoopPHTimeLine.setVisibility(View.GONE);
+
+                setNotificationSwitch.setChecked(false);
+                setTemperSwitch.setChecked(false);
+                setPHSwitch.setChecked(false);
+                setLoopTemperTimeEdit.setText("0");
+                setLoopPHTimeEdit.setText("0");
+            }
+        });
 
         //알림 true 시, view
         setNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

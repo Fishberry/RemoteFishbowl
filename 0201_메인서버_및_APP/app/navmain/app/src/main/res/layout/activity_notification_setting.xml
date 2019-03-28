@@ -181,24 +181,79 @@
         android:layout_marginTop="30dp"
         android:visibility="gone"/>
 
-    <Button
-        android:id="@+id/notification_setting_save_button"
-        android:text="저장"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/feed_bottom_tab"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/notification_setting_cancel_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        android:layout_marginBottom="50dp"/>
-    <Button
-        android:id="@+id/notification_setting_cancel_button"
-        android:text="취소"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/notification_setting_save_button"
+        android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/notification_setting_save_button"
-        app:layout_constraintBottom_toBottomOf="@id/notification_setting_save_button"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:id="@+id/notification_setting_save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:text="저장"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintStart_toStartOf="@id/feed_bottom_tab"
+            app:layout_constraintTop_toTopOf="@id/feed_bottom_tab"
+            app:layout_constraintBottom_toBottomOf="@id/feed_bottom_tab"
+            app:layout_constraintEnd_toStartOf="@id/notification_setting_init_button"
+            app:layout_constraintHorizontal_chainStyle="spread" />
+
+        <View
+            android:id="@+id/feedSaveButton_line"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/notification_setting_save_button"
+            app:layout_constraintEnd_toStartOf="@id/notification_setting_init_button"
+            app:layout_constraintStart_toEndOf="@id/notification_setting_save_button"
+            app:layout_constraintTop_toTopOf="@id/notification_setting_save_button" />
+
+        <TextView
+            android:id="@+id/notification_setting_init_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:text="초기화"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/notification_setting_save_button"
+            app:layout_constraintEnd_toStartOf="@id/notification_setting_cancel_button"
+            app:layout_constraintTop_toTopOf="@id/notification_setting_save_button"
+            app:layout_constraintBottom_toBottomOf="@id/notification_setting_save_button" />
+
+        <View
+            android:id="@+id/feedResetButton_line"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/notification_setting_save_button"
+            app:layout_constraintEnd_toStartOf="@id/notification_setting_cancel_button"
+            app:layout_constraintStart_toEndOf="@id/notification_setting_init_button"
+            app:layout_constraintTop_toTopOf="@id/notification_setting_save_button" />
+
+        <TextView
+            android:id="@+id/notification_setting_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:text="취소"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/notification_setting_init_button"
+            app:layout_constraintEnd_toEndOf="@id/feed_bottom_tab"
+            app:layout_constraintTop_toTopOf="@id/notification_setting_save_button"
+            app:layout_constraintBottom_toBottomOf="@id/notification_setting_save_button" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

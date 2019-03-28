@@ -61,35 +61,30 @@ abstract public class BaseActivity extends AppCompatActivity {
                     case R.id.navigation_item_streaming:
                         intent = new Intent(getApplicationContext(), StreamingActivity.class);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
                     // 네비게이션바 - 먹이급여
                     case R.id.navigation_item_feed:
                         intent = new Intent(getApplicationContext(), FeedFragActivity.class);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
                     // 네비게이션바 - 환수
                     case R.id.navigation_item_water:
                         intent = new Intent(getApplicationContext(), WaterFragActivity.class);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
                     // 네비게이션바 - 온도/pH
                     case R.id.navigation_item_temperPh:
                         intent = new Intent(getApplicationContext(), TemperatureActivity.class);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
                     //네비게이션바 - 알림설정
                     case R.id.nav_sub_menu_item01:
                         intent = new Intent(getApplicationContext(), NotificationSettingActivity.class);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 
                     //네비게이션바 - 로그아웃

@@ -91,6 +91,7 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
                                 waterNowFragment.progressBarWater.setProgress(count);
                                 if (count < 100 && waterFlag == true) {   // 환수 진행중인 상태
                                     waterNowFragment.progressRateWater.setText(count + " %");
+                                    waterNowFragment.btnStartWaterNow.setVisibility(View.INVISIBLE);
                                     waterNowFragment.btnPauseWaterNow.setVisibility(View.VISIBLE);
                                 } else if (count >= 100) {  // 환수 끝났을 때
                                     waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
@@ -113,6 +114,7 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         socket.emit("reqWaterNowPause", "WaterPause");
         Toast.makeText(getApplicationContext(), "환수 일시 정지", Toast.LENGTH_SHORT).show();
         waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
+        waterNowFragment.btnStartWaterNow.setVisibility(View.VISIBLE);
     }
 
 
