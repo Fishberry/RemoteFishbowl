@@ -12,6 +12,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.shinj.navmain.NotificationSetting.NotificationSettingActivity;
+
 import io.socket.client.Socket;
 
 abstract public class BaseActivity extends AppCompatActivity {
@@ -57,33 +60,40 @@ abstract public class BaseActivity extends AppCompatActivity {
                     //  네비게이션바 - 내 어항
                     case R.id.navigation_item_streaming:
                         intent = new Intent(getApplicationContext(), StreamingActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
                     // 네비게이션바 - 먹이급여
                     case R.id.navigation_item_feed:
                         intent = new Intent(getApplicationContext(), FeedFragActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
                     // 네비게이션바 - 환수
                     case R.id.navigation_item_water:
                         intent = new Intent(getApplicationContext(), WaterFragActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
-                     // 네비게이션바 - 온도/pH
+                    // 네비게이션바 - 온도/pH
                     case R.id.navigation_item_temperPh:
                         intent = new Intent(getApplicationContext(), TemperatureActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
-                        //네비게이션바 - 로그아웃
+                    //네비게이션바 - 알림설정
                     case R.id.nav_sub_menu_item01:
+                        intent = new Intent(getApplicationContext(), NotificationSettingActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                        break;
+
+                    //네비게이션바 - 로그아웃
+                    case R.id.nav_sub_menu_item02:
                         final DBHelper dbHelper = new DBHelper(getApplicationContext());
                         dbHelper.delete();
                         intent = new Intent(getApplicationContext(), LoginActivity.class);

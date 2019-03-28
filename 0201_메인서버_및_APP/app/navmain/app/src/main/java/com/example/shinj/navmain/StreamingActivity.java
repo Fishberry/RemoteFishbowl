@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -97,17 +98,17 @@ public class StreamingActivity extends BaseActivity {
                         socket.emit("reqTimerWater", "DB의 TimerWater값 요청");
                         socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
                         }).on("resTimerWater", (Object... objects) -> {
-                        try {
-                            waterTimeRemain = objects[0].toString();
-                            waterTimer.setText("환수시간: " + waterTimeRemain.split("/")[0] + "년"
-                            + waterTimeRemain.split("/")[1] + "월"
-                            + waterTimeRemain.split("/")[2] + "일"
-                            + waterTimeRemain.split("/")[3] + "시"
-                            + waterTimeRemain.split("/")[4] + "분");
-                        } catch (Exception e) {
-                        }
-                    });
-                        Thread.sleep(1000);
+                            try {
+                                waterTimeRemain = objects[0].toString();
+                                waterTimer.setText("환수시간: " + waterTimeRemain.split("/")[0] + "년"
+                                        + waterTimeRemain.split("/")[1] + "월"
+                                        + waterTimeRemain.split("/")[2] + "일"
+                                        + waterTimeRemain.split("/")[3] + "시"
+                                        + waterTimeRemain.split("/")[4] + "분");
+                            } catch (Exception e) {
+                            }
+                        });
+                        Thread.sleep(5000);
                     } catch (Exception e) {
                         Toast.makeText(StreamingActivity.this, "환수예약시간 오류", Toast.LENGTH_SHORT).show();
                         setWhetherSensor(false);
@@ -151,7 +152,7 @@ public class StreamingActivity extends BaseActivity {
                                 }
                             });
                         });
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
                     } catch (Exception e) {
                         Toast.makeText(StreamingActivity.this, "온도센서 혹은 수질센서의 연결에 이상이 생겼습니다.", Toast.LENGTH_SHORT).show();
                         setWhetherSensor(false);

@@ -2,9 +2,10 @@ package com.example.shinj.navmain;
 
 public class DBElement {
     String ip = "";
-    int loop = 0;
-    int watchElement = 0;
     int isRememberIP = 0;
+    int watchElement = 0;
+    int temperLoopTime = 0;
+    int pHLoopTime = 0;
 
     public String getIp() {
         return ip;
@@ -12,14 +13,6 @@ public class DBElement {
 
     public void setIp(String ip) {
         this.ip = ip;
-    }
-
-    public int getLoop() {
-        return loop;
-    }
-
-    public void setLoop(int loop) {
-        this.loop = loop;
     }
 
     public int getWatchElement() {
@@ -36,5 +29,21 @@ public class DBElement {
 
     public void setIsRememberIP(int isRememberIP) {
         this.isRememberIP = isRememberIP;
+    }
+
+    public int getTemperLoopTime() {
+        return temperLoopTime;
+    }
+
+    public void setTemperLoopTime(int temperLoopTime) {
+        this.temperLoopTime = temperLoopTime;
+    }
+
+    public int getpHLoopTime() {
+        return pHLoopTime;
+    }
+
+    public void setpHLoopTime(int pHLoopTime) {
+        this.pHLoopTime = pHLoopTime;
     }
 }

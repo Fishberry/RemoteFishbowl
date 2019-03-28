@@ -2,6 +2,7 @@ package com.example.shinj.navmain;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
@@ -58,6 +59,16 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
                 socket.connect();
                 intentData.setAddress(dbElement.getIp());
                 intentData.setSocket(socket);
+                NotificationService notificationService = new NotificationService(this);
+                Intent notificationIntent = new Intent(this, notificationService.getClass());
+
+                //서비스 실행중인지 확인
+                if (!BootReceiver.isServiceRunning(this, notificationService.getClass())) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                        startForegroundService(notificationIntent);
+                    else
+                        startService(notificationIntent);
+                }
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } catch (URISyntaxException e) {
@@ -96,13 +107,19 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
                     if (dbElement.getIp().equals("NoValue"))
                         dbHelper.insert(ipEdit.getText().toString(), isChecking);
                     else
-                        dbHelper.update(ipEdit.getText().toString());
-
-                    Intent serviceIntent = new Intent(this, NotificationService.class);
-                    startService(serviceIntent);
+                        dbHelper.update(ipEdit.getText().toString(), isChecking);
 
                     intentData.setAddress(ipEdit.getText().toString());
                     intentData.setSocket(socket);
+                    NotificationService notificationService = new NotificationService(this);
+                    Intent notificationIntent = new Intent(this, notificationService.getClass());
+
+                    //서비스 실행중인지 확인
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                        startForegroundService(notificationIntent);
+                    else
+                        startService(notificationIntent);
+
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                 }
