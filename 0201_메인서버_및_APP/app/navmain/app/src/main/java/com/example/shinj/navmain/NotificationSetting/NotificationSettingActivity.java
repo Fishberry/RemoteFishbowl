@@ -1,17 +1,22 @@
 package com.example.shinj.navmain.NotificationSetting;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.shinj.navmain.BootReceiver;
 import com.example.shinj.navmain.DBElement;
 import com.example.shinj.navmain.DBHelper;
 import com.example.shinj.navmain.NotificationService;
@@ -26,6 +31,7 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
     EditText setLoopTemperTimeEdit, setLoopPHTimeEdit;
     TextView setNotificationText, setTemperText, setPHText, setLoopTemperTimeText, secondTemperText, setLoopPHTimeText, secondPHText;
     View setNotificationLine, setTemperLine, setPHLine, setLoopTemperTimeLine, setLoopPHTimeLine;
+    Button saveButton, cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +55,12 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
         setPHLine = (View) findViewById(R.id.set_pH_line);
         setLoopTemperTimeLine = (View) findViewById(R.id.set_loop_temper_time_line);
         setLoopPHTimeLine = (View) findViewById(R.id.set_loop_pH_time_line);
+        saveButton = (Button) findViewById(R.id.notification_setting_save_button);
+        cancelButton = (Button) findViewById(R.id.notification_setting_cancel_button);
 
         notificationSettingPresenterImpl.getDBElement(dbHelper);
 
+        //알림 true 시, view
         setNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -64,6 +73,10 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
                     setPHLine.setVisibility(View.VISIBLE);
 
                     setNotificationSwitch.setChecked(true);
+                    setTemperSwitch.setChecked(false);
+                    setPHSwitch.setChecked(false);
+                    setLoopTemperTimeEdit.setText("0");
+                    setLoopPHTimeEdit.setText("0");
                 }
                 else {
                     setTemperText.setVisibility(View.GONE);
@@ -82,10 +95,15 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
                     setLoopPHTimeLine.setVisibility(View.GONE);
 
                     setNotificationSwitch.setChecked(false);
+                    setTemperSwitch.setChecked(false);
+                    setPHSwitch.setChecked(false);
+                    setLoopTemperTimeEdit.setText("0");
+                    setLoopPHTimeEdit.setText("0");
                 }
             }
         });
 
+        //온도 알림 on 시, view
         setTemperSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -100,10 +118,13 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
                     setLoopTemperTimeEdit.setVisibility(View.GONE);
                     secondTemperText.setVisibility(View.GONE);
                     setLoopTemperTimeLine.setVisibility(View.GONE);
+
+                    setLoopTemperTimeEdit.setText("0");
                 }
             }
         });
 
+        //pH 알림 on 시, view
         setPHSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -118,66 +139,88 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
                     setLoopPHTimeEdit.setVisibility(View.GONE);
                     secondPHText.setVisibility(View.GONE);
                     setLoopPHTimeLine.setVisibility(View.GONE);
+
+                    setLoopTemperTimeEdit.setText("0");
                 }
+            }
+        });
+
+        //저장 버튼
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //알림 설정을 하지 않았을 경우
+                if (!setNotificationSwitch.isChecked()) {
+                    dbHelper.updateNotification(0, 0, 0);
+                    Toast.makeText(getApplicationContext(), "알림 설정 저장", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                //온도만 했을 경우
+                else if (setTemperSwitch.isChecked() && !(setPHSwitch.isChecked()) && !(Integer.parseInt(setLoopTemperTimeEdit.getText().toString()) == 0) && !(setLoopTemperTimeEdit.getText().equals(""))) {
+                    dbHelper.updateNotification(1, Integer.parseInt(setLoopTemperTimeEdit.getText().toString()) * 1000, 0);
+                    Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                        startForegroundService(intent);
+                    else
+                        startService(intent);
+
+                    Toast.makeText(getApplicationContext(), "알림 설정 저장", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                //수질만 했을 경우
+                else if (!setTemperSwitch.isChecked() && setPHSwitch.isChecked() && !(Integer.parseInt(setLoopTemperTimeEdit.getText().toString()) == 0) && !(setLoopPHTimeEdit.getText().equals(""))) {
+                    dbHelper.updateNotification(2, 0, Integer.parseInt(setLoopPHTimeEdit.getText().toString()) * 1000);
+                    Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+
+                    if (!BootReceiver.isServiceRunning(getApplicationContext(), intent.getClass())) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                            startForegroundService(intent);
+                        else
+                            startService(intent);
+                    }
+
+                    Toast.makeText(getApplicationContext(), "알림 설정 저장", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                //온도와 수질 둘 다 했을 경우
+                else if (setTemperSwitch.isChecked() && setPHSwitch.isChecked() && !(Integer.parseInt(setLoopTemperTimeEdit.getText().toString()) == 0) && !(setLoopTemperTimeEdit.getText().equals("")) && !(Integer.parseInt(setLoopTemperTimeEdit.getText().toString()) == 0) && !(setLoopPHTimeEdit.getText().equals(""))) {
+                    dbHelper.updateNotification(3, Integer.parseInt(setLoopTemperTimeEdit.getText().toString()) * 1000, Integer.parseInt(setLoopPHTimeEdit.getText().toString()) * 1000);
+                    Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+
+                    if (!BootReceiver.isServiceRunning(getApplicationContext(), intent.getClass())) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                            startForegroundService(intent);
+                        else
+                            startService(intent);
+                    }
+
+                    Toast.makeText(getApplicationContext(), "알림 설정 저장", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                //알림설정은 클릭했지만, 온도와 수질알림 둘 다 체크를 하지 않았을 경우
+                else if (setNotificationSwitch.isChecked() && !setTemperSwitch.isChecked() && !setPHSwitch.isChecked()) {
+                    Toast.makeText(getApplicationContext(), "알림 설정을 완벽하게 해 주십시오.", Toast.LENGTH_SHORT).show();
+                }
+                //온도 혹은 수질 알림을 체크했지만, 시간을 설정하지 않았을 때
+                else if ((setTemperSwitch.isChecked() && ((Integer.parseInt(setLoopTemperTimeEdit.getText().toString()) == 0) || (setLoopTemperTimeEdit.getText().equals("")))) || (setPHSwitch.isChecked() && ((Integer.parseInt(setLoopTemperTimeEdit.getText().toString()) == 0) || (setLoopPHTimeEdit.getText().equals(""))))) {
+                    Toast.makeText(getApplicationContext(), "알림 설정의 시간을 설정해주십시오.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //취소 버튼
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(this, NotificationService.class);
-        stopService(i);
-    }
 
-    public void saveNotificationSetting(View view) {
-        if (!setNotificationSwitch.isChecked()) {
-            dbHelper.updateNotification(0, 0, 0);
-            Toast.makeText(this, "알림 설정 저장", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        else if (setTemperSwitch.isChecked() && !setPHSwitch.isChecked()) {
-            dbHelper.updateNotification(1, Integer.parseInt(setLoopTemperTimeEdit.getText().toString()) * 1000, 0);
-            Intent intent = new Intent(this, NotificationService.class);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                startForegroundService(intent);
-            else
-                startService(intent);
-
-            Toast.makeText(this, "알림 설정 저장", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        else if (!setTemperSwitch.isChecked() && setPHSwitch.isChecked()) {
-            dbHelper.updateNotification(2, 0, Integer.parseInt(setLoopPHTimeEdit.getText().toString()) * 1000);
-            Intent intent = new Intent(this, NotificationService.class);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                startForegroundService(intent);
-            else
-                startService(intent);
-
-            Toast.makeText(this, "알림 설정 저장", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        else if (setTemperSwitch.isChecked() && setPHSwitch.isChecked()) {
-            dbHelper.updateNotification(3, Integer.parseInt(setLoopTemperTimeEdit.getText().toString()) * 1000, Integer.parseInt(setLoopPHTimeEdit.getText().toString()) * 1000);
-            Intent intent = new Intent(this, NotificationService.class);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                startForegroundService(intent);
-            else
-                startService(intent);
-
-            Toast.makeText(this, "알림 설정 저장", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        else if (setNotificationSwitch.isChecked() && !setTemperSwitch.isChecked() && !setPHSwitch.isChecked()) {
-            Toast.makeText(this, "알림 설정을 완벽하게 해 주십시오.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void cancelNotificationSetting(View view) {
-        finish();
     }
 
     @Override
@@ -204,7 +247,7 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
                     setLoopTemperTimeLine.setVisibility(View.VISIBLE);
                     break;
                 case 2:
-                    setTemperSwitch.setChecked(true);
+                    setPHSwitch.setChecked(true);
                     setTemperText.setVisibility(View.VISIBLE);
                     setTemperSwitch.setVisibility(View.VISIBLE);
                     setTemperLine.setVisibility(View.VISIBLE);

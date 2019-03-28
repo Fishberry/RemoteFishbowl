@@ -15,6 +15,7 @@ import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +52,6 @@ public class NotificationService extends Service {
 
     @Override
     public void onCreate() {
-        android.os.Debug.waitForDebugger();
         Log.d("서비스", "onCreate()");
         super.onCreate();
 
@@ -73,21 +73,28 @@ public class NotificationService extends Service {
         Log.d("서비스", "onDestroy()");
         super.onDestroy();
 
-        Intent broadcastIntent = new Intent("fishberry.example.com.NotificationService");
-        sendBroadcast(broadcastIntent);
-        stopTimerTask();
+        if (dbElement.watchElement > 0) {
+            Intent broadcastIntent = new Intent("fishberry.example.com.NotificationService");
+            sendBroadcast(broadcastIntent);
+            stopTimerTask();
+        }
         //Toast.makeText(this, "알림 서비스가 종료되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         Log.d("서비스", "onConfigurationChanged()");
-        android.os.Debug.waitForDebugger();
         super.onConfigurationChanged(newConfig);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        dbElement = dbHelper.getResult();
+        Log.d("감시값", String.valueOf(dbElement.watchElement));
+
+        if (dbElement.watchElement == 0)
+            onDestroy();
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -100,7 +107,7 @@ public class NotificationService extends Service {
             notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
             notificationManager.createNotificationChannel(notificationChannel);
 
-            Notification notification = new Notification.Builder(this)
+            Notification notification = new Notification.Builder(NotificationService.this)
                     .setContentTitle("")
                     .setContentText("")
                     .setChannelId("notification")
@@ -108,10 +115,8 @@ public class NotificationService extends Service {
 
             startForeground(1, notification);
         }
-        super.onStartCommand(intent, flags, startId);
         Log.d("서비스", "onStartCommand()");
 
-        dbElement = dbHelper.getResult();
         startTimer();
 
         TemperNotificationThread temperThread = new TemperNotificationThread(this);
@@ -125,7 +130,6 @@ public class NotificationService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        android.os.Debug.waitForDebugger();
         Log.d("서비스", "onBind()");
         return null;
     }
@@ -158,8 +162,8 @@ public class NotificationService extends Service {
                     }).on("serverMsg", (Object... objects) -> {
                         //Notification 하기
                         pHValue = Double.parseDouble(objects[1].toString());
-                        minPH = Integer.parseInt(objects[4].toString());
-                        maxPH = Integer.parseInt(objects[5].toString());
+                        minPH = Double.parseDouble(objects[4].toString());
+                        maxPH = Double.parseDouble(objects[5].toString());
                         Log.d("확인", "현재 수질 : " + pHValue);
                         Log.d("확인", "최저 수질" + minPH);
                         Log.d("확인", "최고 수질" + maxPH);
@@ -189,6 +193,9 @@ public class NotificationService extends Service {
                 synchronized (this){
                     dbElement = dbHelper.getResult();
                 }
+
+                if (dbElement.watchElement == 0)
+                    break;
             }
         }
     }
@@ -228,8 +235,10 @@ public class NotificationService extends Service {
                         Log.d("확인", "최저 온도 : " + minTemper);
                         Log.d("확인", "최고 온도 : " + maxTemper);
 
+                        // && (dbElement.watchElement == 1 || dbElement.watchElement == 3)
                         if((temperValue < minTemper || temperValue > maxTemper) && (dbElement.watchElement == 1 || dbElement.watchElement == 3)) {
                             //온도 Notification 알림
+                            Log.d("확인", "온도 알림 들어간드아!");
                             temperPendingIntent = PendingIntent.getActivity(NotificationService.this, 0, new Intent(getApplicationContext(), TemperatureActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
                             Notification.Builder builder = new Notification.Builder(NotificationService.this)
@@ -247,13 +256,15 @@ public class NotificationService extends Service {
                             }
                             notificationManager.notify(0, builder.build());
                         }
-                        dbElement = dbHelper.getResult();
                     });
                     MILLISECONDS.sleep(dbElement.getTemperLoopTime());
                 } catch (Exception e) { }
                 synchronized (this){
                     dbElement = dbHelper.getResult();
                 }
+
+                if (dbElement.watchElement == 0)
+                    break;
             }
         }
     }

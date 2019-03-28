@@ -48,7 +48,6 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
         ipEdit = (EditText) findViewById(R.id.ipEdit);
         pwEdit = (EditText) findViewById(R.id.pwEdit);
         checkBox = (CheckBox) findViewById(R.id.remember_login_checkbox);
-
         dbElement = dbHelper.getResult();
 
         startSplash();
@@ -59,15 +58,18 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
                 socket.connect();
                 intentData.setAddress(dbElement.getIp());
                 intentData.setSocket(socket);
-                NotificationService notificationService = new NotificationService(this);
-                Intent notificationIntent = new Intent(this, notificationService.getClass());
 
-                //서비스 실행중인지 확인
-                if (!BootReceiver.isServiceRunning(this, notificationService.getClass())) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                        startForegroundService(notificationIntent);
-                    else
-                        startService(notificationIntent);
+                if (dbElement.watchElement != 0) {
+                    NotificationService notificationService = new NotificationService(this);
+                    Intent notificationIntent = new Intent(this, notificationService.getClass());
+
+                    //서비스 실행중인지 확인
+                    if (!BootReceiver.isServiceRunning(this, notificationService.getClass())) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                            startForegroundService(notificationIntent);
+                        else
+                            startService(notificationIntent);
+                    }
                 }
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
@@ -111,14 +113,19 @@ public class LoginActivity extends AppCompatActivity implements Serializable {
 
                     intentData.setAddress(ipEdit.getText().toString());
                     intentData.setSocket(socket);
-                    NotificationService notificationService = new NotificationService(this);
-                    Intent notificationIntent = new Intent(this, notificationService.getClass());
 
-                    //서비스 실행중인지 확인
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                        startForegroundService(notificationIntent);
-                    else
-                        startService(notificationIntent);
+                    if (dbElement.watchElement != 0) {
+                        NotificationService notificationService = new NotificationService(this);
+                        Intent notificationIntent = new Intent(this, notificationService.getClass());
+
+                        //서비스 실행중인지 확인
+                        if (!BootReceiver.isServiceRunning(this, notificationService.getClass())) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                                startForegroundService(notificationIntent);
+                            else
+                                startService(notificationIntent);
+                        }
+                    }
 
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);

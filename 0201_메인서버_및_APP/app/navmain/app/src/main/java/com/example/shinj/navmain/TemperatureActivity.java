@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import io.socket.client.Socket;
@@ -14,15 +15,18 @@ public class TemperatureActivity extends BaseActivity {
     private Socket socket;
     int minTemper, maxTemper;
     double minPH, maxPH;
+    EditText minTemperEdit, maxTemperEdit, minPHEdit, maxPHEdit;
     IntentData intentData = IntentData.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         socket = intentData.getSocket();
 
-
+        minTemperEdit = (EditText) findViewById(R.id.edit_min_temp);
+        maxTemperEdit = (EditText) findViewById(R.id.edit_max_temp);
+        minPHEdit = (EditText) findViewById(R.id.edit_min_pH);
+        maxPHEdit = (EditText) findViewById(R.id.edit_max_pH);
     }
 
     @Override
@@ -32,11 +36,25 @@ public class TemperatureActivity extends BaseActivity {
 
     /* 온도, pH 설정값 저장 */
     public void saveTemperPHButton(View v) {
-        socket.emit("insertTemper", minTemper, maxTemper);
-        socket.emit("insertPH", minPH, maxPH);
-        Intent intent = new Intent(this, StreamingActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        try {
+            minTemper = Integer.parseInt(minTemperEdit.getText().toString());
+            maxTemper = Integer.parseInt(maxTemperEdit.getText().toString());
+            minPH = Double.parseDouble(minPHEdit.getText().toString());
+            maxPH = Double.parseDouble(maxPHEdit.getText().toString());
+
+            socket.emit("insertTemper", minTemper, maxTemper);
+            socket.emit("insertPH", minPH, maxPH);
+            Intent intent = new Intent(this, StreamingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        } catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
+
+            Toast.makeText(this, "정확한 값을 모두 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /* 온도, pH 설정값 초기화*/

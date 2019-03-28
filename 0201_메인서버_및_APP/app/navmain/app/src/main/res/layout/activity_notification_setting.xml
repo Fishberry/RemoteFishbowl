@@ -110,6 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="      "
+        android:text="0"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="@id/second_temper_text"
         app:layout_constraintEnd_toStartOf="@id/second_temper_text"
@@ -153,6 +154,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="      "
+        android:text="0"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="@id/second_pH_text"
         app:layout_constraintEnd_toStartOf="@id/second_pH_text"
@@ -188,8 +190,7 @@
         app:layout_constraintEnd_toStartOf="@id/notification_setting_cancel_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread"
-        android:layout_marginBottom="50dp"
-        android:onClick="saveNotificationSetting"/>
+        android:layout_marginBottom="50dp"/>
     <Button
         android:id="@+id/notification_setting_cancel_button"
         android:text="취소"
@@ -198,7 +199,6 @@
         app:layout_constraintStart_toEndOf="@id/notification_setting_save_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/notification_setting_save_button"
-        app:layout_constraintBottom_toBottomOf="@id/notification_setting_save_button"
-        android:onClick="cancelNotificationSetting"/>
+        app:layout_constraintBottom_toBottomOf="@id/notification_setting_save_button"/>
 
 </android.support.constraint.ConstraintLayout>

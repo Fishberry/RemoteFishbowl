@@ -11,6 +11,7 @@ import android.util.Log;
 import java.util.logging.LogRecord;
 
 public class BootReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -19,13 +20,17 @@ public class BootReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         //폰 재시작 시, 서비스 등록
-        if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
+        if (action.equals("android.intent.action.BOOT_COMPLETED")) {
             Intent serviceLauncher = new Intent(context, NotificationService.class);
+            final DBHelper dbHelper = new DBHelper(context);
+            DBElement dbElement = dbHelper.getResult();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                context.startForegroundService(serviceLauncher);
-            else
-                context.startService(serviceLauncher);
+            if (dbElement.watchElement != 0) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    context.startForegroundService(serviceLauncher);
+                else
+                    context.startService(serviceLauncher);
+            }
         }
     }
 
