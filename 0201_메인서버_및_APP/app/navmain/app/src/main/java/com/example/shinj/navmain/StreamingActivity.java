@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -29,6 +28,7 @@ public class StreamingActivity extends BaseActivity {
     String progressTemp;
     IntentData intentData = IntentData.getInstance();
     boolean isConnectSensor;
+    public String minTempValue, maxTempValue, minPHValue, maxPHValue;
 
     private Handler handler = new Handler();
 
@@ -72,7 +72,7 @@ public class StreamingActivity extends BaseActivity {
                             runOnUiThread(()-> {
                                 if (!(objects[0].toString().equals("0")) || !(objects[1].toString().equals("0"))) {
                                     feedTimeRemain = Integer.parseInt(objects[1].toString());
-                                    feedTimer.setText("먹이급여: " + feedTimeRemain/60/60 + "시간 "
+                                    feedTimer.setText(feedTimeRemain/60/60 + "시간 "
                                             + feedTimeRemain/60%60 + "분 " +
                                             + feedTimeRemain%60 + "초 "
                                             + " 회전수: " + objects[0].toString() );
@@ -100,7 +100,7 @@ public class StreamingActivity extends BaseActivity {
                         }).on("resTimerWater", (Object... objects) -> {
                             try {
                                 waterTimeRemain = objects[0].toString();
-                                waterTimer.setText("환수시간: " + waterTimeRemain.split("/")[0] + "년"
+                                waterTimer.setText(waterTimeRemain.split("/")[0] + "년"
                                         + waterTimeRemain.split("/")[1] + "월"
                                         + waterTimeRemain.split("/")[2] + "일"
                                         + waterTimeRemain.split("/")[3] + "시"
@@ -108,7 +108,7 @@ public class StreamingActivity extends BaseActivity {
                             } catch (Exception e) {
                             }
                         });
-                        Thread.sleep(5000);
+                        Thread.sleep(1000);
                     } catch (Exception e) {
                         Toast.makeText(StreamingActivity.this, "환수예약시간 오류", Toast.LENGTH_SHORT).show();
                         setWhetherSensor(false);
@@ -128,12 +128,16 @@ public class StreamingActivity extends BaseActivity {
                         socket.emit("reqMsg", "App에서 측정값 받아갑니다");
                         socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
                         }).on("serverMsg", (Object... objects) -> {
+                            minTempValue = objects[2].toString();
+                            maxTempValue = objects[3].toString();
+                            minPHValue = objects[4].toString();
+                            maxPHValue = objects[5].toString();
                             runOnUiThread(()-> {
                                 if (!(objects[0].toString().equals("0")) || !(objects[1].toString().equals("0"))) {
                                     setWhetherSensor(true);
                                     /* 서버DB에서 온도,pH 위험설정값을 받아와서 출력 */
-                                    settingTemperPh.setText("온도설정: " + objects[2].toString() + " ~ " + objects[3].toString() + "\n"
-                                            + "pH설정: " + objects[4].toString() + " ~ " + objects[5].toString());
+                                    settingTemperPh.setText(objects[2].toString() + "℃ ~ " + objects[3].toString() + "℃\n"
+                                            + objects[4].toString() + " ~ " + objects[5].toString());
                                     //
                                     tempValue.setText(progressTemp = objects[0].toString());
                                     phValue.setText(objects[1].toString());
@@ -152,7 +156,7 @@ public class StreamingActivity extends BaseActivity {
                                 }
                             });
                         });
-                        Thread.sleep(5000);
+                        Thread.sleep(1000);
                     } catch (Exception e) {
                         Toast.makeText(StreamingActivity.this, "온도센서 혹은 수질센서의 연결에 이상이 생겼습니다.", Toast.LENGTH_SHORT).show();
                         setWhetherSensor(false);

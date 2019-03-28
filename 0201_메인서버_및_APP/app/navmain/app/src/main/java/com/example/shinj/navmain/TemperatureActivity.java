@@ -13,20 +13,29 @@ import io.socket.client.Socket;
 public class TemperatureActivity extends BaseActivity {
 
     private Socket socket;
-    int minTemper, maxTemper;
-    double minPH, maxPH;
-    EditText minTemperEdit, maxTemperEdit, minPHEdit, maxPHEdit;
+    int minTemperValue, maxTemperValue;
+    double minPHValue, maxPHValue;
     IntentData intentData = IntentData.getInstance();
+    EditText minTemper, maxTemper, minPH, maxPH;
+    public static StreamingActivity streamingActivity = new StreamingActivity();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        socket = intentData.getSocket();
 
-        minTemperEdit = (EditText) findViewById(R.id.edit_min_temp);
-        maxTemperEdit = (EditText) findViewById(R.id.edit_max_temp);
-        minPHEdit = (EditText) findViewById(R.id.edit_min_pH);
-        maxPHEdit = (EditText) findViewById(R.id.edit_max_pH);
+        minTemper = findViewById(R.id.edit_min_temp);
+        maxTemper = findViewById(R.id.edit_max_temp);
+        minPH = findViewById(R.id.edit_min_pH);
+        maxPH = findViewById(R.id.edit_max_pH);
+
+
+        minTemper.setText(streamingActivity.minTempValue);
+        maxTemper.setText(streamingActivity.maxTempValue);
+        minPH.setText(streamingActivity.minPHValue);
+        maxPH.setText(streamingActivity.maxPHValue);
+
+        socket = intentData.getSocket();
     }
 
     @Override
@@ -36,25 +45,15 @@ public class TemperatureActivity extends BaseActivity {
 
     /* 온도, pH 설정값 저장 */
     public void saveTemperPHButton(View v) {
-        try {
-            minTemper = Integer.parseInt(minTemperEdit.getText().toString());
-            maxTemper = Integer.parseInt(maxTemperEdit.getText().toString());
-            minPH = Double.parseDouble(minPHEdit.getText().toString());
-            maxPH = Double.parseDouble(maxPHEdit.getText().toString());
-
-            socket.emit("insertTemper", minTemper, maxTemper);
-            socket.emit("insertPH", minPH, maxPH);
-            Intent intent = new Intent(this, StreamingActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        } catch (NumberFormatException nfe) {
-            nfe.printStackTrace();
-
-            Toast.makeText(this, "정확한 값을 모두 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        minTemperValue = Integer.parseInt(minTemper.getText().toString());
+        maxTemperValue = Integer.parseInt(maxTemper.getText().toString());
+        minPHValue = Double.parseDouble(minPH.getText().toString());
+        maxPHValue = Double.parseDouble(maxPH.getText().toString());
+        socket.emit("insertTemper", minTemperValue, maxTemperValue);
+        socket.emit("insertPH", minPHValue, maxPHValue);
+        Intent intent = new Intent(this, StreamingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     /* 온도, pH 설정값 초기화*/
@@ -62,6 +61,7 @@ public class TemperatureActivity extends BaseActivity {
     public void resetTemperPHButton(View view) {
         show();
     }
+
     void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("경고범위 초기화");
@@ -75,10 +75,10 @@ public class TemperatureActivity extends BaseActivity {
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        minTemper = -1;
-                        maxTemper = -1;
-                        socket.emit("insertTemper", minTemper, maxTemper);
-                        socket.emit("insertPH", minPH, maxPH);
+                        minTemperValue = -1;
+                        maxTemperValue = -1;
+                        socket.emit("insertTemper", minTemperValue, maxTemperValue);
+                        socket.emit("insertPH", minPHValue, maxPHValue);
                         Toast.makeText(getApplicationContext(), "경고범위를 초기화하였습니다.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), StreamingActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

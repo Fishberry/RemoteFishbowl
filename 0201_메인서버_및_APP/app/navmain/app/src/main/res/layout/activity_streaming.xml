@@ -233,6 +233,16 @@
                 app:layout_constraintTop_toBottomOf="@id/img_streaming_reserve">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="먹이급여"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/feedTimer"/>
+                <TextView
                     android:id="@+id/feedTimer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -253,6 +263,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/feedTimer" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="환수예약"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    app:layout_constraintStart_toStartOf="@id/bottomLayout"
+                    app:layout_constraintTop_toTopOf="@id/waterTimer"
+                    app:layout_constraintTop_toBottomOf="@+id/feedTimerLine"/>
 
                 <TextView
                     android:id="@+id/waterTimer"
@@ -276,6 +298,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/waterTimer" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="온도\n pH"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    app:layout_constraintStart_toStartOf="@id/bottomLayout"
+                    app:layout_constraintTop_toTopOf="@id/settingTemperPh"/>
 
                 <TextView
                     android:id="@+id/settingTemperPh"
