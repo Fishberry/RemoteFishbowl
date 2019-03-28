@@ -38,6 +38,7 @@ module.exports = (server, app) => {
 
     let servoTimer = 0;
     let servoCircle = 0;
+    let waterTimer = 0;
     let waterTimer1 = 0;
     let waterTimer2 = 0;
 
@@ -113,6 +114,7 @@ module.exports = (server, app) => {
     setInterval(() => {
 	
     	connection.query('select * from ExchangeSetting', (error, results, fields) => {
+		waterTimer = results[0].exTime_save;
 
 		if(!isChanged) {
     			fs.readFile('/home/pi/Desktop/FishberryServer/background/arduino_log', 'utf8', (err, data) => {
@@ -132,6 +134,7 @@ module.exports = (server, app) => {
 				if(results[0].exTimer1 === 30) {
 	    			//fs.open(tty, 'a', 666, (e, fd) => {
 					fs.write(fd, 'StartOUT', null, null, null, (err) => {
+					    if(err) throw err;
 					    console.log('StartOUT');	
 					    fs.close(fd, (err) => {
 	    				        console.log(err);
@@ -143,6 +146,7 @@ module.exports = (server, app) => {
 				else if(results[0].exTimer1 === 2) {
 	    			//fs.open(tty, 'a', 666, (e, fd) => {
 					fs.write(fd, 'StopOUT', null, null, null, (err) => {
+					    if(err) throw err;
 					    console.log('StopOUT');	
 					    fs.close(fd, (err) => {
 	    				        console.log(err);
@@ -159,6 +163,7 @@ module.exports = (server, app) => {
 				if(results[0].exTimer2 === 30) {
 	    				//fs.open(tty, 'a', 666, (e, fd) => {
 						fs.write(fd, 'StartIN', null, null, null, (err) => {
+					    	    if(err) throw err;
 						    console.log('StartIN');	
 						    fs.close(fd, (err) => {
 	    					        console.log(err);
@@ -171,6 +176,7 @@ module.exports = (server, app) => {
 				else if(results[0].exTimer2 === 0) {
 	    				//fs.open(tty, 'a', 666, (e, fd) => {
 				  	    fs.write(fd, 'StopIN', null, null, null, (err) => {
+					        if(err) throw err;
 					    	console.log('StopIN');	
 					    	fs.close(fd, (err) => {
 	    						console.log(err);
@@ -234,13 +240,11 @@ module.exports = (server, app) => {
 	// 수온과 수질 전부 이상이 있을 때 하얀색
 	if ((temperature >= maxTemper || temperature <= minTemper) && (phValue >= maxPH || phValue <= minPH)) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
-		    if(e) throw e;
 	  	    fs.write(fd, 'BothWN', null, null, null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Temperature&pH Warnning!!');	
 		    	fs.close(fd, (err) => {
-		    	    if(err) throw err;
-	    		    //console.log(err);
+	    		    console.log(err);
 	      	    	});
 	    	    });
 	   	});
@@ -249,13 +253,11 @@ module.exports = (server, app) => {
 	// 수질만 이상 있을 때 보라색
 	else if ((phValue >= maxPH || phValue <= minPH) && (temperature < maxTemper && temperature > minTemper)) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
-		    if(e) throw e;
 	  	    fs.write(fd, 'pHWN', null, null, null, (err) => {
 		    	if(err) throw err;
 		    	console.log('pH Warnning!!');	
 		    	fs.close(fd, (err) => {
-		    	    if(err) throw err;
-	    		    //console.log(err);
+	    		    console.log(err);
 	      	    	});
 	    	    });
 	   	});
@@ -264,13 +266,11 @@ module.exports = (server, app) => {
 	// 수온만 이상 있을 때 빨간색
 	else if ((temperature >= maxTemper || temperature <= minTemper) && (phValue < maxPH && phValue > minPH)) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
-		    if(e) throw e;
 	  	    fs.write(fd, 'TempWN', null, null, null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Temperature Warnning!!');	
 		    	fs.close(fd, (err) => {
-		    	    if(err) throw err;
-	    		    //console.log(err);
+	    		    console.log(err);
 	      	    	});
 	    	    });
 	   	});
@@ -279,13 +279,11 @@ module.exports = (server, app) => {
 	// 이상이 없을 때 초록색
 	else if (temperature > minTemper && temperature < maxTemper && phValue > minPH && phValue < maxPH) {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
-		    if(e) throw e;
 	  	    fs.write(fd, 'NotWN', null, null, null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Not Warnning!!');	
 		    	fs.close(fd, (err) => {
-		    	    if(err) throw err;
-	    		    //console.log(err);
+	    		    console.log(err);
 	      	    	});
 	    	    });
 	   	});
@@ -293,18 +291,15 @@ module.exports = (server, app) => {
 
 	else {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
-		    if(e) throw e;
 	  	    fs.write(fd, 'NotWN', null, null, null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Not Warnning!!');	
 		    	fs.close(fd, (err) => {
-		    	    if(err) throw err;
-	    		    //console.log(err);
+	    		    console.log(err);
 	      	    	});
 	    	    });
 	   	});
 	}
-
     }, 5000);
 
     // 소켓통신 관련 코드
