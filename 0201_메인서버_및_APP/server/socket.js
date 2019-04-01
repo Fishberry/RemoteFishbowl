@@ -56,11 +56,11 @@ module.exports = (server, app) => {
 	    // 1회전으로 설정시 동작
 	    if(results[0].circle == '1') {
 	   	fs.open(tty, 'a', 666, (e, fd) => {
-	  	    fs.write(fd, 'StartServo1', null, null, null, (err) => {
+	  	    fs.write(fd, 'StartServo1', null, (err) => {
 		    	if(err) throw err;
 			console.log('Servo1');	
 		    	fs.close(fd, (err) => {
-	    			console.log(err);
+	    			//console.log(err);
 	      	    	});
 	    	    });
 	   	});
@@ -69,13 +69,12 @@ module.exports = (server, app) => {
 	    // 2회전으로 설정시 동작
 	    else if(results[0].circle == '2') {
 	    	fs.open(tty, 'a', 666, (e, fd) => {
-	 	    fs.write(fd, 'StartServo2', null, null, null, (err) => {
+	 	    fs.write(fd, 'StartServo2', null, (err) => {
 		        if(err) throw err;
 		        console.log('Servo2');	
 		        fs.close(fd, (err) => {
-	                    console.log(err);
+	                    //console.log(err);
 	      	        });
-				//console.log("ttt : ", text, results[0].exTime_save, text.length, results[0].exTime_save.length);
 	    	    });
 	   	 });
 	    }
@@ -83,11 +82,11 @@ module.exports = (server, app) => {
 	    // 3회전으로 설정시 동작
 	    else if(results[0].circle == '3') {
 	    	fs.open(tty, 'a', 666, (e, fd) => {
-		    fs.write(fd, 'StartServo3', null, null, null, (err) => {
+		    fs.write(fd, 'StartServo3', null, (err) => {
 		       if(err) throw err;
 		       console.log('Servo3');	
 		       fs.close(fd, (err) => {
-	                   console.log(err);
+	                   //console.log(err);
 	      	       });
 	    	    });
 	   	 });
@@ -105,7 +104,7 @@ module.exports = (server, app) => {
     	    getMinute = parseInt(servoTimer/60%60);
     	    getSecond = parseInt(servoTimer%60);
     	    console.log(getHour+"시간 "+getMinute+"분 "+getSecond+"초 뒤 먹이급여 시작");
-	    //console.log(maxTemper + " " + minTemper + " " + maxPH + " " + minPH);
+	    //console.log(maxTemper + " " + minTemper + " " + maxPH + " " + minPH); //값 테스트
 	}
       });
     }, 1000);
@@ -132,27 +131,23 @@ module.exports = (server, app) => {
 			console.log('totalPercent : ' + totalPercent);
 	   		if(results[0].exTimer1 > 0) {
 				if(results[0].exTimer1 === 30) {
-	    			//fs.open(tty, 'a', 666, (e, fd) => {
-					fs.write(fd, 'StartOUT', null, null, null, (err) => {
+					fs.write(fd, 'StartOUT', null, (err) => {
 					    if(err) throw err;
 					    console.log('StartOUT');	
 					    fs.close(fd, (err) => {
-	    				        console.log(err);
+	    				        //console.log(err);
 	      			      });
 	    			    });
-	   			//});
 				}
 
 				else if(results[0].exTimer1 === 2) {
-	    			//fs.open(tty, 'a', 666, (e, fd) => {
-					fs.write(fd, 'StopOUT', null, null, null, (err) => {
+					fs.write(fd, 'StopOUT', null, (err) => {
 					    if(err) throw err;
 					    console.log('StopOUT');	
 					    fs.close(fd, (err) => {
-	    				        console.log(err);
+	    				        //console.log(err);
 	      			      });
 	    			    });
-	   			//});
 				}
 
 				waterTimer1 = results[0].exTimer1 - 1;
@@ -161,28 +156,24 @@ module.exports = (server, app) => {
 	   		}
 	   		else {
 				if(results[0].exTimer2 === 30) {
-	    				//fs.open(tty, 'a', 666, (e, fd) => {
-						fs.write(fd, 'StartIN', null, null, null, (err) => {
+						fs.write(fd, 'StartIN', null, (err) => {
 					    	    if(err) throw err;
 						    console.log('StartIN');	
 						    fs.close(fd, (err) => {
-	    					        console.log(err);
+	    					        //console.log(err);
 	      				      	    });
 	    				    	});
-	   				//});
 					waterTimer2 = results[0].exTimer2 - 1;
 	        			connection.query('update ExchangeSetting set exTimer2='+waterTimer2, () => {});
 				}
 				else if(results[0].exTimer2 === 0) {
-	    				//fs.open(tty, 'a', 666, (e, fd) => {
-				  	    fs.write(fd, 'StopIN', null, null, null, (err) => {
+				  	    fs.write(fd, 'StopIN', null, (err) => {
 					        if(err) throw err;
 					    	console.log('StopIN');	
 					    	fs.close(fd, (err) => {
-	    						console.log(err);
+	    						//console.log(err);
 	      			 	    	});
 	    				    });
-	   				//});
 					totalPercent = 0;
 		    			waterTimer1 = 32;
 		    			waterTimer2 = 32;
@@ -238,68 +229,62 @@ module.exports = (server, app) => {
 
 	// 수온 및 수질에 따른 아두이노 LED 제어
 	// 수온과 수질 전부 이상이 있을 때 하얀색
+      fs.open(tty, 'a', 666, (e, fd) => {
 	if ((temperature >= maxTemper || temperature <= minTemper) && (phValue >= maxPH || phValue <= minPH)) {
-	   	fs.open(tty, 'a', 666, (e, fd) => {
-	  	    fs.write(fd, 'BothWN', null, null, null, (err) => {
+	  	    fs.write(fd, 'BothWN', null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Temperature&pH Warnning!!');	
 		    	fs.close(fd, (err) => {
-	    		    console.log(err);
+		    	    if(err) throw err;
 	      	    	});
 	    	    });
-	   	});
 	}
 
 	// 수질만 이상 있을 때 보라색
 	else if ((phValue >= maxPH || phValue <= minPH) && (temperature < maxTemper && temperature > minTemper)) {
-	   	fs.open(tty, 'a', 666, (e, fd) => {
-	  	    fs.write(fd, 'pHWN', null, null, null, (err) => {
+	  	    fs.write(fd, 'pHWN', null, (err) => {
 		    	if(err) throw err;
 		    	console.log('pH Warnning!!');	
 		    	fs.close(fd, (err) => {
-	    		    console.log(err);
+		    	    if(err) throw err;
 	      	    	});
 	    	    });
-	   	});
 	}
 
 	// 수온만 이상 있을 때 빨간색
 	else if ((temperature >= maxTemper || temperature <= minTemper) && (phValue < maxPH && phValue > minPH)) {
-	   	fs.open(tty, 'a', 666, (e, fd) => {
-	  	    fs.write(fd, 'TempWN', null, null, null, (err) => {
+	  	    fs.write(fd, 'TempWN', null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Temperature Warnning!!');	
 		    	fs.close(fd, (err) => {
-	    		    console.log(err);
+		    	    if(err) throw err;
 	      	    	});
 	    	    });
-	   	});
 	}
 
 	// 이상이 없을 때 초록색
 	else if (temperature > minTemper && temperature < maxTemper && phValue > minPH && phValue < maxPH) {
-	   	fs.open(tty, 'a', 666, (e, fd) => {
-	  	    fs.write(fd, 'NotWN', null, null, null, (err) => {
+	  	    fs.write(fd, 'NotWN', null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Not Warnning!!');	
 		    	fs.close(fd, (err) => {
 	    		    console.log(err);
+		    	    if(err) throw err;
 	      	    	});
 	    	    });
-	   	});
 	}
 
 	else {
-	   	fs.open(tty, 'a', 666, (e, fd) => {
-	  	    fs.write(fd, 'NotWN', null, null, null, (err) => {
+	  	    fs.write(fd, 'NotWN', null, (err) => {
 		    	if(err) throw err;
 		    	console.log('Not Warnning!!');	
 		    	fs.close(fd, (err) => {
-	    		    console.log(err);
+		    	    if(err) throw err;
 	      	    	});
 	    	    });
-	   	});
 	}
+      });
+
     }, 5000);
 
     // 소켓통신 관련 코드
@@ -350,11 +335,11 @@ module.exports = (server, app) => {
             console.log('app에서 받은 입력 : ', data); // data = StartServo1
 	    
 	    fs.open(tty, 'a', 666, (e, fd) => {
-		fs.write(fd, data, null, null, null, (err) => {
+		fs.write(fd, data, null, (err) => {
 		    if(err) throw err;
 		    console.log('ok!');	
 		    fs.close(fd, (err) => {
-	    	        console.log(err);
+	    	        //console.log(err);
 	            });
 	        });
 	    });
@@ -385,11 +370,11 @@ module.exports = (server, app) => {
             console.log('app에서 받은 입력 : ', data); // data = StartOUT
 	    isChanged = true;
 	    fs.open(tty, 'a', 666, (e, fd) => {
-		fs.write(fd, data, null, null, null, (err) => {
+		fs.write(fd, data, null, (err) => {
 		    if(err) throw err;
 		    console.log('ok!');	
 		    fs.close(fd, (err) => {
-	    	        console.log(err);
+	    	        //console.log(err);
 	            });
 	        });
 	    });
@@ -408,19 +393,19 @@ module.exports = (server, app) => {
 	        isChanged = false;
 
 		if(totalPercent < 50) {
-		fs.write(fd, 'StopOUT', null, null, null, (err) => {
+		fs.write(fd, 'StopOUT', null, (err) => {
 		    if(err) throw err;
 		    fs.close(fd, (err) => {
-	    	        console.log(err);
+	    	        //console.log(err);
 	            });
 	        });
 		}
 
 		else {
-		fs.write(fd, 'StopIN', null, null, null, (err) => {
+		fs.write(fd, 'StopIN', null, (err) => {
 		    if(err) throw err;
 		    fs.close(fd, (err) => {
-	    	        console.log(err);
+	    	        //console.log(err);
 	            });
 	        });
 		}
@@ -436,21 +421,21 @@ module.exports = (server, app) => {
 	        isChanged = true;
 
 		if(totalPercent < 50) {
-		fs.write(fd, 'StartOUT', null, null, null, (err) => {
+		fs.write(fd, 'StartOUT', null, (err) => {
 		    if(err) throw err;
 		    console.log('StartOUT ok!');	
 		    fs.close(fd, (err) => {
-	    	        console.log(err);
+	    	        //console.log(err);
 	            });
 	        });
 		}
 
 		else {
-		fs.write(fd, 'StartIN', null, null, null, (err) => {
+		fs.write(fd, 'StartIN', null, (err) => {
 		    if(err) throw err;
 		    console.log('StartIN ok!');	
 		    fs.close(fd, (err) => {
-	    	        console.log(err);
+	    	        //console.log(err);
 	            });
 	        });
 		}
