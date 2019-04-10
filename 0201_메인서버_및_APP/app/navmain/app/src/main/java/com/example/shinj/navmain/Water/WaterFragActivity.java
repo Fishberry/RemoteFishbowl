@@ -3,7 +3,6 @@ package com.example.shinj.navmain.Water;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -65,7 +64,6 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         socket.emit("reqChanged", "isChanged");
         socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
         }).on("resChanged", (Object... objects) -> {
-            boolean waterFlag;
             if(objects[0].toString() == "true")
                 waterFlag = true;
             else
@@ -83,9 +81,13 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
                         handler.post(new Runnable() {
                             public void run() {
                                 waterNowFragment.progressBarWater.setProgress(count);
-                                if (count < 100 && waterFlag == true) {   // 환수 진행중인 상태
+                                if ( count > 0 && count < 100 && waterFlag == true) {
                                     waterNowFragment.btnStartWaterNow.setVisibility(View.INVISIBLE);
                                     waterNowFragment.btnPauseWaterNow.setVisibility(View.VISIBLE);
+                                    waterNowFragment.progressRateWater.setText(count + " %");
+                                } else if ( count > 0 && count < 100 & waterFlag == false) {
+                                    waterNowFragment.btnStartWaterNow.setVisibility(View.VISIBLE);
+                                    waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
                                     waterNowFragment.progressRateWater.setText(count + " %");
                                 } else if (count >= 100) {  // 환수 끝났을 때
                                     waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
@@ -111,41 +113,11 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
     public void onStartWaterNowButton(View v) {
         waterFlag = true;
-
         if(count == 0)
             socket.emit("reqWaterNow", "StartOUT");
         else
             socket.emit("reqWaterNowRestart", "reqWaterNowRestart");
-
         Toast.makeText(getApplicationContext(), "지금환수 시작", Toast.LENGTH_SHORT).show();
-
-//        new Thread() {
-//            public void run() {
-//                while (true) {
-//                    try {
-//                        waterFragPresenterImpl.proceedingCount(socket);
-//
-//                        handler.post(new Runnable() {
-//                            public void run() {
-//                                waterNowFragment.progressBarWater.setProgress(count);
-//                                if (count < 100 && waterFlag == true) {   // 환수 진행중인 상태
-//                                    waterNowFragment.progressRateWater.setText(count + " %");
-//                                    waterNowFragment.btnStartWaterNow.setVisibility(View.INVISIBLE);
-//                                    waterNowFragment.btnPauseWaterNow.setVisibility(View.VISIBLE);
-//                                } else if (count >= 100) {  // 환수 끝났을 때
-//                                    waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
-//                                    waterNowFragment.progressRateWater.setText("환수 완료^-^");
-//                                    count = 0;
-//                                    waterFlag = false;
-//                                }
-//                            }
-//                        });
-//                        Thread.sleep(200);
-//                    } catch (Exception e) {
-//                    }
-//                }
-//            }
-//        }.start();
     }
 
     public void onPauseWaterNowButton(View v) {
