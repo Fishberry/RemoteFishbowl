@@ -1,7 +1,7 @@
 package com.example.shinj.navmain.NotificationSetting;
 
-import com.example.shinj.navmain.DBElement;
-import com.example.shinj.navmain.DBHelper;
+import com.example.shinj.navmain.DB.DBElement;
+import com.example.shinj.navmain.DB.DBHelper;
 
 class NotificationSettingPresenterImpl implements NotificationSettingPresenter {
 

@@ -1,4 +1,4 @@
-package com.example.shinj.navmain;
+package com.example.shinj.navmain.Water;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -10,8 +10,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import io.socket.client.IO;
-import io.socket.client.Socket;
+import com.example.shinj.navmain.R;
 
 public class WaterNowFragment extends Fragment {
 

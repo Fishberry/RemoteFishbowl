@@ -8,8 +8,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import java.net.Socket;
-import java.util.ArrayList;
+import com.example.shinj.navmain.Streaming.StreamingActivity;
 
 public class MainActivity extends BaseActivity {
 

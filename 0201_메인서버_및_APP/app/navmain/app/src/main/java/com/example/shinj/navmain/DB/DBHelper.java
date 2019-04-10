@@ -1,4 +1,4 @@
-package com.example.shinj.navmain;
+package com.example.shinj.navmain.DB;
 
 import android.content.Context;
 import android.database.Cursor;

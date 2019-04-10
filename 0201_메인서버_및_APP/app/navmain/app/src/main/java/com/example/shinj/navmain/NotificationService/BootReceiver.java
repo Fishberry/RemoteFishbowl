@@ -1,14 +1,14 @@
-package com.example.shinj.navmain;
+package com.example.shinj.navmain.NotificationService;
 
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
 import android.util.Log;
 
-import java.util.logging.LogRecord;
+import com.example.shinj.navmain.DB.DBElement;
+import com.example.shinj.navmain.DB.DBHelper;
 
 public class BootReceiver extends BroadcastReceiver {
 

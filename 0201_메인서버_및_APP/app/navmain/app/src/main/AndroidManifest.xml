@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver android:name=".BootReceiver"
+        <receiver android:name=".NotificationService.BootReceiver"
             android:enabled="true"
             android:exported="false"
             android:label="BOOTReceiver">
@@ -20,7 +20,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".RestartService"
+        <receiver android:name=".NotificationService.RestartService"
             android:enabled="true"
             android:exported="false"
             android:label="RestartServiceWhenStopped">
@@ -28,23 +28,23 @@
                 <action android:name="fishberry.example.com.NotificationService"/>
             </intent-filter>
         </receiver>
-        <service android:name=".NotificationService"
+        <service android:name=".NotificationService.NotificationService"
             android:enabled="true"
             android:stopWithTask="false"/>
         <activity android:name=".NotificationSetting.NotificationSettingActivity"/>
-        <activity android:name=".TemperatureActivity"/>
-        <activity android:name=".WaterFragActivity" />
+        <activity android:name=".Temperature.TemperatureActivity"/>
+        <activity android:name=".Water.WaterFragActivity" />
         <activity android:name=".BaseActivity" />
         <activity android:name=".ManualActivity" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".FeedFragActivity" />
-        <activity android:name=".StreamingActivity" />
+        <activity android:name=".Feed.FeedFragActivity" />
+        <activity android:name=".Streaming.StreamingActivity" />
         <activity
-            android:name=".FullStreammingActivity"
+            android:name=".Streaming.FullStreammingActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Login.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

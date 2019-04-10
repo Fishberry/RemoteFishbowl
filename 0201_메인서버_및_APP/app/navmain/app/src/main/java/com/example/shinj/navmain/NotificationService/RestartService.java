@@ -1,4 +1,4 @@
-package com.example.shinj.navmain;
+package com.example.shinj.navmain.NotificationService;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

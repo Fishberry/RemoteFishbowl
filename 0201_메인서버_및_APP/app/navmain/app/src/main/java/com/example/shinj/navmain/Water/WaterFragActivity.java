@@ -1,4 +1,4 @@
-package com.example.shinj.navmain;
+package com.example.shinj.navmain.Water;
 
 import android.app.AlertDialog;
 import android.app.FragmentManager;
@@ -11,9 +11,15 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.shinj.navmain.BaseActivity;
+import com.example.shinj.navmain.IntentData;
+import com.example.shinj.navmain.R;
+import com.example.shinj.navmain.Streaming.StreamingActivity;
+
 import io.socket.client.Socket;
 
-public class WaterFragActivity extends BaseActivity implements View.OnClickListener {
+public class WaterFragActivity extends BaseActivity implements View.OnClickListener, WaterFragPresenter.View {
 
     private Socket socket;
     Button btn_water_frag_now, btn_water_frag_reserve;
@@ -25,6 +31,8 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
     IntentData intentData = IntentData.getInstance();
     Handler handler = new Handler(); // Thread 에서 화면에 그리기 위해서 필요
     boolean waterFlag;
+    String address;
+    WaterFragPresenterImpl waterFragPresenterImpl;
 
     int count = 0;
 
@@ -45,6 +53,7 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
         waterNowFragment = new WaterNowFragment();
         waterReserveFragment = new WaterReserveFragment();
+        waterFragPresenterImpl = new WaterFragPresenterImpl();
 
         setFrag(0);
 
@@ -55,6 +64,7 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         socket.emit("reqChanged", "isChanged");
         socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
         }).on("resChanged", (Object... objects) -> {
+            boolean waterFlag;
             if(objects[0].toString() == "true")
                 waterFlag = true;
             else
@@ -72,20 +82,19 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
     public void onStartWaterNowButton(View v) {
         waterFlag = true;
+
         if(count == 0)
             socket.emit("reqWaterNow", "StartOUT");
         else
             socket.emit("reqWaterNowRestart", "reqWaterNowRestart");
+
         Toast.makeText(getApplicationContext(), "지금환수 시작", Toast.LENGTH_SHORT).show();
         new Thread() {
             public void run() {
                 while (true) {
                     try {
-                        socket.emit("reqPercent", "reqPercent");
-                        socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
-                        }).on("resPercent", (Object... objects) -> {
-                            count = Integer.parseInt(objects[0].toString());
-                        });
+                        waterFragPresenterImpl.preceedingCount(socket);
+
                         handler.post(new Runnable() {
                             public void run() {
                                 waterNowFragment.progressBarWater.setProgress(count);
@@ -111,7 +120,7 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
     public void onPauseWaterNowButton(View v) {
         waterFlag = false;
-        socket.emit("reqWaterNowPause", "WaterPause");
+        waterFragPresenterImpl.pauseChangeWater(socket);
         Toast.makeText(getApplicationContext(), "환수 일시 정지", Toast.LENGTH_SHORT).show();
         waterNowFragment.btnPauseWaterNow.setVisibility(View.INVISIBLE);
         waterNowFragment.btnStartWaterNow.setVisibility(View.VISIBLE);
@@ -156,18 +165,8 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
 
     /* 환수예약 저장 */
     public void saveWaterButton(View v) {
+        waterFragPresenterImpl.saveReserveWater(socket, waterReserveFragment);
 
-        String yearWater, monthWater, dayWater, hourWater, minunteWater;
-        String timerWater;
-        yearWater = Integer.toString(waterReserveFragment.datePickerWater.getYear());
-        monthWater = Integer.toString(waterReserveFragment.datePickerWater.getMonth() + 1);
-        dayWater = Integer.toString(waterReserveFragment.datePickerWater.getDayOfMonth());
-        hourWater = Integer.toString(waterReserveFragment.timePickerWater.getHour());
-        minunteWater = Integer.toString(waterReserveFragment.timePickerWater.getMinute());
-
-        timerWater = "\"" + yearWater + "/" + monthWater + "/" + dayWater + "/" + hourWater + "/" + minunteWater + "/0\"";
-
-        socket.emit("insertWater", timerWater);
         Intent intent = new Intent(this, StreamingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -218,5 +217,10 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void setCount(int count) {
+        this.count = count;
     }
 }

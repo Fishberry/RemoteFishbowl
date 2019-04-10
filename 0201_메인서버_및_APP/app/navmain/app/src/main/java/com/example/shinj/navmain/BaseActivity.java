@@ -13,7 +13,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.shinj.navmain.DB.DBHelper;
+import com.example.shinj.navmain.Feed.FeedFragActivity;
+import com.example.shinj.navmain.Login.LoginActivity;
 import com.example.shinj.navmain.NotificationSetting.NotificationSettingActivity;
+import com.example.shinj.navmain.Streaming.StreamingActivity;
+import com.example.shinj.navmain.Temperature.TemperatureActivity;
+import com.example.shinj.navmain.Water.WaterFragActivity;
 
 import io.socket.client.Socket;
 

@@ -1,4 +1,4 @@
-package com.example.shinj.navmain;
+package com.example.shinj.navmain.NotificationService;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -11,22 +11,20 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
+import com.example.shinj.navmain.DB.DBElement;
+import com.example.shinj.navmain.DB.DBHelper;
+import com.example.shinj.navmain.R;
+import com.example.shinj.navmain.Temperature.TemperatureActivity;
+import com.example.shinj.navmain.Water.WaterFragActivity;
+
 import java.net.URISyntaxException;
-import java.sql.Time;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;

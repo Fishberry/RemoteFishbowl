@@ -1,11 +1,11 @@
-package com.example.shinj.navmain;
+package com.example.shinj.navmain.DB;
 
 public class DBElement {
-    String ip = "";
-    int isRememberIP = 0;
-    int watchElement = 0;
-    int temperLoopTime = 0;
-    int pHLoopTime = 0;
+    public String ip = "";
+    public int isRememberIP = 0;
+    public int watchElement = 0;
+    public int temperLoopTime = 0;
+    public int pHLoopTime = 0;
 
     public String getIp() {
         return ip;

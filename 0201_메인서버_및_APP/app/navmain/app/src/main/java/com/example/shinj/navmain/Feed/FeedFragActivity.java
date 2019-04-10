@@ -1,4 +1,4 @@
-package com.example.shinj.navmain;
+package com.example.shinj.navmain.Feed;
 
 import android.app.AlertDialog;
 import android.app.FragmentManager;
@@ -11,11 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import io.socket.client.IO;
+import com.example.shinj.navmain.BaseActivity;
+import com.example.shinj.navmain.IntentData;
+import com.example.shinj.navmain.R;
+import com.example.shinj.navmain.Streaming.StreamingActivity;
+
 import io.socket.client.Socket;
 
 
-public class FeedFragActivity extends BaseActivity implements View.OnClickListener{
+public class FeedFragActivity extends BaseActivity implements View.OnClickListener, FeedFragPresenter.View{
 
     private Socket socket;
     String address;
@@ -28,12 +32,12 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
     IntentData intentData = IntentData.getInstance();
     int timerFeed = 0;
     int circleFeed = 0;
+    FeedFragPresenterImpl feedFragPresenterimpl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        address = intentData.getAddress();
         socket = intentData.getSocket();
 
         btn_feed_frag_now =  findViewById(R.id.btn_feed_frag_now);
@@ -46,6 +50,8 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
 
         feedNowFragment = new FeedNowFragment();
         feedReserveFragment = new FeedReserveFragment();
+
+        feedFragPresenterimpl = new FeedFragPresenterImpl();
 
         setFrag(0);
 
@@ -93,8 +99,8 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
     }
 
     public void onStartFeedNowButton(View v) {
+        feedFragPresenterimpl.startFeed(socket);
         Toast.makeText(getApplicationContext(), "먹이급여를 완료하였습니다.", Toast.LENGTH_SHORT).show();
-        socket.emit("reqFeedNow", "StartServo1");
     }
 
     /* FeedReserveFragment 기능 */
@@ -145,7 +151,7 @@ public class FeedFragActivity extends BaseActivity implements View.OnClickListen
 
     /* 먹이값 저장 */
     public void savefeedButton(View v) {
-        socket.emit("insertFeed", timerFeed, circleFeed);
+        feedFragPresenterimpl.saveFeed(socket, timerFeed, circleFeed);
         Toast.makeText(this, "저장하였습니다.", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, StreamingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
