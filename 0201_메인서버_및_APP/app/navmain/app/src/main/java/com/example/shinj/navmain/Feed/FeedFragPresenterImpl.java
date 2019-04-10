@@ -14,5 +14,5 @@ public class FeedFragPresenterImpl implements FeedFragPresenter {
     @Override
     public void saveFeed(Socket socket, int timerFeed, int circleFeed) {
         socket.emit("insertFeed", timerFeed, circleFeed);
-    }
+}
 }

@@ -1,10 +1,16 @@
 package com.example.shinj.navmain.Water;
 
+import android.content.Context;
+
 import io.socket.client.Socket;
 
 public class WaterFragPresenterImpl implements WaterFragPresenter {
 
     WaterFragPresenter.View view;
+
+    public WaterFragPresenterImpl(WaterFragPresenter.View view) {
+        this.view = view;
+    }
 
     @Override
     public void proceedingCount(Socket socket) {
@@ -31,7 +37,7 @@ public class WaterFragPresenterImpl implements WaterFragPresenter {
         hourWater = Integer.toString(waterReserveFragment.timePickerWater.getHour());
         minunteWater = Integer.toString(waterReserveFragment.timePickerWater.getMinute());
 
-        timerWater = "\"" + yearWater + "/" + monthWater + "/" + dayWater + "/" + hourWater + "/" + minunteWater + "/0\"";
+        timerWater = "\"" + yearWater + "/" + monthWater + "/" + dayWater + "/" + hourWater + "/" + minunteWater + "\"";
 
         socket.emit("insertWater", timerWater);
     }
