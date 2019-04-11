@@ -239,7 +239,7 @@ router.get('/inputExValue', (req, res) => {
 	else {
 		const _url = req.url;
 		const queryData = url.parse(_url, true).query;
-		let setTime = "\"" +queryData.ex_year + '/' + queryData.ex_month + '/' + queryData.ex_day + '/' + queryData.ex_hour + '/' + queryData.ex_minute + '/' + '0' + "\"";
+		let setTime = "\"" +queryData.ex_year + '/' + queryData.ex_month + '/' + queryData.ex_day + '/' + queryData.ex_hour + '/' + queryData.ex_minute + "\"";
 		db.insertExchange(32, 32, String(setTime));
 		res.send('<script type="text/javascript">alert("설정값이 저장되었습니다."); history.back();</script>');
 	}
