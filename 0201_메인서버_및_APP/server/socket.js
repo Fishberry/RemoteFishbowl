@@ -48,7 +48,7 @@ module.exports = (server, app) => {
 
     // 서버의 현재시간을 저장한다
     var dt = new Date();
-    currentDate = dt.getFullYear()+'/'+(dt.getMonth()+1)+'/'+dt.getDate()+'/'+dt.getHours()+'/'+dt.getMinutes();
+    currentDate = "\"" + dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate() + '/' + dt.getHours() + '/' + dt.getMinutes() + "\"";
 
     // 자동 먹이지급 관련 제어코드
     autoFeed(connection, tty, fs);
@@ -76,9 +76,9 @@ module.exports = (server, app) => {
     });
   }, 1000);
 
-  
+
   setInterval(() => {
-   connection.query('insert into DataRepository values(' + currentDate + ',' + temperature + ',' + phValue + ')', () => {});
+    connection.query('insert into DataRepository values(' + currentDate + ',' + temperature + ',' + phValue + ')', () => { });
   }, 1800000);
 
   // 5초마다 수온측정, 수질측정을 진행하고, 그에 따른 LED상태변화도 진행한다
@@ -150,15 +150,6 @@ module.exports = (server, app) => {
       console.log('app에서 받은 입력 : ', data); // data = StartServo1
 
       fs.open(tty, 'a', 666, (e, fd) => {
-        /*
-              fs.write(fd, data, null, (err) => {
-                if (err) throw err;
-                console.log('ok!');
-                fs.close(fd, (err) => {
-                  //console.log(err);
-                });
-              });
-        */
         fishberryWrite.input(e, fd, data);
       });
     });
@@ -204,30 +195,11 @@ module.exports = (server, app) => {
       fs.open(tty, 'a', 666, (e, fd) => {
         db.startExchange(false);
 
-        if (totalPercent < 50) {
+        if (totalPercent < 50)
           fishberryWrite.input(e, fd, 'StopOUT');
-	/*
-          fs.write(fd, 'StopOUT', null, (err) => {
-            if (err) throw err;
-            fs.close(fd, (err) => {
-              //console.log(err);
-            });
-          });
-	*/
-        }
 
-        else {
+        else
           fishberryWrite.input(e, fd, 'StopIN');
-	/*
-          fs.write(fd, 'StopIN', null, (err) => {
-            if (err) throw err;
-            fs.close(fd, (err) => {
-              //console.log(err);
-            });
-          });
-	*/
-        }
-
       });
     });
 
@@ -238,32 +210,11 @@ module.exports = (server, app) => {
       fs.open(tty, 'a', 666, (e, fd) => {
         db.startExchange(true);
 
-        if (totalPercent < 50) {
+        if (totalPercent < 50)
           fishberryWrite.input(e, fd, 'StartOUT');
-	/*
-          fs.write(fd, 'StartOUT', null, (err) => {
-            if (err) throw err;
-            console.log('StartOUT ok!');
-            fs.close(fd, (err) => {
-              //console.log(err);
-            });
-          });
-	*/
-        }
 
-        else {
+        else
           fishberryWrite.input(e, fd, 'StartIN');
-	/*
-          fs.write(fd, 'StartIN', null, (err) => {
-            if (err) throw err;
-            console.log('StartIN ok!');
-            fs.close(fd, (err) => {
-              //console.log(err);
-            });
-          });
-	  */
-        }
-
       });
     });
 
