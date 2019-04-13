@@ -18,7 +18,7 @@ app.set('port', 3000);		// 포트번호를 3000으로 지정
 app.use(morgan('dev'));		// 요청에 대한 정보를 콘솔에 기록
 app.use(express.static(path.join(__dirname, 'public')));	// 정적파일(css, js등)의 위치지정
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // 라우터 지정
@@ -28,19 +28,19 @@ webSocket(server, app);
 
 // 라우터 지정 이후 404에러가 들어오면 처리
 app.use((req, res, next) => {
-	const err = new Error('404 Not Found');
-	err.status = 404;
-	next(err);	// 에러 핸들러로 에러내용 전송
+  const err = new Error('404 Not Found');
+  err.status = 404;
+  next(err);	// 에러 핸들러로 에러내용 전송
 });
 
 // 에러 핸들러
 app.use((err, req, res) => {
-	res.locals.message = err.message;
-	res.locals.error = req.app.get('env') === 'development' ? err : {};
-	res.status(err.status || 500);
-	res.render('error');
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.status(err.status || 500);
+  res.render('error');
 });
 
 server.listen(app.get('port'), () => {
-	console.log('Server Start...!! Port : ', app.get('port'));
+  console.log('Server Start...!! Port : ', app.get('port'));
 });

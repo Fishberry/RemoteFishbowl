@@ -1,9 +1,9 @@
 const fs = require('fs');
 
-exports.input = function(e, fd, data) {
+exports.input = function(fd, data, msg) {
   fs.write(fd, data, null, (err) => {
     if (err) throw err;
-    console.log('아두이노로 write 완료');
+    console.log(msg);
     fs.close(fd, (err) => {
       if(err) console.log(err);
     });

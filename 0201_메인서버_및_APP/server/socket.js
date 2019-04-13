@@ -38,10 +38,8 @@ module.exports = (server, app) => {
   let temperature = 0.0, phValue = 0.0;
   let minTemper = 0.0, maxTemper = 0.0, minPH = 0.0, maxPH = 0.0;
 
-  let getTime = 0, getHour = 0, getMinute = 0, getSecond = 0;
-
   let servoTimer = 0, servoCircle = 0;
-  let waterTimer = 0, waterTimer1 = 0, waterTimer2 = 0, totalPercent = 0;
+  let waterTimer = 0, totalPercent = 0;
   let isChanged = false;
 
   setInterval(() => {
@@ -150,7 +148,7 @@ module.exports = (server, app) => {
       console.log('app에서 받은 입력 : ', data); // data = StartServo1
 
       fs.open(tty, 'a', 666, (e, fd) => {
-        fishberryWrite.input(e, fd, data);
+        fishberryWrite.input(fd, data);
       });
     });
 
@@ -179,7 +177,7 @@ module.exports = (server, app) => {
       console.log('app에서 받은 입력 : ', data); // data = StartOUT
       db.startExchange(true);
       fs.open(tty, 'a', 666, (e, fd) => {
-        fishberryWrite.input(e, fd, data);
+        fishberryWrite.input(fd, data);
       });
     });
 
@@ -196,10 +194,10 @@ module.exports = (server, app) => {
         db.startExchange(false);
 
         if (totalPercent < 50)
-          fishberryWrite.input(e, fd, 'StopOUT');
+          fishberryWrite.input(fd, 'StopOUT');
 
         else
-          fishberryWrite.input(e, fd, 'StopIN');
+          fishberryWrite.input(fd, 'StopIN');
       });
     });
 
@@ -211,10 +209,10 @@ module.exports = (server, app) => {
         db.startExchange(true);
 
         if (totalPercent < 50)
-          fishberryWrite.input(e, fd, 'StartOUT');
+          fishberryWrite.input(fd, 'StartOUT');
 
         else
-          fishberryWrite.input(e, fd, 'StartIN');
+          fishberryWrite.input(fd, 'StartIN');
       });
     });
 

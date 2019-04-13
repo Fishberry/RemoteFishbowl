@@ -1,7 +1,7 @@
 const db = require('../../models/findDB');
 let temperature = '';
 
-function startCheckTemper(fs, connection) {
+function startCheckTemper(fs) {
   fs.access('/sys/bus/w1/devices/28-020d9246133d/w1_slave', fs.constants.F_OK, (err) => {
     if (err) {
       temperature = '-999';
@@ -14,9 +14,9 @@ function startCheckTemper(fs, connection) {
         //console.log('읽어온 온도 : ', data); // 전체 파일의 내용을 로그찍음
 
         if (err) throw err;
-        var text = data;
-        var first = text.substring(69, 71);
-        var second = text.substring(71, 72);
+        var temperFullData = data;
+        var first = temperFullData.substring(69, 71);
+        var second = temperFullData.substring(71, 72);
 
         temperature = `${first}.${second}`;
         //console.log("Temperature : " + temperature);

@@ -1,3 +1,5 @@
+const fishberryWrite = require('./fishberryWrite');
+
 let getHour = 0, getMinute = 0, getSecond = 0;
 let servoTimer = 0, servoCircle = 0;
 
@@ -7,39 +9,21 @@ function startAutoFeed(connection, tty, fs) {
       // 1회전으로 설정시 동작
       if (results[0].circle == '1') {
         fs.open(tty, 'a', 666, (e, fd) => {
-          fs.write(fd, 'StartServo1', null, (err) => {
-            if (err) throw err;
-            console.log('Servo1');
-            fs.close(fd, (err) => {
-              //console.log(err);
-            });
-          });
+          fishberryWrite.input(fd, 'StartServo1');
         });
       }
 
       // 2회전으로 설정시 동작
       else if (results[0].circle == '2') {
         fs.open(tty, 'a', 666, (e, fd) => {
-          fs.write(fd, 'StartServo2', null, (err) => {
-            if (err) throw err;
-            console.log('Servo2');
-            fs.close(fd, (err) => {
-              //console.log(err);
-            });
-          });
+          fishberryWrite.input(fd, 'StartServo2');
         });
       }
 
       // 3회전으로 설정시 동작
       else if (results[0].circle == '3') {
         fs.open(tty, 'a', 666, (e, fd) => {
-          fs.write(fd, 'StartServo3', null, (err) => {
-            if (err) throw err;
-            console.log('Servo3');
-            fs.close(fd, (err) => {
-              //console.log(err);
-            });
-          });
+          fishberryWrite.input(fd, 'StartServo3');
         });
       }
 
