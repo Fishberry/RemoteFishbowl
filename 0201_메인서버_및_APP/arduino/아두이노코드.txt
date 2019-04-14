@@ -2,8 +2,8 @@
 #include <Wire.h>
 #include "RTClib.h"
 
-const int WaterPumpA = 9; // 워터펌프 A
-const int WaterPumpB = 10; // 워터펌프 B
+const int WaterPumpA = 10; // 워터펌프 A
+const int WaterPumpB = 9; // 워터펌프 B
 const int SERVO = 8;       // 서보모터 8번핀
 
 const int BLED = 11;
@@ -19,7 +19,7 @@ void setup() {
   Serial.begin(9600);
   /* 서보모터 */
   myServo.attach(SERVO);
-  //myServo.write(0); // 처음에 0도로 초기화
+  myServo.write(0); // 처음에 0도로 초기화
   
   /* RTC */
   // I^2C버스와 RTC 모두 시작
@@ -77,28 +77,28 @@ void loop() {
     }
     else if(nodeData == "TempWN")
     {
-      setMode(1);
+      setLED(1);
     }
     else if(nodeData == "pHWN")
     {
-      setMode(2);
+      setLED(2);
     }
     else if(nodeData == "NotWN")
     {
-      setMode(3);
+      setLED(3);
     }
     else if(nodeData == "BothWN")
     {
-      setMode(4);
+      setLED(4);
     }
   }
 
   /* RTC 시간 구하기 */
   getTime();
-  delay(10);
+  delay(100);
 }
 
-void setMode(int mode) {
+void setLED(int mode) {
   if(mode == 1) {
     digitalWrite(RLED, HIGH);
     digitalWrite(GLED, LOW);
