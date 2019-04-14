@@ -87,16 +87,3 @@ exports.confirmPassword = function(password) {
 		}
 	});
 };
-exports.confirmPassword = function(password) {
-	connection.query('select * from passwordSetting', (error, results, fields) => {
-		if(error)
-			console.log(error);
-		else {
-			console.log('database : ' + results[0].password);
-			if(password == results[0].password)
-				return "OK"
-			else
-				return "NO"
-		}
-	});
-};
