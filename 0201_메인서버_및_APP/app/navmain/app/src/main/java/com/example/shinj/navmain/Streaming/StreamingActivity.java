@@ -117,7 +117,7 @@ public class StreamingActivity extends BaseActivity implements StreamingPresente
 
                 while (true) {
                     try {
-                        streamingPresenterimpl.reqTemperMsg(socket);
+                        streamingPresenterimpl.reqTemperPHMsg(socket);
                         socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
                         }).on("serverMsg", (Object... objects) -> {
                             minTempValue = objects[2].toString();

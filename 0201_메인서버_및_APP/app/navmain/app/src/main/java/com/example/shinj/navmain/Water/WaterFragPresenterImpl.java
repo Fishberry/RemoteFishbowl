@@ -23,6 +23,14 @@ public class WaterFragPresenterImpl implements WaterFragPresenter {
     }
 
     @Override
+    public void reqChangeWater(Socket socket, int count) {
+        if(count == 0)
+            socket.emit("reqWaterNow", "StartOUT");
+        else
+            socket.emit("reqWaterNowRestart", "reqWaterNowRestart");
+    }
+
+    @Override
     public void pauseChangeWater(Socket socket) {
         socket.emit("reqWaterNowPause", "WaterPause");
     }

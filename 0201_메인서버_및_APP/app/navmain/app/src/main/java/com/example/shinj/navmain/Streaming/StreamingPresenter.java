@@ -8,7 +8,7 @@ public interface StreamingPresenter {
 
     void reqTimerFeed(Socket socket);
     void reqTimerWater(Socket socket);
-    void reqTemperMsg(Socket socket);
+    void reqTemperPHMsg(Socket socket);
     void startWebView(WebView webView, String address);
 
     interface View {

@@ -17,7 +17,7 @@ public class StreamingPresenterImpl implements StreamingPresenter {
     }
 
     @Override
-    public void reqTemperMsg(Socket socket) {
+    public void reqTemperPHMsg(Socket socket) {
         socket.emit("reqMsg", "App에서 측정값 받아갑니다");
     }
 
