@@ -23,15 +23,21 @@ function startAutoExchange(connection, tty, fs) {
         if (results[0].exTimer1 > 0) {
           if (results[0].exTimer1 == 30) {
             fishberryWrite.input(fd, 'StartOUT');
+            waterTimer1 = results[0].exTimer1 - 1;
+            connection.query('update ExchangeSetting set exTimer1=' + waterTimer1, () => { });
           }
 
           else if (results[0].exTimer1 == 2) {
             fishberryWrite.input(fd, 'StopOUT');
+            waterTimer1 = results[0].exTimer1 - 1;
+            connection.query('update ExchangeSetting set exTimer1=' + waterTimer1, () => { });
           }
 
-          waterTimer1 = results[0].exTimer1 - 1;
-          totalPercent = parseInt((1 - (waterTimer1 / 32)) * 50);
-          connection.query('update ExchangeSetting set exTimer1=' + waterTimer1 + ', totalPercent=' + totalPercent, () => { });
+	  else {
+            waterTimer1 = results[0].exTimer1 - 1;
+            totalPercent = parseInt((1 - (waterTimer1 / 32)) * 50);
+            connection.query('update ExchangeSetting set exTimer1=' + waterTimer1 + ', totalPercent=' + totalPercent, () => { });
+	  }
         }
         else {
           if (results[0].exTimer2 == 30) {
