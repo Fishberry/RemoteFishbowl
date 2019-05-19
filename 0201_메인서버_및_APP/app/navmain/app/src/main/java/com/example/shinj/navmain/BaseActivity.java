@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.shinj.navmain.DB.DBHelper;
 import com.example.shinj.navmain.Feed.FeedFragActivity;
+import com.example.shinj.navmain.Chart.ChartActivity;
 import com.example.shinj.navmain.Login.LoginActivity;
 import com.example.shinj.navmain.NotificationSetting.NotificationSettingActivity;
 import com.example.shinj.navmain.Streaming.StreamingActivity;
@@ -84,6 +85,12 @@ abstract public class BaseActivity extends AppCompatActivity {
                     // 네비게이션바 - 온도/pH
                     case R.id.navigation_item_temperPh:
                         intent = new Intent(getApplicationContext(), TemperatureActivity.class);
+                        startActivity(intent);
+                        break;
+
+                    // 네비게이션바 - 차트
+                    case R.id.navigation_item_chart:
+                        intent = new Intent(getApplicationContext(), ChartActivity.class);
                         startActivity(intent);
                         break;
 

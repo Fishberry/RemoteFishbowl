@@ -3,7 +3,7 @@
     package="com.example.shinj.navmain">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -12,27 +12,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver android:name=".NotificationService.BootReceiver"
+        <activity android:name=".Chart.ChartActivity"></activity>
+
+        <receiver
+            android:name=".NotificationService.BootReceiver"
             android:enabled="true"
             android:exported="false"
             android:label="BOOTReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".NotificationService.RestartService"
+        <receiver
+            android:name=".NotificationService.RestartService"
             android:enabled="true"
             android:exported="false"
             android:label="RestartServiceWhenStopped">
             <intent-filter>
-                <action android:name="fishberry.example.com.NotificationService"/>
+                <action android:name="fishberry.example.com.NotificationService" />
             </intent-filter>
         </receiver>
-        <service android:name=".NotificationService.NotificationService"
+
+        <service
+            android:name=".NotificationService.NotificationService"
             android:enabled="true"
-            android:stopWithTask="false"/>
-        <activity android:name=".NotificationSetting.NotificationSettingActivity"/>
-        <activity android:name=".Temperature.TemperatureActivity"/>
+            android:stopWithTask="false" />
+
+        <activity android:name=".NotificationSetting.NotificationSettingActivity" />
+        <activity android:name=".Temperature.TemperatureActivity" />
         <activity android:name=".Water.WaterFragActivity" />
         <activity android:name=".BaseActivity" />
         <activity android:name=".ManualActivity" />
