@@ -23,7 +23,7 @@ import io.socket.client.Socket;
 public class WaterFragActivity extends BaseActivity implements View.OnClickListener, WaterFragPresenter.View {
 
     private Socket socket;
-    Button btn_water_frag_now, btn_water_frag_reserve;
+    Button BtnWaterFragNow, BtnWaterFragReserve;
     View view_water_frag_now, view_water_frag_reserve;
     FragmentManager fm;
     FragmentTransaction tran;
@@ -44,10 +44,10 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
         address = intentData.getAddress();
         socket = intentData.getSocket();
 
-        btn_water_frag_now = findViewById(R.id.btn_water_frag_now);
-        btn_water_frag_reserve = findViewById(R.id.btn_water_frag_reserve);
-        btn_water_frag_now.setOnClickListener(this);
-        btn_water_frag_reserve.setOnClickListener(this);
+        BtnWaterFragNow = findViewById(R.id.btn_water_frag_now);
+        BtnWaterFragReserve = findViewById(R.id.btn_water_frag_reserve);
+        BtnWaterFragNow.setOnClickListener(this);
+        BtnWaterFragReserve.setOnClickListener(this);
 
         view_water_frag_now = (View) findViewById(R.id.view_water_frag_now);
         view_water_frag_reserve = (View) findViewById(R.id.view_water_frag_reserve);
@@ -130,15 +130,15 @@ public class WaterFragActivity extends BaseActivity implements View.OnClickListe
                 setFrag(0);
                 view_water_frag_now.setBackgroundResource(R.color.colorBlack);
                 view_water_frag_reserve.setBackgroundResource(R.color.white);
-                btn_water_frag_now.setTextColor(Color.BLACK);
-                btn_water_frag_reserve.setTextColor(Color.GRAY);
+                BtnWaterFragNow.setTextColor(Color.BLACK);
+                BtnWaterFragReserve.setTextColor(Color.GRAY);
                 break;
             case R.id.btn_water_frag_reserve:
                 setFrag(1);
                 view_water_frag_reserve.setBackgroundResource(R.color.colorBlack);
                 view_water_frag_now.setBackgroundResource(R.color.white);
-                btn_water_frag_reserve.setTextColor(Color.BLACK);
-                btn_water_frag_now.setTextColor(Color.GRAY);
+                BtnWaterFragReserve.setTextColor(Color.BLACK);
+                BtnWaterFragNow.setTextColor(Color.GRAY);
                 break;
         }
     }

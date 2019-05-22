@@ -15,11 +15,11 @@ import android.widget.Toast;
 
 import com.example.shinj.navmain.DB.DBHelper;
 import com.example.shinj.navmain.Feed.FeedFragActivity;
-import com.example.shinj.navmain.Chart.ChartActivity;
 import com.example.shinj.navmain.Login.LoginActivity;
 import com.example.shinj.navmain.NotificationSetting.NotificationSettingActivity;
 import com.example.shinj.navmain.Streaming.StreamingActivity;
 import com.example.shinj.navmain.Temperature.TemperatureActivity;
+import com.example.shinj.navmain.UserSetting.SettingActivity;
 import com.example.shinj.navmain.Water.WaterFragActivity;
 
 import io.socket.client.Socket;
@@ -88,12 +88,6 @@ abstract public class BaseActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
 
-                    // 네비게이션바 - 차트
-                    case R.id.navigation_item_chart:
-                        intent = new Intent(getApplicationContext(), ChartActivity.class);
-                        startActivity(intent);
-                        break;
-
                     //네비게이션바 - 알림설정
                     case R.id.nav_sub_menu_item01:
                         intent = new Intent(getApplicationContext(), NotificationSettingActivity.class);
@@ -103,7 +97,8 @@ abstract public class BaseActivity extends AppCompatActivity {
                     //네비게이션바 - 로그아웃
                     case R.id.nav_sub_menu_item02:
                         final DBHelper dbHelper = new DBHelper(getApplicationContext());
-                        dbHelper.delete();
+//                        dbHelper.delete();
+                        dbHelper.logoutUpdate(0);
                         intent = new Intent(getApplicationContext(), LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);

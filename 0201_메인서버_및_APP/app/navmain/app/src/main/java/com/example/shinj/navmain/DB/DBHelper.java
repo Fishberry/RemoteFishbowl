@@ -28,6 +28,13 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void logoutUpdate(int isChecking) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.execSQL("UPDATE NotificationInformation SET isChecking=" + isChecking + ";");
+        db.close();
+    }
+
     public void update(String ip, int isChecking) {
         SQLiteDatabase db = getWritableDatabase();
 

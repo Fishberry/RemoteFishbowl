@@ -1,5 +1,9 @@
 package com.example.shinj.navmain.Chart;
 
+import android.graphics.Color;
+import android.os.Bundle;
+import android.widget.TextView;
+
 import com.example.shinj.navmain.BaseActivity;
 import com.example.shinj.navmain.R;
 import com.github.mikephil.charting.animation.Easing;
@@ -9,10 +13,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-
-import android.graphics.Color;
-import android.os.Bundle;
-import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
