@@ -151,40 +151,24 @@
                         android:id="@+id/WeeklyChart_Monday_MaxTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="21.1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Monday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Monday_Title"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Monday_MaxTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Monday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Monday_MaxTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Monday_MinTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20.2"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Monday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Monday_MaxTemper"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Monday_MinTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Monday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Monday_MinTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Monday_MaxPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.5"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Monday"
@@ -194,7 +178,7 @@
                         android:id="@+id/WeeklyChart_Monday_MinPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.4"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Monday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Monday_MaxPH"
@@ -203,19 +187,11 @@
                         android:id="@+id/WeeklyChart_Monday_Feed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Monday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Monday_MinPH"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="회"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Monday_Feed"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Monday_Feed"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Monday"/>
                 </android.support.constraint.ConstraintLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -251,40 +227,24 @@
                         android:id="@+id/WeeklyChart_Tuesday_MaxTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="21.1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Tuesday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Tuesday_Title"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Tuesday_MaxTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Tuesday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Tuesday_MaxTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Tuesday_MinTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20.2"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Tuesday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Tuesday_MaxTemper"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Tuesday_MinTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Tuesday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Tuesday_MinTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Tuesday_MaxPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.5"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Tuesday"
@@ -294,7 +254,7 @@
                         android:id="@+id/WeeklyChart_Tuesday_MinPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.4"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Tuesday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Tuesday_MaxPH"
@@ -303,18 +263,12 @@
                         android:id="@+id/WeeklyChart_Tuesday_Feed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Tuesday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Tuesday_MinPH"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="회"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Tuesday_Feed"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Tuesday_Feed"/>
+                    
                 </android.support.constraint.ConstraintLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -350,40 +304,24 @@
                         android:id="@+id/WeeklyChart_Wednesday_MaxTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="21.1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Wednesday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Wednesday_Title"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Wednesday_MaxTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Wednesday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Wednesday_MaxTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Wednesday_MinTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20.2"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Wednesday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Wednesday_MaxTemper"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Wednesday_MinTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Wednesday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Wednesday_MinTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Wednesday_MaxPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.5"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Wednesday"
@@ -393,7 +331,7 @@
                         android:id="@+id/WeeklyChart_Wednesday_MinPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.4"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Wednesday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Wednesday_MaxPH"
@@ -402,18 +340,11 @@
                         android:id="@+id/WeeklyChart_Wednesday_Feed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Wednesday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Wednesday_MinPH"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="회"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Wednesday_Feed"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Wednesday_Feed"/>
                 </android.support.constraint.ConstraintLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -449,40 +380,24 @@
                         android:id="@+id/WeeklyChart_Thursday_MaxTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="21.1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Thursday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Thursday_Title"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Thursday_MaxTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Thursday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Thursday_MaxTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Thursday_MinTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20.2"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Thursday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Thursday_MaxTemper"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Thursday_MinTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Thursday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Thursday_MinTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Thursday_MaxPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.5"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Thursday"
@@ -492,7 +407,7 @@
                         android:id="@+id/WeeklyChart_Thursday_MinPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.4"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Thursday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Thursday_MaxPH"
@@ -501,18 +416,11 @@
                         android:id="@+id/WeeklyChart_Thursday_Feed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Thursday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Thursday_MinPH"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="회"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Thursday_Feed"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Thursday_Feed"/>
                 </android.support.constraint.ConstraintLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -548,40 +456,24 @@
                         android:id="@+id/WeeklyChart_Friday_MaxTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="21.1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Friday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Friday_Title"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Friday_MaxTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Friday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Friday_MaxTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Friday_MinTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20.2"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Friday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Friday_MaxTemper"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Friday_MinTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Friday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Friday_MinTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Friday_MaxPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.5"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Friday"
@@ -591,7 +483,7 @@
                         android:id="@+id/WeeklyChart_Friday_MinPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.4"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Friday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Friday_MaxPH"
@@ -600,18 +492,11 @@
                         android:id="@+id/WeeklyChart_Friday_Feed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Friday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Friday_MinPH"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="회"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Friday_Feed"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Friday_Feed"/>
                 </android.support.constraint.ConstraintLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -647,40 +532,24 @@
                         android:id="@+id/WeeklyChart_Saturday_MaxTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="21.1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Saturday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Saturday_Title"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Saturday_MaxTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Saturday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Saturday_MaxTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Saturday_MinTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20.2"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Saturday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Saturday_MaxTemper"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Saturday_MinTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Saturday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Saturday_MinTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Saturday_MaxPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.5"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Saturday"
@@ -690,7 +559,7 @@
                         android:id="@+id/WeeklyChart_Saturday_MinPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.4"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Saturday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Saturday_MaxPH"
@@ -699,18 +568,11 @@
                         android:id="@+id/WeeklyChart_Saturday_Feed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Saturday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Saturday_MinPH"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="회"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Saturday_Feed"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Saturday_Feed"/>
                 </android.support.constraint.ConstraintLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -746,40 +608,24 @@
                         android:id="@+id/WeeklyChart_Sunday_MaxTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="21.1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Sunday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Sunday_Title"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Sunday_MaxTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Sunday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Sunday_MaxTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Sunday_MinTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20.2"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Sunday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Sunday_MaxTemper"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="°"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Sunday_MinTemper"
-                        app:layout_constraintEnd_toEndOf="@id/WeeklyChart_Sunday"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Sunday_MinTemper"/>
-                    <TextView
                         android:id="@+id/WeeklyChart_Sunday_MaxPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.5"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Sunday"
@@ -789,7 +635,7 @@
                         android:id="@+id/WeeklyChart_Sunday_MinPH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7.4"
+                        android:text=""
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Sunday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Sunday_MaxPH"
@@ -798,18 +644,11 @@
                         android:id="@+id/WeeklyChart_Sunday_Feed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1"
+                        android:text=""
                         android:textSize="15sp"
                         android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Sunday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Sunday_MinPH"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="회"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toEndOf="@id/WeeklyChart_Sunday_Feed"
-                        app:layout_constraintTop_toTopOf="@id/WeeklyChart_Sunday_Feed"/>
                 </android.support.constraint.ConstraintLayout>
             </android.support.constraint.ConstraintLayout>
         </android.support.constraint.ConstraintLayout>

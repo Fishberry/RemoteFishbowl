@@ -2,12 +2,10 @@ package com.example.shinj.navmain.UserSetting;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Looper;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.shinj.navmain.R;
 

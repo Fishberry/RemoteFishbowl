@@ -11,6 +11,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+    repositories {
+        maven { url "https://jitpack.io" }  // MPAndroidChart(*신제우)
+    }
     buildTypes {
         release {
             minifyEnabled false
