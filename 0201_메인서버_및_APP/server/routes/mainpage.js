@@ -135,6 +135,14 @@ router.get('/changePW', (req, res) => {
 		res.status(200).render('changePW.ejs');
 });
 
+router.get('/raspInfo', (req, res) => {
+	var cookieValue = req.cookies.password;
+	if(cookieValue == null)
+		res.status(200).render('passwordPage.ejs');
+	else
+		res.status(200).render('raspInfo.ejs');
+});
+
 router.get('/logout', (req, res) => {
 	res.clearCookie('password');
 	res.redirect('/');

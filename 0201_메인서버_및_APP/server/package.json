@@ -11,6 +11,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
+    "crontab": "^1.2.0",
     "dataformat": "^1.0.0",
     "dns": "^0.2.2",
     "ejs": "^2.6.1",
@@ -18,6 +19,7 @@
     "express-jsdom": "0.0.1",
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
+    "node-os-utils": "^1.0.7",
     "os-tmpdir": "^2.0.0",
     "router": "^1.3.3",
     "serialport": "^7.1.4",

@@ -2,6 +2,9 @@
 const fs = require('fs');
 const mysql = require('mysql');
 const crypto = require('crypto');
+const os = require('os');
+const utils = require('node-os-utils');
+const cpu = utils.cpu;
 
 const db = require('./models/findDB');
 
@@ -35,8 +38,12 @@ fs.readdir('/dev', (err, data) => {
 
 module.exports = (server, app) => {
   let currentDate = '';
+  let currentDay = '';
+  let current12 = '';
   let temperature = 0.0, phValue = 0.0;
   let minTemper = 0.0, maxTemper = 0.0, minPH = 0.0, maxPH = 0.0;
+  let minTemp_day = 0.0, maxTemp_day = 0.0, minPH_day = 0.0, maxPH_day = 0.0, feed_day=0;
+  let Temp3 = 0.0, PH3 = 0.0, feed3 = 0;
 
   let servoTimer = 0, servoCircle = 0;
   let waterTimer = 0, totalPercent = 0;
@@ -47,6 +54,10 @@ module.exports = (server, app) => {
     // 서버의 현재시간을 저장한다
     var dt = new Date();
     currentDate = "\"" + dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate() + '/' + dt.getHours() + '/' + dt.getMinutes() + "\"";
+    currentDate2 = "\"" + dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate() + '/' + dt.getHours() + "\"";
+    currentDay = "\"" + dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate() + "\"";
+
+    current12 = "\"" + dt.getHours() + '/' + dt.getMinutes() + "\"";
 
     // 자동 먹이지급 관련 제어코드
     autoFeed(connection, tty, fs);
@@ -74,10 +85,40 @@ module.exports = (server, app) => {
     });
   }, 1000);
 
-
+  // 3시간마다 온도, ph, 먹이지급여부 기록
   setInterval(() => {
-    connection.query('insert into DataRepository values(' + currentDate + ',' + temperature + ',' + phValue + ')', () => { });
-  }, 1800000);
+    //connection.query('insert into DataRepository values(' + currentDate + ',' + temperature + ',' + phValue + ',' + feed_day + ')', () => { });
+    connection.query('insert into Hour3Value values(' + currentDate2 + ',' + temperature + ',' + phValue + ',' + feed_day + ')', () => { });
+  }, 10800000);
+
+  // 1분마다 DailyValue DB에 최대온도 등의 값들을 update하고, 12시에 새로운 값 추가
+  setInterval(() => {
+	  /*
+      connection.query('select EXISTS (select * from DailyValue where date="' + currentDay + '") as success', (error, results, fields) => {
+  	  if(results.success == '1') 
+    	    connection.query('insert into DailyValue values('+ currentDay + ',' + temperature + ',' + temperature + ',' + phValue + ',' + phValue + ',' + '1' + ')', () => { });   
+	  else
+	    console.log(results);
+      });
+	  */
+      connection.query('select * from DailyValue', (error, results, fields) => {
+	if(current12=="\"0/0\"") connection.query('insert into DailyValue value (' + currentDay + ',' + temperature + ',' + temperature + ',' + phValue + ',' + phValue + ',' +'0' + ')');
+	for(var i=0; i<results.length; i++) {
+  	  if(("\"" + results[i].date + "\"" )== currentDay) {
+	    if(results[i].maxTemp < temperature) connection.query('update DailyValue set maxTemp='+temperature);
+	    if(results[i].minTemp > temperature) connection.query('update DailyValue set minTemp='+temperature);
+	    if(results[i].maxPH < phValue) connection.query('update DailyValue set maxPH='+phValue);
+	    if(results[i].minPH > phValue) connection.query('update DailyValue set minPH='+phValue);
+	  }
+	maxTemp_day = results[i].maxTemp;
+	minTemp_day = results[i].minTemp;
+	maxPH_day = results[i].maxPH;
+	minPH_day = results[i].minPH;
+	feed_day = results[i].feed;
+	}
+      });
+    
+  }, 60000);
 
   // 5초마다 수온측정, 수질측정을 진행하고, 그에 따른 LED상태변화도 진행한다
   setInterval(() => {
@@ -150,6 +191,35 @@ module.exports = (server, app) => {
       fs.open(tty, 'a', 666, (e, fd) => {
         fishberryWrite.input(fd, data);
       });
+    });
+
+    socket.on('reqDailyValue', (data, err) => {
+      connection.query('select * from DailyValue where date=' + data, (error, results, fields) => {
+        if (error)
+          console.log(error);
+        else {
+          socket.emit('resDailyValue', results[0].maxTemp, results[0].minTemp, results[0].maxPH, results[0].minPH, results[0].feed, data);
+	  console.log('날짜: ', data);
+	  console.log('test data: ', results[0].maxTemp);
+	  console.log('test data: ', results[0].minTemp);
+	  console.log('test data: ', results[0].maxPH);
+	  console.log('test data: ', results[0].minPH);
+	  console.log('test data: ', results[0].feed);
+        }
+      });
+      //socket.emit(minTemp_day, maxTemp_day, minPH_day, maxPH_day, feed_day);
+    });
+
+    socket.on('reqHour3Value', (data, err) => {
+      connection.query('select * from Hour3Value where date=' + data, (error, results, fields) => {
+        if (error)
+          console.log(error);
+        else {
+          socket.emit(results[0].Temp, results[0].PH, results[0].feed);
+        }
+      });
+      //console.log('app에서 받은 입력 : ', data);
+      //socket.emit(Temp3, PH3, feed3);
     });
 
     // App에 먹이지급 타이머와 회전수를 전송
@@ -238,6 +308,33 @@ module.exports = (server, app) => {
       });
     });
 
+    socket.on('changePassword', (previewPw, forwardPw) => {
+      
+      connection.query('select * from passwordSetting', (error, results, fields) => {
+      	
+	if (error) throw error;
+
+	else {
+	  console.log(results);
+
+	  var decipher = crypto.createDecipher('aes256', 'password');
+	  decipher.update(results[0].password, 'hex', 'ascii');
+	  var decipherd = decipher.final('ascii');
+
+	  if (decipherd == previewPw) {
+	    var cipher = crypto.createCipher('aes256', 'password');
+	    cipher.update(forwardPw, 'ascii', 'hex');
+	    var cipherd = cipher.final('hex');
+	    connection.query("update passwordSetting set password='" + cipherd + "';");
+
+	    socket.emit('changePasswordResult', 1);
+	  }
+	  else
+	    socket.emit('changePasswordResult', 0);
+	}
+      });
+    });
+
     // App에서 DB에 값 등록
     socket.on('insertTemper', (min, max) => {
       console.log('minTemper : ' + min);
@@ -270,6 +367,16 @@ module.exports = (server, app) => {
     // App에서 nodejs로의 연결 해제
     socket.on('disconnect', () => {
       console.log('연결 해제');
+    });
+
+    socket.on('reqOS', (data, err) => {
+        if (err) throw err;
+        //console.log('app에서 받은 입력 : ', data);
+        var version = os.hostname() + os.release();
+	cpu.usage().then(info=> {
+		var cpuinfo = info;
+	});
+        socket.emit('resOS', version, os.freemem(), os.totalmem(), cpuinfo);
     });
 
   });

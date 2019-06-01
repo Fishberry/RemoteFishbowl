@@ -36,7 +36,8 @@ while True:
     #phph = 7-1000*(sensorValue-365)*4.95/59.16/1023.2
 
     voltage = sensorValue*5.0/1024
-    pHValue = 3.5*voltage - 2
+    #pHValue = 3.5*voltage - 2
+    pHValue = 3.5*voltage + 1; 
     print("Read Value : {0}".format(readValue))
     print("Voltage : %0.5fmV"%(voltage))
     print("pH Value : %0.2f"%(pHValue))
