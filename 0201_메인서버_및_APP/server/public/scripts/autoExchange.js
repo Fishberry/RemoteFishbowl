@@ -21,42 +21,55 @@ function startAutoExchange(connection, tty, fs) {
       fs.open(tty, 'a', 666, (e, fd) => {
         console.log('totalPercent : ' + totalPercent);
         if (results[0].exTimer1 > 0) {
-          if (results[0].exTimer1 == 30) {
+          if (results[0].exTimer1 == 21) {
             fishberryWrite.input(fd, 'StartOUT');
             waterTimer1 = results[0].exTimer1 - 1;
             connection.query('update ExchangeSetting set exTimer1=' + waterTimer1, () => { });
           }
 
-          else if (results[0].exTimer1 == 2) {
+          else if (results[0].exTimer1 == 3) {
             fishberryWrite.input(fd, 'StopOUT');
+            waterTimer1 = results[0].exTimer1 - 1;
+            connection.query('update ExchangeSetting set exTimer1=' + waterTimer1, () => { });
+          }
+
+          else if (results[0].exTimer1 == 1) {
+            fishberryWrite.input(fd, 'StartIN');
             waterTimer1 = results[0].exTimer1 - 1;
             connection.query('update ExchangeSetting set exTimer1=' + waterTimer1, () => { });
           }
 
 	  else {
             waterTimer1 = results[0].exTimer1 - 1;
-            totalPercent = parseInt((1 - (waterTimer1 / 32)) * 50);
+            totalPercent = parseInt((1 - (waterTimer1 / 22)) * 50);
             connection.query('update ExchangeSetting set exTimer1=' + waterTimer1 + ', totalPercent=' + totalPercent, () => { });
 	  }
         }
         else {
-          if (results[0].exTimer2 == 30) {
+	/*	
+          if (results[0].exTimer2 == 20) {
             fishberryWrite.input(fd, 'StartIN');
             waterTimer2 = results[0].exTimer2 - 1;
             connection.query('update ExchangeSetting set exTimer2=' + waterTimer2, () => { });
           }
-          else if (results[0].exTimer2 == 0) {
-            fishberryWrite.input(fd, 'StopIN');
+	*/
+          if (results[0].exTimer2 == 0) {
             totalPercent = 0;
-            waterTimer1 = 32;
-            waterTimer2 = 32;
+            waterTimer1 = 22;
+            waterTimer2 = 22;
             results[0].isChanged = false;
             connection.query('update ExchangeSetting set exTimer1=' + waterTimer1 + ', exTimer2=' + waterTimer2 + ', isChanged=false, totalPercent = 0', () => { });
           }
 
+          else if (results[0].exTimer2 == 2) {
+            fishberryWrite.input(fd, 'StopIN');
+            waterTimer2 = results[0].exTimer2 - 1;
+            connection.query('update ExchangeSetting set exTimer2=' + waterTimer2, () => { });
+          }
+
           else {
             waterTimer2 = results[0].exTimer2 - 1;
-            totalPercent = 50 + parseInt((1 - (waterTimer2 / 32)) * 50);
+            totalPercent = 50 + parseInt((1 - (waterTimer2 / 22)) * 50);
             connection.query('update ExchangeSetting set exTimer2=' + waterTimer2 + ', totalPercent=' + totalPercent, () => { });
           }
         }

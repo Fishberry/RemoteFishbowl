@@ -7,6 +7,7 @@ const utils = require('node-os-utils');
 const cpu = utils.cpu;
 
 const db = require('./models/findDB');
+var exec = require('child_process').exec, child;
 
 const autoFeed = require('./public/scripts/autofeed');
 const autoExchange = require('./public/scripts/autoExchange');
@@ -48,6 +49,7 @@ module.exports = (server, app) => {
   let servoTimer = 0, servoCircle = 0;
   let waterTimer = 0, totalPercent = 0;
   let isChanged = false;
+  let cpuinfo = '';
 
   setInterval(() => {
 
@@ -105,10 +107,10 @@ module.exports = (server, app) => {
 	if(current12=="\"0/0\"") connection.query('insert into DailyValue value (' + currentDay + ',' + temperature + ',' + temperature + ',' + phValue + ',' + phValue + ',' +'0' + ')');
 	for(var i=0; i<results.length; i++) {
   	  if(("\"" + results[i].date + "\"" )== currentDay) {
-	    if(results[i].maxTemp < temperature) connection.query('update DailyValue set maxTemp='+temperature);
-	    if(results[i].minTemp > temperature) connection.query('update DailyValue set minTemp='+temperature);
-	    if(results[i].maxPH < phValue) connection.query('update DailyValue set maxPH='+phValue);
-	    if(results[i].minPH > phValue) connection.query('update DailyValue set minPH='+phValue);
+	    if(results[i].maxTemp < temperature) connection.query('update DailyValue set maxTemp='+temperature+' where date='+currentDay);
+	    if(results[i].minTemp > temperature) connection.query('update DailyValue set minTemp='+temperature+' where date='+currentDay);
+	    if(results[i].maxPH < phValue) connection.query('update DailyValue set maxPH='+phValue+' where date='+currentDay);
+	    if(results[i].minPH > phValue) connection.query('update DailyValue set minPH='+phValue+' where date='+currentDay);
 	  }
 	maxTemp_day = results[i].maxTemp;
 	minTemp_day = results[i].minTemp;
@@ -144,6 +146,9 @@ module.exports = (server, app) => {
 
     // 수온 및 수질에 따른 아두이노 LED 제어
     checkLED(tty, fs, temperature, phValue, maxTemper, minTemper, maxPH, minPH);
+    cpu.usage().then(info=> {
+	cpuinfo = info;
+    });
 
   }, 5000);
 
@@ -199,12 +204,6 @@ module.exports = (server, app) => {
           console.log(error);
         else {
           socket.emit('resDailyValue', results[0].maxTemp, results[0].minTemp, results[0].maxPH, results[0].minPH, results[0].feed, data);
-	  console.log('날짜: ', data);
-	  console.log('test data: ', results[0].maxTemp);
-	  console.log('test data: ', results[0].minTemp);
-	  console.log('test data: ', results[0].maxPH);
-	  console.log('test data: ', results[0].minPH);
-	  console.log('test data: ', results[0].feed);
         }
       });
       //socket.emit(minTemp_day, maxTemp_day, minPH_day, maxPH_day, feed_day);
@@ -361,7 +360,7 @@ module.exports = (server, app) => {
     socket.on('insertWater', (timerWater) => {
       console.log('timerWater : ' + timerWater);
 
-      db.insertExchange(32, 32, timerWater);
+      db.insertExchange(22, 22, timerWater);
     });
 
     // App에서 nodejs로의 연결 해제
@@ -373,10 +372,25 @@ module.exports = (server, app) => {
         if (err) throw err;
         //console.log('app에서 받은 입력 : ', data);
         var version = os.hostname() + os.release();
-	cpu.usage().then(info=> {
-		var cpuinfo = info;
-	});
         socket.emit('resOS', version, os.freemem(), os.totalmem(), cpuinfo);
+    });
+
+    socket.on('reqReboot', () => {
+      console.log('서버 재부팅');
+      child = exec("sudo reboot", function(error) {
+	      if(error != null) {
+		      console.log('exec error: ' + error);
+	      }
+      });
+    });
+
+    socket.on('reqHalt', () => {
+      console.log('서버 종료');
+      child = exec("sudo halt", function(error) {
+	      if(error != null) {
+		      console.log('exec error: ' + error);
+	      }
+      });
     });
 
   });
