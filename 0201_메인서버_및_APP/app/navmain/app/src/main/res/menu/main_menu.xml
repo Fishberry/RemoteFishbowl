@@ -11,5 +11,8 @@
     <item
         android:id="@+id/Inquire"
         android:title="문의"/>
+    <item
+        android:id="@+id/infoDevice"
+        android:title="기기 정보"/>
 
 </menu>
