@@ -209,6 +209,16 @@ module.exports = (server, app) => {
       //socket.emit(minTemp_day, maxTemp_day, minPH_day, maxPH_day, feed_day);
     });
 
+    socket.on('reqDailyValueCount', (data, err) => {
+      connection.query('select count(*) AS count from DailyValue', (error, results, fields) => {
+        if (error)
+          console.log(error);
+        else {
+          socket.emit('resDailyValueCount', results[0].count);
+        }
+      });
+    });
+
     socket.on('reqHour3Value', (data, err) => {
       connection.query('select * from Hour3Value where date=' + data, (error, results, fields) => {
         if (error)
