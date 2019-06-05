@@ -16,10 +16,12 @@ import android.widget.Toast;
 import com.example.shinj.navmain.DB.DBHelper;
 import com.example.shinj.navmain.Feed.FeedFragActivity;
 import com.example.shinj.navmain.Chart.ChartActivity;
+import com.example.shinj.navmain.InfoDevice.InfoDeviceActivity;
 import com.example.shinj.navmain.Login.LoginActivity;
 import com.example.shinj.navmain.NotificationSetting.NotificationSettingActivity;
 import com.example.shinj.navmain.Streaming.StreamingActivity;
 import com.example.shinj.navmain.Temperature.TemperatureActivity;
+import com.example.shinj.navmain.UserSetting.SettingActivity;
 import com.example.shinj.navmain.Water.WaterFragActivity;
 
 import io.socket.client.Socket;
@@ -148,6 +150,10 @@ abstract public class BaseActivity extends AppCompatActivity {
                 break;
             case R.id.Inquire:
                 Toast.makeText(this, "문의 : https://github.com/Fishberry/RemoteFishbowl", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.infoDevice:
+                intent = new Intent(this, InfoDeviceActivity.class);
+                startActivity(intent);
                 break;
         }
 

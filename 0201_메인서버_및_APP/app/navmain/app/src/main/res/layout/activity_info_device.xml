@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InfoDevice.InfoDeviceActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/top_layout_info_device"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_layout_info_device"
+        android:background="@drawable/round_layout_shape"
+        android:elevation="3dp"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <TextView
+            android:id="@+id/os_version_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="15dp"
+            android:text="OS 버전 : "
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"/>
+        <TextView
+            android:id="@+id/os_version_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/os_version_title"
+            app:layout_constraintTop_toTopOf="@id/os_version_title"
+            app:layout_constraintBottom_toBottomOf="@id/os_version_title"
+            android:text="OS가 나옵니다"
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"/>
+        <TextView
+            android:id="@+id/free_memory_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/os_version_title"
+            app:layout_constraintTop_toBottomOf="@id/os_version_title"
+            android:text="남은 메모리 : "
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"/>
+        <TextView
+            android:id="@+id/free_memory_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/free_memory_title"
+            app:layout_constraintTop_toTopOf="@id/free_memory_title"
+            app:layout_constraintBottom_toBottomOf="@id/free_memory_title"
+            android:text="남은 메모리가 나옵니다"
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"/>
+        <TextView
+            android:id="@+id/total_memory_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/os_version_title"
+            app:layout_constraintTop_toBottomOf="@id/free_memory_title"
+            android:text="총 메모리 : "
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"/>
+        <TextView
+            android:id="@+id/total_memory_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/total_memory_title"
+            app:layout_constraintTop_toTopOf="@id/total_memory_title"
+            app:layout_constraintBottom_toBottomOf="@id/total_memory_title"
+            android:text="총 메모리가 나옵니다"
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"/>
+        <TextView
+            android:id="@+id/cpu_info_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/os_version_title"
+            app:layout_constraintTop_toBottomOf="@id/total_memory_title"
+            android:text="CPU 사용량 : "
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"/>
+        <TextView
+            android:id="@+id/cpu_info_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/cpu_info_title"
+            app:layout_constraintTop_toTopOf="@id/cpu_info_title"
+            app:layout_constraintBottom_toBottomOf="@id/cpu_info_title"
+            android:text="CPU 샤용량이 나옵니다"
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/bottom_layout_info_device"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_layout_info_device"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/round_layout_shape"
+        android:elevation="3dp">
+
+        <GridView
+            android:id="@+id/info_device_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:stretchMode="columnWidth"
+            android:numColumns="2">
+        </GridView>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
