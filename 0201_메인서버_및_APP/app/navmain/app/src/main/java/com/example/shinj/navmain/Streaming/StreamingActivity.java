@@ -73,7 +73,11 @@ public class StreamingActivity extends BaseActivity implements StreamingPresente
                         });
                         Thread.sleep(1000);
                     } catch (Exception e) {
-                        Toast.makeText(StreamingActivity.this, "먹이급여시간 오류", Toast.LENGTH_SHORT).show();
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(StreamingActivity.this, "먹이급여시간 오류", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         setWhetherSensor(false);
                     }
                 }
@@ -102,7 +106,11 @@ public class StreamingActivity extends BaseActivity implements StreamingPresente
                         });
                         Thread.sleep(1000);
                     } catch (Exception e) {
-                        Toast.makeText(StreamingActivity.this, "환수예약시간 오류", Toast.LENGTH_SHORT).show();
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(StreamingActivity.this, "환수예약시간 오류", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         setWhetherSensor(false);
                     }
                 }
@@ -144,13 +152,21 @@ public class StreamingActivity extends BaseActivity implements StreamingPresente
                                     });
                                 }
                                 else {
-                                    Toast.makeText(StreamingActivity.this, "온도센서 혹은 수질센서에서 값을 받아 올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                                    runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            Toast.makeText(StreamingActivity.this, "온도센서 혹은 수질센서에서 값을 받아 올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             });
                         });
                         Thread.sleep(1000);
                     } catch (Exception e) {
-                        Toast.makeText(StreamingActivity.this, "온도센서 혹은 수질센서의 연결에 이상이 생겼습니다.", Toast.LENGTH_SHORT).show();
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(StreamingActivity.this, "온도센서 혹은 수질센서의 연결에 이상이 생겼습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         setWhetherSensor(false);
                     }
 

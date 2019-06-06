@@ -1,7 +1,6 @@
 package com.example.shinj.navmain.InfoDevice;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import io.socket.client.Socket;
 

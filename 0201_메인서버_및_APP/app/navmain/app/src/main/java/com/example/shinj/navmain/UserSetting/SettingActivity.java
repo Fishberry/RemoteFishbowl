@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,6 @@ import com.example.shinj.navmain.R;
 public class SettingActivity extends AppCompatActivity implements SettingPresenter.View {
 
     GridView gridView;
-    ConstraintLayout layout;
 
     private Integer[] mThumbnail = {
             R.drawable.ic_change_password,
@@ -48,9 +46,8 @@ public class SettingActivity extends AppCompatActivity implements SettingPresent
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        layout = findViewById(R.id.setting_layout);
-        gridView = (GridView) findViewById(R.id.setting_gridview);
         Adapter adapter = new Adapter(this);
+        gridView = (GridView) findViewById(R.id.setting_gridview);
         gridView.setAdapter(adapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

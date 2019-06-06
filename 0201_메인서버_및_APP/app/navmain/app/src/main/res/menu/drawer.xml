@@ -34,7 +34,15 @@
             <item
                 android:icon="@drawable/ic_emoticon"
                 android:id="@+id/nav_sub_menu_item02"
-                android:title="@string/nav_sub_menu_item02" />
+                android:title="기기 상태" />
+            <!--<item-->
+                <!--android:icon="@drawable/ic_emoticon"-->
+                <!--android:id="@+id/nav_sub_menu_item03"-->
+                <!--android:title="로그아웃" />-->
+            <item
+                android:icon="@drawable/ic_emoticon"
+                android:id="@+id/nav_sub_menu_item04"
+                android:title="사용자 설정" />
         </menu>
     </item>
 

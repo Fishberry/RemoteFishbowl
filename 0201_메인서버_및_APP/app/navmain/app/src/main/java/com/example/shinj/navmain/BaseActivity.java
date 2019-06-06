@@ -21,7 +21,6 @@ import com.example.shinj.navmain.Login.LoginActivity;
 import com.example.shinj.navmain.NotificationSetting.NotificationSettingActivity;
 import com.example.shinj.navmain.Streaming.StreamingActivity;
 import com.example.shinj.navmain.Temperature.TemperatureActivity;
-import com.example.shinj.navmain.UserSetting.SettingActivity;
 import com.example.shinj.navmain.Water.WaterFragActivity;
 
 import io.socket.client.Socket;
@@ -69,44 +68,64 @@ abstract public class BaseActivity extends AppCompatActivity {
                     //  네비게이션바 - 내 어항
                     case R.id.navigation_item_streaming:
                         intent = new Intent(getApplicationContext(), StreamingActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
 
                     // 네비게이션바 - 먹이급여
                     case R.id.navigation_item_feed:
                         intent = new Intent(getApplicationContext(), FeedFragActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
 
                     // 네비게이션바 - 환수
                     case R.id.navigation_item_water:
                         intent = new Intent(getApplicationContext(), WaterFragActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
 
                     // 네비게이션바 - 온도/pH
                     case R.id.navigation_item_temperPh:
                         intent = new Intent(getApplicationContext(), TemperatureActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
 
                     // 네비게이션바 - 차트
                     case R.id.navigation_item_chart:
                         intent = new Intent(getApplicationContext(), ChartActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
 
                     //네비게이션바 - 알림설정
                     case R.id.nav_sub_menu_item01:
                         intent = new Intent(getApplicationContext(), NotificationSettingActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
 
-                    //네비게이션바 - 로그아웃
+                    //네비게이션바 - 기기 상태
                     case R.id.nav_sub_menu_item02:
-                        final DBHelper dbHelper = new DBHelper(getApplicationContext());
-                        dbHelper.delete();
-                        intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent = new Intent(getApplicationContext(), InfoDeviceActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        break;
+
+//                    //네비게이션바 - 로그아웃
+//                    case R.id.nav_sub_menu_item03:
+//                        final DBHelper dbHelper = new DBHelper(getApplicationContext());
+//                        dbHelper.delete();
+//                        intent = new Intent(getApplicationContext(), LoginActivity.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity(intent);
+//                        break;
+
+                    //네비게이션바 - 사용자 설정
+                    case R.id.nav_sub_menu_item04:
+                        intent = new Intent(getApplicationContext(), SettingActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
@@ -123,7 +142,6 @@ abstract public class BaseActivity extends AppCompatActivity {
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -139,7 +157,7 @@ abstract public class BaseActivity extends AppCompatActivity {
             case R.id.action_settings:
                 return true;
 
-            /* 우측 상단위 옵션메뉴 */
+            /*// 우측 상단위 옵션메뉴
             case R.id.usingGuide:
                 intent = new Intent(this, ManualActivity.class);
                 startActivity(intent);
@@ -151,10 +169,7 @@ abstract public class BaseActivity extends AppCompatActivity {
             case R.id.Inquire:
                 Toast.makeText(this, "문의 : https://github.com/Fishberry/RemoteFishbowl", Toast.LENGTH_LONG).show();
                 break;
-            case R.id.infoDevice:
-                intent = new Intent(this, InfoDeviceActivity.class);
-                startActivity(intent);
-                break;
+             */
         }
 
         return super.onOptionsItemSelected(item);

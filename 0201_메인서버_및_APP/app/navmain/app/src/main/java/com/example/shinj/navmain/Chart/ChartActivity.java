@@ -11,9 +11,14 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TabLayout;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +34,15 @@ import io.socket.client.Socket;
 
 
 public class ChartActivity extends BaseActivity {
+
+    private Socket socket;
+    IntentData intentData;
+
+    int dailyValueCount = 0;
+    int pageCount = 0;
+    int thisWeekCount = 0;
+
+    String today = DayOfWeek.getTodayDate();
     static TextView mondayDate, mondayMaxTemper, mondayMinTemper, mondayMaxPH, mondayMinPH, mondayFeed,
             tuesdayDate, tuesdayMaxTemper, tuesdayMinTemper, tuesdayMaxPH, tuesdayMinPH, tuesdayFeed,
             wednesdayDate, wednesdayMaxTemper, wednesdayMinTemper, wednesdayMaxPH, wednesdayMinPH, wednesdayFeed,
@@ -36,11 +50,20 @@ public class ChartActivity extends BaseActivity {
             fridayDate, fridayMaxTemper, fridayMinTemper, fridayMaxPH, fridayMinPH, fridayFeed,
             saturdayDate, saturdayMaxTemper, saturdayMinTemper, saturdayMaxPH, saturdayMinPH, saturdayFeed,
             sundayDate, sundayMaxTemper, sundayMinTemper, sundayMaxPH, sundayMinPH, sundayFeed;
-
+    static ConstraintLayout weeklyChartLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        intentData = IntentData.getInstance();
+        socket = intentData.getSocket();
+
+        socket.emit("reqDailyValueCount", "앱에서 DailValue의 Count요청");
+        socket.on(Socket.EVENT_CONNECT, (Object... objects) -> {
+        }).on("resDailyValueCount", (Object... objects) -> {
+           getDailyValueCount(objects[0].toString());
+        });
+        weeklyChartLayout = findViewById(R.id.weeklyChartLayout);
         // 월
         mondayDate = findViewById(R.id.WeeklyChart_Monday_Date);
         mondayMaxTemper = findViewById(R.id.WeeklyChart_Monday_MaxTemper);
@@ -91,12 +114,75 @@ public class ChartActivity extends BaseActivity {
         sundayMinPH = findViewById(R.id.WeeklyChart_Sunday_MinPH);
         sundayFeed = findViewById(R.id.WeeklyChart_Sunday_Feed);
 
-        drawDate();
+        drawDate(today);
         drawDailyChart();
-        String today = DayOfWeek.getTodayDate();
         WeeklyChart weeklyChart = new WeeklyChart(today);
+        thisWeekCount = WeeklyChart.getThisWeekCount();
+
+        weeklyChartLayout.setOnTouchListener(new View.OnTouchListener() {
+            float downXAxis, upXAxis, intervalXAxis;
+             public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    // 버튼을 눌렀을 때
+                    downXAxis = event.getX();
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    // 버튼에서 손을 떼었을 때
+                    upXAxis = event.getX();
+                    intervalXAxis = downXAxis - upXAxis;
+                    if( intervalXAxis < -350 && dailyValueCount > 7 ) { // 저번주 코드
+                        Log.d("저번주코드:", "하하");
+                        pageCount++;
+                        String startDate = WeeklyChart.getStartDate(DayOfWeek.calculDate(today, -(7* pageCount) ));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                drawDate(startDate);
+                                WeeklyChart.getWeeklyData(startDate, DayOfWeek.calculDate(startDate, 6));
+                            }
+                        });
+                        if(pageCount == 1) {
+                            dailyValueCount -= thisWeekCount;
+                            Log.d("저번주에:", ""+dailyValueCount +"dddd" +thisWeekCount);
+                        } else {
+                            dailyValueCount -= 7;
+                        }
+                    } else if(intervalXAxis > 350 && pageCount > 1) { // 다음주 코드
+                        pageCount--;
+                        String startDate = WeeklyChart.getStartDate(DayOfWeek.calculDate(today, -(7* pageCount) ));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                drawDate(startDate);
+                                WeeklyChart.getWeeklyData(startDate, DayOfWeek.calculDate(startDate, 6));
+                            }
+                        });
+                        dailyValueCount += 7;
+                    } else if(intervalXAxis > 350 && pageCount == 1) { // 이번주 전 페이지에서 이번주 페이지로 넘어올 때
+                        pageCount--;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                int nullDateCount = 0;
+                                drawDate(today);
+                                WeeklyChart.getWeeklyData(WeeklyChart.getStartDate(today), today);
+                                if (thisWeekCount != 7) { // 이번주 데이터에서 아직 없는 요일(ex.오늘 목요일이면 금,토,일)은 WeeklyChart에 null로 표시
+                                    while (7 - nullDateCount > thisWeekCount) {
+                                        drawWeeklyChartINVISIBLE(DayOfWeek.getDayOfWeek(DayOfWeek.calculDate(today, ++nullDateCount)));
+                                    }
+                                }
+                                dailyValueCount += thisWeekCount;
+                            }
+                        });
+                    }
+                }
+                return true;
+            }
+        });
     }
 
+    private void getDailyValueCount(String count){
+        dailyValueCount = Integer.parseInt(count);
+    }
 
     private void drawDailyChart() {
 
@@ -196,7 +282,7 @@ public class ChartActivity extends BaseActivity {
                 saturdayMaxTemper.setText(dailyValues[0] + "°");
                 saturdayMinTemper.setText(dailyValues[1] + "°");
                 saturdayMaxPH.setText(dailyValues[2]);
-                fridayMinPH.setText(dailyValues[3]);
+                saturdayMinPH.setText(dailyValues[3]);
                 saturdayFeed.setText(dailyValues[4] + "회");
                 break;
             case "일":
@@ -209,116 +295,125 @@ public class ChartActivity extends BaseActivity {
         }
     }
 
-//    public void drawWeeklyChart() {
-//
-//        DayOfWeek dayOfWeek = new DayOfWeek();
-//        String today = dayOfWeek.getTodayDate();
-//        WeeklyChart weeklyChart = new WeeklyChart(today);
-//        mondayMaxTemper.setText(weeklyChart.weeklyValue[0][0]);
-//        mondayMinTemper.setText(weeklyChart.weeklyValue[0][1]);
-//        mondayMaxPH.setText(weeklyChart.weeklyValue[0][2]);
-//        mondayMinPH.setText(weeklyChart.weeklyValue[0][3]);
-//
-//
-//        tuesdayMaxTemper.setText(weeklyChart.weeklyValue[1][0]);
-//        tuesdayMinTemper.setText(weeklyChart.weeklyValue[1][1]);
-//        tuesdayMaxPH.setText(weeklyChart.weeklyValue[1][2]);
-//        tuesdayMinPH.setText(weeklyChart.weeklyValue[1][3]);
-//
-//        wednesdayMaxTemper.setText(weeklyChart.weeklyValue[2][0]);
-//        wednesdayMinTemper.setText(weeklyChart.weeklyValue[2][1]);
-//        wednesdayMaxPH.setText(weeklyChart.weeklyValue[2][2]);
-//        wednesdayMinPH.setText(weeklyChart.weeklyValue[2][3]);
-//
-//
-//        thursdayMaxTemper.setText(weeklyChart.weeklyValue[3][0]);
-//        thursdayMinTemper.setText(weeklyChart.weeklyValue[3][1]);
-//        thursdayMaxPH.setText(weeklyChart.weeklyValue[3][2]);
-//        thursdayMinPH.setText(weeklyChart.weeklyValue[3][3]);
-//
-//        fridayMaxTemper.setText("xx");
-//        fridayMinTemper.setText("xx");
-//        fridayMaxPH.setText("xx");
-//        fridayMinPH.setText("xx");
-//
-//        saturdayMaxTemper.setText("xx");
-//        saturdayMinTemper.setText("xx");
-//        saturdayMaxPH.setText("xx");
-//        saturdayMinPH.setText("xx");
-//
-//        sundayMaxTemper.setText("xx");
-//        sundayMinTemper.setText("xx");
-//        sundayMaxPH.setText("xx");
-//        sundayMinPH.setText("xx");
-//    }
-
-    public void drawDate() {
-        DayOfWeek dayOfWeek = new DayOfWeek();
-        String today = dayOfWeek.getTodayDate();
-        String yoiL = dayOfWeek.getDayOfWeek(today);
-        switch (yoiL) {
+    private void drawWeeklyChartINVISIBLE(String dayOfWeek){
+        switch (dayOfWeek){
             case "월":
-                mondayDate.setText(dayOfWeek.transformDateString(today));
-                tuesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 1));
-                wednesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 2));
-                thursdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 3));
-                fridayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 4));
-                saturdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 5));
-                sundayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 6));
+                mondayMaxTemper.setText("");
+                mondayMinTemper.setText("");
+                mondayMaxPH.setText("");
+                mondayMinPH.setText("");
+                mondayFeed.setText("");
                 break;
             case "화":
-                mondayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -1));
-                tuesdayDate.setText(dayOfWeek.transformDateString(today));
-                wednesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 1));
-                thursdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 2));
-                fridayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 3));
-                saturdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 4));
-                sundayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 5));
+                tuesdayMaxTemper.setText("");
+                tuesdayMinTemper.setText("");
+                tuesdayMaxPH.setText("");
+                tuesdayMinPH.setText("");
+                tuesdayFeed.setText("");
                 break;
             case "수":
-                mondayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -2));
-                tuesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -1));
-                wednesdayDate.setText(dayOfWeek.transformDateString(today));
-                thursdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 1));
-                fridayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 2));
-                saturdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 3));
-                sundayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 4));
+                wednesdayMaxTemper.setText("");
+                wednesdayMinTemper.setText("");
+                wednesdayMaxPH.setText("");
+                wednesdayMinPH.setText("");
+                wednesdayFeed.setText("");
                 break;
             case "목":
-                mondayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -3));
-                tuesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -2));
-                wednesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -1));
-                thursdayDate.setText(dayOfWeek.transformDateString(today));
-                fridayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 1));
-                saturdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 2));
-                sundayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 3));
+                thursdayMaxTemper.setText("");
+                thursdayMinTemper.setText("");
+                thursdayMaxPH.setText("");
+                thursdayMinPH.setText("");
+                thursdayFeed.setText("");
                 break;
             case "금":
-                mondayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -4));
-                tuesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -3));
-                wednesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -2));
-                thursdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -1));
-                fridayDate.setText(dayOfWeek.transformDateString(today));
-                saturdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 1));
-                sundayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 2));
+                fridayMaxTemper.setText("");
+                fridayMinTemper.setText("");
+                fridayMaxPH.setText("");
+                fridayMinPH.setText("");
+                fridayFeed.setText("");
                 break;
             case "토":
-                mondayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -5));
-                tuesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -4));
-                wednesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -3));
-                thursdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -2));
-                fridayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -1));
-                saturdayDate.setText(dayOfWeek.transformDateString(today));
-                sundayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, 1));
+                saturdayMaxTemper.setText("");
+                saturdayMinTemper.setText("");;
+                saturdayMaxPH.setText("");
+                saturdayMinPH.setText("");
+                saturdayFeed.setText("");
                 break;
             case "일":
-                mondayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -6));
-                tuesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -5));
-                wednesdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -4));
-                thursdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -3));
-                fridayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -2));
-                saturdayDate.setText(dayOfWeek.setDateOnWeeklyChart(today, -1));
-                sundayDate.setText(dayOfWeek.transformDateString(today));
+                sundayMaxTemper.setText("");
+                sundayMinTemper.setText("");
+                sundayMaxPH.setText("");
+                sundayMinPH.setText("");
+                sundayFeed.setText("");
+                break;
+        }
+    }
+
+    public void drawDate(String targetDate) {
+        String yoiL = DayOfWeek.getDayOfWeek(targetDate);
+        switch (yoiL) {
+            case "월":
+                mondayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 0));
+                tuesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 1));
+                wednesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 2));
+                thursdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 3));
+                fridayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 4));
+                saturdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 5));
+                sundayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 6));
+                break;
+            case "화":
+                mondayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -1));
+                tuesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 0));
+                wednesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 1));
+                thursdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 2));
+                fridayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 3));
+                saturdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 4));
+                sundayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 5));
+                break;
+            case "수":
+                mondayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -2));
+                tuesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -1));
+                wednesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 0));
+                thursdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 1));
+                fridayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 2));
+                saturdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 3));
+                sundayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 4));
+                break;
+            case "목":
+                mondayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -3));
+                tuesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -2));
+                wednesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -1));
+                thursdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 0));
+                fridayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 1));
+                saturdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 2));
+                sundayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 3));
+                break;
+            case "금":
+                mondayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -4));
+                tuesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -3));
+                wednesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -2));
+                thursdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -1));
+                fridayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 0));
+                saturdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 1));
+                sundayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 2));
+                break;
+            case "토":
+                mondayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -5));
+                tuesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -4));
+                wednesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -3));
+                thursdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -2));
+                fridayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -1));
+                saturdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 0));
+                sundayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 1));
+                break;
+            case "일":
+                mondayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -6));
+                tuesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -5));
+                wednesdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -4));
+                thursdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -3));
+                fridayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -2));
+                saturdayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, -1));
+                sundayDate.setText(DayOfWeek.setDateOnWeeklyChart(targetDate, 0));
                 break;
         }
 
