@@ -21,6 +21,7 @@ import com.example.shinj.navmain.Login.LoginActivity;
 import com.example.shinj.navmain.NotificationSetting.NotificationSettingActivity;
 import com.example.shinj.navmain.Streaming.StreamingActivity;
 import com.example.shinj.navmain.Temperature.TemperatureActivity;
+import com.example.shinj.navmain.UserSetting.SettingActivity;
 import com.example.shinj.navmain.Water.WaterFragActivity;
 
 import io.socket.client.Socket;

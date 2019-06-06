@@ -38,12 +38,12 @@
             android:enabled="true"
             android:stopWithTask="false" />
 
+        <activity android:name=".UserSetting.SettingActivity"/>
         <activity android:name=".NotificationSetting.NotificationSettingActivity" />
         <activity android:name=".Temperature.TemperatureActivity" />
         <activity android:name=".Water.WaterFragActivity" />
         <activity android:name=".BaseActivity" />
         <activity android:name=".ManualActivity" />
-        <activity android:name=".SettingActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".Feed.FeedFragActivity" />
         <activity android:name=".Streaming.StreamingActivity" />
