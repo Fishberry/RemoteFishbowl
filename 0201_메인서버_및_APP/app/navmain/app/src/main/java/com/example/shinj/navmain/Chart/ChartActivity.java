@@ -6,7 +6,9 @@ import com.example.shinj.navmain.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -15,6 +17,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import android.content.Intent;
@@ -192,145 +195,112 @@ public class ChartActivity extends BaseActivity {
 
     private void drawDailyChart() {
 
-        LineChart lineChart;
-        BarChart barChart;
-        lineChart = (LineChart) findViewById(R.id.chart);
-        barChart = (BarChart) findViewById(R.id.bar_chart);
+        LineChart lineChartTemper, lineChartPH;
+        lineChartTemper = (LineChart) findViewById(R.id.graph_temperature);
+        lineChartPH = (LineChart)findViewById(R.id.graph_ph);
         MyMarkerView marker = new MyMarkerView(this, R.layout.markerview);
-        marker.setChartView(lineChart);
-        lineChart.setMarker(marker);
-        lineChart.bringToFront();       //해당 뷰를 위로 올리는 메소드.
+        marker.setChartView(lineChartTemper);
+        lineChartTemper.setMarker(marker);
 
+        // 온도 데이터
         ArrayList<Entry> temperatureValue = new ArrayList<>();
-        temperatureValue.add(new Entry(0, 22));
-        temperatureValue.add(new Entry(3, 23));
-        temperatureValue.add(new Entry(6, 24));
-        temperatureValue.add(new Entry(9, 23));
-        temperatureValue.add(new Entry(12, 21));
-        temperatureValue.add(new Entry(15, 22));
-        temperatureValue.add(new Entry(18, 24));
-        temperatureValue.add(new Entry(21, 25));
-        //temperatureValue.add(new Entry(24, 24));
+        temperatureValue.add(new Entry(0, 22f));
+        temperatureValue.add(new Entry(3, 23f));
+        temperatureValue.add(new Entry(6, 24f));
+        temperatureValue.add(new Entry(9, 23f));
+        temperatureValue.add(new Entry(12, 21f));
+        temperatureValue.add(new Entry(15, 22f));
+        temperatureValue.add(new Entry(18, 24f));
+        temperatureValue.add(new Entry(21, 25f));
+        temperatureValue.add(new Entry(24, 24f));
 
-//        ArrayList<Entry> phValue = new ArrayList<>();
-//        phValue.add(new Entry(0, 8));
-//        phValue.add(new Entry(3, 7));
-//        phValue.add(new Entry(6, 8));
-//        phValue.add(new Entry(9, 9));
-//        phValue.add(new Entry(12, 7));
-//        phValue.add(new Entry(15, 8));
-//        phValue.add(new Entry(18, 7));
-//        phValue.add(new Entry(21, 9));
+        // pH 데이터
+        ArrayList<Entry> phValue = new ArrayList<>();
+        phValue.add(new Entry(0, 8f));
+        phValue.add(new Entry(3, 7f));
+        phValue.add(new Entry(6, 7.5f));
+        phValue.add(new Entry(9, 7.35f));
+        phValue.add(new Entry(12, 7.65f));
+        phValue.add(new Entry(15, 7.9f));
+        phValue.add(new Entry(18, 8.3f));
+        phValue.add(new Entry(21, 7.85f));
+        phValue.add(new Entry(24, 7.61f));
 
-        ArrayList<BarEntry> phValue = new ArrayList<>();
-        phValue.add(new BarEntry(0, 8f));
-        phValue.add(new BarEntry(3, 7f));
-        phValue.add(new BarEntry(6, 8f));
-        phValue.add(new BarEntry(9, 9f));
-        phValue.add(new BarEntry(12, 7f));
-        phValue.add(new BarEntry(15, 8f));
-        phValue.add(new BarEntry(18, 7f));
-        phValue.add(new BarEntry(21, 9f));
+        // 온도그래프부분
+        LineDataSet lineDataSetTemper = new LineDataSet(temperatureValue, "온도");
+        lineDataSetTemper.setLineWidth(2);
+        lineDataSetTemper.setCircleRadius(4);
+        lineDataSetTemper.setCircleColor(Color.parseColor("#0431B4"));
+        lineDataSetTemper.setCircleColorHole(Color.BLUE);
+        lineDataSetTemper.setColor(Color.parseColor("#0431B4"));
+        lineDataSetTemper.setDrawCircleHole(true);
+        lineDataSetTemper.setDrawCircles(true);
+        lineDataSetTemper.setDrawHorizontalHighlightIndicator(false);
+        lineDataSetTemper.setDrawHighlightIndicators(false);
+        lineDataSetTemper.setDrawValues(false);
 
-        //이것은 범주를 찍기 위해 추가한 요소입니다.
-        //위에서 보시면 알다시피 데이터는 없지만, 범주를 추가하려면 Set은 만들어줘야되기 때문에, Set만 만들어주고 데이터는 집어넣지 않았습니다.
-        //범주의 색깔은 빨간색으로
-        LineDataSet lineDataSet = new LineDataSet(temperatureValue, "수질");
-        lineDataSet.setLineWidth(2);
-        lineDataSet.setCircleRadius(6);
-        lineDataSet.setCircleColor(Color.parseColor("#FFFF0000"));
-        lineDataSet.setCircleColorHole(Color.BLUE);
-        lineDataSet.setColor(Color.parseColor("#FFFF0000"));
-        lineDataSet.setDrawCircleHole(true);
-        lineDataSet.setDrawCircles(true);
-        lineDataSet.setDrawHorizontalHighlightIndicator(false);
-        lineDataSet.setDrawHighlightIndicators(false);
-        lineDataSet.setDrawValues(false);
+        LineData lineDataTemper = new LineData(lineDataSetTemper);
+        lineChartTemper.setData(lineDataTemper);
 
-        //실질적인 온도그래프의 설정.
-        LineDataSet lineDataSet2 = new LineDataSet(temperatureValue, "온도");
-        lineDataSet2.setLineWidth(2);
-        lineDataSet2.setCircleRadius(6);
-        lineDataSet2.setCircleColor(Color.parseColor("#FFA1B4DC"));
-        lineDataSet2.setCircleColorHole(Color.BLUE);
-        lineDataSet2.setColor(Color.parseColor("#FFA1B4DC"));
-        lineDataSet2.setDrawCircleHole(true);
-        lineDataSet2.setDrawCircles(true);
-        lineDataSet2.setDrawHorizontalHighlightIndicator(false);
-        lineDataSet2.setDrawHighlightIndicators(false);
-        lineDataSet2.setDrawValues(false);
+        XAxis xAxisTemper = lineChartTemper.getXAxis();
+        xAxisTemper.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxisTemper.setTextColor(Color.WHITE);
+        xAxisTemper.enableGridDashedLine(8, 24, 0);
+        xAxisTemper.setLabelCount(9, true);
 
-//        LineDataSet lineDataSet2 = new LineDataSet(phValue, "수질");
-//        lineDataSet2.setLineWidth(2);
-//        lineDataSet2.setCircleRadius(6);
-//        lineDataSet2.setCircleColor(Color.parseColor("#FF0000"));
-//        lineDataSet2.setCircleColorHole(Color.RED);
-//        lineDataSet2.setColor(Color.parseColor("#FF0000"));
-//        lineDataSet2.setDrawCircleHole(true);
-//        lineDataSet2.setDrawCircles(true);
-//        lineDataSet2.setDrawHorizontalHighlightIndicator(false);
-//        lineDataSet2.setDrawHighlightIndicators(false);
-//        lineDataSet2.setDrawValues(false);
+        YAxis yLAxisTemper = lineChartTemper.getAxisLeft();
+        yLAxisTemper.setTextColor(Color.BLACK);
+        yLAxisTemper.setLabelCount(10, true);
 
-        //막대그래프 설정.
-        BarDataSet barDataSet = new BarDataSet(phValue, "수질");
-        barDataSet.setColors(Color.parseColor("#FF0000"));
-        BarData barData = new BarData(barDataSet);
-        barData.setBarWidth(0.9f);
+        YAxis yRAxisTemper = lineChartTemper.getAxisRight();
+        yRAxisTemper.setDrawLabels(false);
+        yRAxisTemper.setDrawAxisLine(false);
+        yRAxisTemper.setDrawGridLines(false);
 
-        //막대그래프 X축 수치 안 나오게 하기.
-        XAxis barXAxis = barChart.getXAxis();
-        barXAxis.setDrawLabels(false);
-        barXAxis.setDrawAxisLine(false);
-        barXAxis.setDrawGridLines(false);
+        lineChartTemper.getLegend().setEnabled(false);
+        lineChartTemper.setDoubleTapToZoomEnabled(false);
+        lineChartTemper.setDrawGridBackground(false);
+        lineChartTemper.animateY(1000, Easing.EasingOption.EaseInCubic);
+        lineChartTemper.getDescription().setEnabled(false);
+        lineChartTemper.invalidate();
 
-        //막대그래프 Y축 왼쪽 안 나오게 하기.
-        YAxis barYLAxis = barChart.getAxisLeft();
-        barYLAxis.setDrawLabels(false);
-        barYLAxis.setDrawAxisLine(false);
-        barYLAxis.setDrawGridLines(false);
+        // pH 그래프 부분
+        LineDataSet lineDataSetPH = new LineDataSet(phValue, "pH");
+        lineDataSetPH.setLineWidth(2);
+        lineDataSetPH.setCircleRadius(4);
+        lineDataSetPH.setCircleColor(Color.parseColor("#FFFF0000"));
+        lineDataSetPH.setCircleColorHole(Color.BLUE);
+        lineDataSetPH.setColor(Color.parseColor("#FFFF0000"));
+        lineDataSetPH.setDrawCircleHole(true);
+        lineDataSetPH.setDrawCircles(true);
+        lineDataSetPH.setDrawHorizontalHighlightIndicator(false);
+        lineDataSetPH.setDrawHighlightIndicators(false);
+        lineDataSetPH.setDrawValues(false);
 
-        barChart.setData(barData);
-        barChart.setFitBars(true);
-        barChart.getDescription().setEnabled(false);    //설명 없애기 (이거 안 하면 오른쪽에 설명이 쓰여짐)
-        barChart.getLegend().setEnabled(false);         //범주를 없애기 (이거 안 하면 겹쳐서 보이기에 없애고, 범주는 꺾은선그래프에 넣음)
-        barChart.invalidate();                          //출력
+        LineData lineDataPH = new LineData(lineDataSetPH);
+        lineChartPH.setData(lineDataPH);
 
-//여기까지 바 그래프
-//====================================================================================
-//여기서부터 꺾은선그래프
+        XAxis xAxisPH = lineChartPH.getXAxis();
+        xAxisPH.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxisPH.setTextColor(Color.BLACK);
+        xAxisPH.enableGridDashedLine(8, 24, 0);
+        xAxisPH.setLabelCount(9, true);
 
-        //꺾은선그래프 요소 Set들을 각 배열리스트에 집어넣어 꺾은선차트에 데이터 집어넣기.
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-        dataSets.add(lineDataSet);
-        dataSets.add(lineDataSet2);     //둘을 넣어줘야 범주도 함께 추가가 됩니다.
-        LineData lineData = new LineData(dataSets);
-        lineChart.setData(lineData);
+        YAxis yLAxisPH = lineChartPH.getAxisLeft();
+        yLAxisPH.setTextColor(Color.BLACK);
+        yLAxisPH.setDrawLabels(false);
+        yLAxisPH.setDrawAxisLine(false);
+        yLAxisPH.setDrawGridLines(false);
 
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);      //X 수치를 위 혹은 아래에 놓을 수 있습니다. 여기서 TOP, BOTTOM으로 변경만 하시면 되요.
-        xAxis.setTextColor(Color.BLACK);
-        xAxis.enableGridDashedLine(8, 24, 0);
-        xAxis.setLabelCount(9, true);
-//        xAxis.setDrawLabels(false);
-//        xAxis.setDrawAxisLine(false);
-//        xAxis.setDrawGridLines(false);
+        YAxis yRAxisPH = lineChartPH.getAxisRight();
+        yRAxisPH.setLabelCount(10, true);
 
-        YAxis yLAxis = lineChart.getAxisLeft();
-        yLAxis.setTextColor(Color.BLACK);
-        yLAxis.setLabelCount(10, true);
-
-        //Y축 오른쪽 수치 안 보이게 하기.
-        YAxis yRAxis = lineChart.getAxisRight();
-        yRAxis.setDrawLabels(false);
-        yRAxis.setDrawAxisLine(false);
-        yRAxis.setDrawGridLines(false);
-
-        lineChart.setDoubleTapToZoomEnabled(false);
-        lineChart.setDrawGridBackground(false);
-        lineChart.animateY(2000, Easing.EasingOption.EaseInCubic);
-        lineChart.getDescription().setEnabled(false);
-        lineChart.invalidate();
+        lineChartPH.getLegend().setEnabled(false);
+        lineChartPH.setDoubleTapToZoomEnabled(false);
+        lineChartPH.setDrawGridBackground(false);
+        lineChartPH.animateY(1000, Easing.EasingOption.EaseInCubic);
+        lineChartPH.getDescription().setEnabled(false);
+        lineChartPH.invalidate();
     }
 
     public static void drawWeeklyChart(String dayOfWeek, String[] dailyValues) {
