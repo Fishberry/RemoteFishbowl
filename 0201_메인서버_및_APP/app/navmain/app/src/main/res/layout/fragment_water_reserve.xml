@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorLightGray">
+
+    <ImageView
+        android:id="@+id/img_water_calendar"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/calendar"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/reserveWater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="환수날짜"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/img_water_calendar"
+        app:layout_constraintTop_toTopOf="@id/img_water_calendar"
+        app:layout_constraintBottom_toBottomOf="@id/img_water_calendar"/>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/water_reserve_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/round_layout_shape"
+        android:elevation="3dp"
+        android:padding="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_water_calendar">
+
+        <DatePicker
+            android:id="@+id/date_picker2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/img_water_clock"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/clock"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/water_reserve_top_layout" />
+
+    <TextView
+        android:id="@+id/waterTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="환수시간"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/img_water_clock"
+        app:layout_constraintTop_toTopOf="@id/img_water_clock"
+        app:layout_constraintBottom_toBottomOf="@id/img_water_clock" />
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/water_reserve_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/round_layout_shape"
+        android:elevation="3dp"
+        android:padding="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/waterTime">
+
+        <TimePicker
+            android:id="@+id/time_picker2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:timePickerMode="spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></TimePicker>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/water_bottom_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/waterSaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:onClick="saveWaterButton"
+            android:text="저장"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/waterResetButton"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/waterSaveButton_line"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/waterSaveButton"
+            app:layout_constraintEnd_toStartOf="@id/waterResetButton"
+            app:layout_constraintStart_toEndOf="@id/waterSaveButton"
+            app:layout_constraintTop_toTopOf="@id/waterSaveButton" />
+
+        <TextView
+            android:id="@+id/waterResetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="resetWaterButton"
+            android:text="초기화"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="@id/waterSaveButton"
+            app:layout_constraintEnd_toStartOf="@id/waterCancelButton"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/waterSaveButton"
+            app:layout_constraintTop_toTopOf="@id/waterSaveButton" />
+
+        <View
+            android:id="@+id/waterResetButton_line"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/waterSaveButton"
+            app:layout_constraintEnd_toStartOf="@id/waterCancelButton"
+            app:layout_constraintStart_toEndOf="@id/waterResetButton"
+            app:layout_constraintTop_toTopOf="@id/waterSaveButton" />
+
+        <TextView
+            android:id="@+id/waterCancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="cancelWaterButton"
+            android:text="취소"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="@id/waterSaveButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/waterResetButton"
+            app:layout_constraintTop_toTopOf="@id/waterSaveButton" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_item_streaming"
+            android:checked="true"
+            android:icon="@drawable/icon_fishbowl"
+            android:title="내 어항" />
+        <item
+            android:id="@+id/navigation_item_feed"
+            android:icon="@drawable/icon_fishfood"
+            android:title="먹이급여" />
+        <item
+            android:id="@+id/navigation_item_water"
+            android:icon="@drawable/icon_water"
+            android:title="환수" />
+        <item
+            android:id="@+id/navigation_item_temperPh"
+            android:icon="@drawable/icon_thermometer"
+            android:title="온도/pH" />
+        <item
+            android:id="@+id/navigation_item_chart"
+            android:icon="@drawable/icon_graph_chart"
+            android:title="차트" />
+    </group>
+
+    <item android:title="@string/nav_sub_menu">
+        <menu>
+            <item
+                android:icon="@drawable/ic_emoticon"
+                android:id="@+id/nav_sub_menu_item01"
+                android:title="@string/nav_sub_menu_item01" />
+            <item
+                android:icon="@drawable/ic_emoticon"
+                android:id="@+id/nav_sub_menu_item02"
+                android:title="기기 상태" />
+            <!--<item-->
+                <!--android:icon="@drawable/ic_emoticon"-->
+                <!--android:id="@+id/nav_sub_menu_item03"-->
+                <!--android:title="로그아웃" />-->
+            <item
+                android:icon="@drawable/ic_emoticon"
+                android:id="@+id/nav_sub_menu_item04"
+                android:title="사용자 설정" />
+        </menu>
+    </item>
+
+</menu>

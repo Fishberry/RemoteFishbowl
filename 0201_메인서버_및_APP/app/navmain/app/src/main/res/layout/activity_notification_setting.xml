@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NotificationSetting.NotificationSettingActivity">
+
+    <TextView
+        android:id="@+id/set_notification_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="알림 켜기/끄기"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="30dp"/>
+    <Switch
+        android:id="@+id/set_notification_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/set_notification_text"
+        app:layout_constraintBottom_toBottomOf="@id/set_notification_text"
+        android:layout_marginEnd="50dp"/>
+    <View
+        android:id="@+id/set_notification_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorBlack"
+        app:layout_constraintTop_toBottomOf="@id/set_notification_switch"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/set_temper_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="온도 경고 받기"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/set_notification_line"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"/>
+    <Switch
+        android:id="@+id/set_temper_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/set_temper_text"
+        app:layout_constraintBottom_toBottomOf="@id/set_temper_text"
+        android:layout_marginEnd="50dp"
+        android:visibility="gone"/>
+    <View
+        android:id="@+id/set_temper_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorBlack"
+        app:layout_constraintTop_toBottomOf="@id/set_temper_switch"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/set_pH_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="수질 경고 받기"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/set_temper_line"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"/>
+    <Switch
+        android:id="@+id/set_pH_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/set_pH_text"
+        app:layout_constraintBottom_toBottomOf="@id/set_pH_text"
+        android:layout_marginEnd="50dp"
+        android:visibility="gone"/>
+    <View
+        android:id="@+id/set_pH_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorBlack"
+        app:layout_constraintTop_toBottomOf="@id/set_pH_switch"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/set_loop_temper_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="온도 경고 주기 시간"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/set_pH_line"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"/>
+    <EditText
+        android:id="@+id/set_loop_temper_time_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="      "
+        android:text="0"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@id/second_temper_text"
+        app:layout_constraintEnd_toStartOf="@id/second_temper_text"
+        app:layout_constraintTop_toTopOf="@id/second_temper_text"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/second_temper_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="초"
+        android:textSize="25sp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/set_loop_temper_time_text"
+        app:layout_constraintBottom_toBottomOf="@id/set_loop_temper_time_text"
+        android:layout_marginEnd="50dp"
+        android:visibility="gone"/>
+    <View
+        android:id="@+id/set_loop_temper_time_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorBlack"
+        app:layout_constraintTop_toBottomOf="@+id/second_temper_text"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/set_loop_pH_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="수질 경고 주기 시간"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/set_loop_temper_time_line"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"/>
+    <EditText
+        android:id="@+id/set_loop_pH_time_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="      "
+        android:text="0"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@id/second_pH_text"
+        app:layout_constraintEnd_toStartOf="@id/second_pH_text"
+        app:layout_constraintTop_toTopOf="@id/second_pH_text"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/second_pH_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="초"
+        android:textSize="25sp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/set_loop_pH_time_text"
+        app:layout_constraintBottom_toBottomOf="@id/set_loop_pH_time_text"
+        android:layout_marginEnd="50dp"
+        android:visibility="gone"/>
+    <View
+        android:id="@+id/set_loop_pH_time_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorBlack"
+        app:layout_constraintTop_toBottomOf="@+id/second_pH_text"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"/>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/feed_bottom_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:id="@+id/notification_setting_save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:text="저장"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintStart_toStartOf="@id/feed_bottom_tab"
+            app:layout_constraintTop_toTopOf="@id/feed_bottom_tab"
+            app:layout_constraintBottom_toBottomOf="@id/feed_bottom_tab"
+            app:layout_constraintEnd_toStartOf="@id/notification_setting_init_button"
+            app:layout_constraintHorizontal_chainStyle="spread" />
+
+        <View
+            android:id="@+id/feedSaveButton_line"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/notification_setting_save_button"
+            app:layout_constraintEnd_toStartOf="@id/notification_setting_init_button"
+            app:layout_constraintStart_toEndOf="@id/notification_setting_save_button"
+            app:layout_constraintTop_toTopOf="@id/notification_setting_save_button" />
+
+        <TextView
+            android:id="@+id/notification_setting_init_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:text="초기화"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/notification_setting_save_button"
+            app:layout_constraintEnd_toStartOf="@id/notification_setting_cancel_button"
+            app:layout_constraintTop_toTopOf="@id/notification_setting_save_button"
+            app:layout_constraintBottom_toBottomOf="@id/notification_setting_save_button" />
+
+        <View
+            android:id="@+id/feedResetButton_line"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/notification_setting_save_button"
+            app:layout_constraintEnd_toStartOf="@id/notification_setting_cancel_button"
+            app:layout_constraintStart_toEndOf="@id/notification_setting_init_button"
+            app:layout_constraintTop_toTopOf="@id/notification_setting_save_button" />
+
+        <TextView
+            android:id="@+id/notification_setting_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1"
+            android:text="취소"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/notification_setting_init_button"
+            app:layout_constraintEnd_toEndOf="@id/feed_bottom_tab"
+            app:layout_constraintTop_toTopOf="@id/notification_setting_save_button"
+            app:layout_constraintBottom_toBottomOf="@id/notification_setting_save_button" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
