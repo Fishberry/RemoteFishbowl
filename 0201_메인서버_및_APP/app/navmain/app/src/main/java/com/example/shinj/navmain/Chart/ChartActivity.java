@@ -61,6 +61,8 @@ public class ChartActivity extends BaseActivity {
             sundayDate, sundayMaxTemper, sundayMinTemper, sundayMaxPH, sundayMinPH, sundayFeed;
     static ConstraintLayout weeklyChartLayout;
 
+    static View mondayView, tuesdayView, wednesdayView, thursdayView, fridayView, saturdayView, sundayView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +130,255 @@ public class ChartActivity extends BaseActivity {
         WeeklyChart weeklyChart = new WeeklyChart(today);
         thisWeekCount = WeeklyChart.getThisWeekCount();
 
+        mondayView = findViewById(R.id.monday_view);
+        tuesdayView = findViewById(R.id.tuesday_view);
+        wednesdayView = findViewById(R.id.wednesday_view);
+        thursdayView = findViewById(R.id.thursday_view);
+        fridayView = findViewById(R.id.friday_view);
+        saturdayView = findViewById(R.id.saturday_view);
+        sundayView = findViewById(R.id.sunday_view);
+
+        //각 뷰를 위로 올려서 뷰가 먼저 닿도록 한다.
+        mondayView.bringToFront();
+        tuesdayView.bringToFront();
+        wednesdayView.bringToFront();
+        thursdayView.bringToFront();
+        fridayView.bringToFront();
+        saturdayView.bringToFront();
+        sundayView.bringToFront();
+
+        //뷰의 클릭 리스너
+        mondayView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChartActivity.this, "월요일", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        tuesdayView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChartActivity.this, "화요일", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        wednesdayView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChartActivity.this, "수요일", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        thursdayView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChartActivity.this, "목요일", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        fridayView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChartActivity.this, "금요일", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        saturdayView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChartActivity.this, "토요일", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        sundayView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChartActivity.this, "일요일", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //뷰의 터치 리스너
+        //여기서 코드가 많이 드러워지는 이유
+        //기본적으로 안드로이드에서 뷰는 겹치게 되면 최상위의 뷰만 건드려지게 됩니다.
+        //그렇기에 터치를 표현할 뷰가 위로 올라오게 되면 반대로 weeklyChartLayout을 못 건드리게 된다는 겁니다. (아래에 있으니까)
+        //반대로 레이아웃을 위로 올려버리면 뷰가 아래로 내려와서 뷰를 못 건드리게 되고, 그 때문에 클릭을 인식하지 못하게 됩니다.
+        //그렇기 때문에 레이아웃의 코드를 뷰로 올려서 각 뷰마다 적용시켰습니다.
+
+        mondayView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                float downXAxis = 0;
+                float upXAxis = 0;
+                float intervalXAxis = 0;
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                    downXAxis = motionEvent.getX();
+                else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    upXAxis = motionEvent.getX();
+                    intervalXAxis = downXAxis - upXAxis;
+                    Log.d("월요일", String.valueOf(intervalXAxis));
+
+                    //레이아웃 코드르 여기로 가져왔습니다.
+                    isTurnWeeklyChart(intervalXAxis);
+                }
+
+                //터치를 했다면
+                if (intervalXAxis > -350 && intervalXAxis < 350)
+                    //return true로 해버리면 touch에서 그만둔다. 하지만, longclick과 click 리스너는 전부 touch에서 파생되며 false로 해야 다음으로 넘어가집니다.
+                    //실제로 touch와 longclick과 click을 두고 log를 띄워본다면 touch -> click -> longclick순으로 메소드가 진행됩니다.
+                    //이하의 것들도 전부 똑같으니 생략하도록 합니다.
+                    return false;
+
+                return true;
+            }
+        });
+
+        tuesdayView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                float downXAxis = 0;
+                float upXAxis = 0;
+                float intervalXAxis = 0;
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                    downXAxis = motionEvent.getX();
+                else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    upXAxis = motionEvent.getX();
+                    intervalXAxis = downXAxis - upXAxis;
+                    Log.d("화요일", String.valueOf(intervalXAxis));
+
+                    isTurnWeeklyChart(intervalXAxis);
+                }
+
+                if (intervalXAxis > -350 && intervalXAxis < 350)
+                    return false;
+
+                return true;
+            }
+        });
+
+        wednesdayView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                float downXAxis = 0;
+                float upXAxis = 0;
+                float intervalXAxis = 0;
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                    downXAxis = motionEvent.getX();
+                else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    upXAxis = motionEvent.getX();
+                    intervalXAxis = downXAxis - upXAxis;
+                    Log.d("수요일", String.valueOf(intervalXAxis));
+
+                    isTurnWeeklyChart(intervalXAxis);
+                }
+
+                if (intervalXAxis > -350 && intervalXAxis < 350)
+                    return false;
+
+                return true;
+            }
+        });
+
+        thursdayView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                float downXAxis = 0;
+                float upXAxis = 0;
+                float intervalXAxis = 0;
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                    downXAxis = motionEvent.getX();
+                else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    upXAxis = motionEvent.getX();
+                    intervalXAxis = downXAxis - upXAxis;
+                    Log.d("목요일", String.valueOf(intervalXAxis));
+
+                    isTurnWeeklyChart(intervalXAxis);
+                }
+
+                if (intervalXAxis > -350 && intervalXAxis < 350)
+                    return false;
+
+                return true;
+            }
+        });
+
+        fridayView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                float downXAxis = 0;
+                float upXAxis = 0;
+                float intervalXAxis = 0;
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                    downXAxis = motionEvent.getX();
+                else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    upXAxis = motionEvent.getX();
+                    intervalXAxis = downXAxis - upXAxis;
+                    Log.d("금요일", String.valueOf(intervalXAxis));
+
+                    isTurnWeeklyChart(intervalXAxis);
+                }
+
+                if (intervalXAxis > -350 && intervalXAxis < 350)
+                    return false;
+
+                return true;
+            }
+        });
+
+        saturdayView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                float downXAxis = 0;
+                float upXAxis = 0;
+                float intervalXAxis = 0;
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                    downXAxis = motionEvent.getX();
+                else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    upXAxis = motionEvent.getX();
+                    intervalXAxis = downXAxis - upXAxis;
+                    Log.d("토요일", String.valueOf(intervalXAxis));
+
+                    isTurnWeeklyChart(intervalXAxis);
+                }
+
+                if (intervalXAxis > -350 && intervalXAxis < 350)
+                    return false;
+
+                return true;
+            }
+        });
+
+        sundayView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                float downXAxis = 0;
+                float upXAxis = 0;
+                float intervalXAxis = 0;
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                    downXAxis = motionEvent.getX();
+                else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    upXAxis = motionEvent.getX();
+                    intervalXAxis = downXAxis - upXAxis;
+                    Log.d("일요일", String.valueOf(intervalXAxis));
+
+                    isTurnWeeklyChart(intervalXAxis);
+                }
+
+                if (intervalXAxis > -350 && intervalXAxis < 350)
+                    return false;
+
+                return true;
+            }
+        });
+
+        //해당 레이아웃은 뷰에 가려져 더 이상 건드릴 수 없으므로 주석처리 했습니다. 만약, 뷰를 없애게 된다면 다시 이 메소드를 이용해주세요.
+/*
         weeklyChartLayout.setOnTouchListener(new View.OnTouchListener() {
             float downXAxis, upXAxis, intervalXAxis;
             public boolean onTouch(View v, MotionEvent event) {
@@ -187,6 +438,7 @@ public class ChartActivity extends BaseActivity {
                 return true;
             }
         });
+*/
     }
 
     private void getDailyValueCount(String count){
@@ -480,6 +732,54 @@ public class ChartActivity extends BaseActivity {
                 break;
         }
 
+    }
+
+    public void isTurnWeeklyChart(float intervalXAxis) {
+        if( intervalXAxis < -350 && dailyValueCount > 7 ) { // 저번주 코드
+            Log.d("저번주코드:", "하하");
+            pageCount++;
+            String startDate = WeeklyChart.getStartDate(DayOfWeek.calculDate(today, -(7* pageCount) ));
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    drawDate(startDate);
+                    WeeklyChart.getWeeklyData(startDate, DayOfWeek.calculDate(startDate, 6));
+                }
+            });
+            if(pageCount == 1) {
+                dailyValueCount -= thisWeekCount;
+                Log.d("저번주에:", ""+dailyValueCount +"dddd" +thisWeekCount);
+            } else {
+                dailyValueCount -= 7;
+            }
+        } else if(intervalXAxis > 350 && pageCount > 1) { // 다음주 코드
+            pageCount--;
+            String startDate = WeeklyChart.getStartDate(DayOfWeek.calculDate(today, -(7* pageCount) ));
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    drawDate(startDate);
+                    WeeklyChart.getWeeklyData(startDate, DayOfWeek.calculDate(startDate, 6));
+                }
+            });
+            dailyValueCount += 7;
+        } else if(intervalXAxis > 350 && pageCount == 1) { // 이번주 전 페이지에서 이번주 페이지로 넘어올 때
+            pageCount--;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int nullDateCount = 0;
+                    drawDate(today);
+                    WeeklyChart.getWeeklyData(WeeklyChart.getStartDate(today), today);
+                    if (thisWeekCount != 7) { // 이번주 데이터에서 아직 없는 요일(ex.오늘 목요일이면 금,토,일)은 WeeklyChart에 null로 표시
+                        while (7 - nullDateCount > thisWeekCount) {
+                            drawWeeklyChartINVISIBLE(DayOfWeek.getDayOfWeek(DayOfWeek.calculDate(today, ++nullDateCount)));
+                        }
+                    }
+                    dailyValueCount += thisWeekCount;
+                }
+            });
+        }
     }
 
     @Override

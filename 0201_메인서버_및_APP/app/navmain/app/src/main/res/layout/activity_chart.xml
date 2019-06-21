@@ -132,7 +132,8 @@
                 app:layout_constraintStart_toEndOf="@id/img_weekly_chart"
                 app:layout_constraintTop_toTopOf="@id/img_weekly_chart" />
 
-            <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <android.support.constraint.ConstraintLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/weeklyChartLayout"
@@ -156,7 +157,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/weeklyChartLayout"
                     app:layout_constraintEnd_toStartOf="@id/WeeklyChart_Tuesday"
-                    app:layout_constraintHorizontal_chainStyle="spread">
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    android:background="@drawable/custom_ripple_effect">
                     <TextView
                         android:id="@+id/WeeklyChart_Monday_Date"
                         android:layout_width="wrap_content"
@@ -231,7 +233,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toEndOf="@id/WeeklyChart_Monday"
                     app:layout_constraintTop_toTopOf="@id/WeeklyChart_Monday"
-                    app:layout_constraintEnd_toStartOf="@id/WeeklyChart_Wednesday">
+                    app:layout_constraintEnd_toStartOf="@id/WeeklyChart_Wednesday"
+                    android:background="@drawable/custom_ripple_effect">
 
                     <TextView
                         android:id="@+id/WeeklyChart_Tuesday_Date"
@@ -308,7 +311,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toStartOf="@id/WeeklyChart_Tuesday"
                     app:layout_constraintStart_toEndOf="@id/WeeklyChart_Thursday"
-                    app:layout_constraintTop_toTopOf="@id/WeeklyChart_Tuesday">
+                    app:layout_constraintTop_toTopOf="@id/WeeklyChart_Tuesday"
+                    android:background="@drawable/custom_ripple_effect">
 
                     <TextView
                         android:id="@+id/WeeklyChart_Wednesday_Date"
@@ -384,7 +388,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toStartOf="@id/WeeklyChart_Friday"
                     app:layout_constraintStart_toEndOf="@id/WeeklyChart_Wednesday"
-                    app:layout_constraintTop_toTopOf="@id/WeeklyChart_Wednesday">
+                    app:layout_constraintTop_toTopOf="@id/WeeklyChart_Wednesday"
+                    android:background="@drawable/custom_ripple_effect">
 
                     <TextView
                         android:id="@+id/WeeklyChart_Thursday_Date"
@@ -460,7 +465,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toStartOf="@id/WeeklyChart_Saturday"
                     app:layout_constraintStart_toEndOf="@id/WeeklyChart_Thursday"
-                    app:layout_constraintTop_toTopOf="@id/WeeklyChart_Thursday">
+                    app:layout_constraintTop_toTopOf="@id/WeeklyChart_Thursday"
+                    android:background="@drawable/custom_ripple_effect">
 
                     <TextView
                         android:id="@+id/WeeklyChart_Friday_Date"
@@ -536,7 +542,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toStartOf="@id/WeeklyChart_Sunday"
                     app:layout_constraintStart_toEndOf="@id/WeeklyChart_Friday"
-                    app:layout_constraintTop_toTopOf="@id/WeeklyChart_Friday">
+                    app:layout_constraintTop_toTopOf="@id/WeeklyChart_Friday"
+                    android:background="@drawable/custom_ripple_effect">
 
                     <TextView
                         android:id="@+id/WeeklyChart_Saturday_Date"
@@ -612,7 +619,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/WeeklyChart_Saturday"
-                    app:layout_constraintTop_toTopOf="@id/WeeklyChart_Saturday">
+                    app:layout_constraintTop_toTopOf="@id/WeeklyChart_Saturday"
+                    android:background="@drawable/custom_ripple_effect">
 
                     <TextView
                         android:id="@+id/WeeklyChart_Sunday_Date"
@@ -681,7 +689,78 @@
                         app:layout_constraintStart_toStartOf="@id/WeeklyChart_Sunday"
                         app:layout_constraintTop_toBottomOf="@id/WeeklyChart_Sunday_MinPH"/>
                 </android.support.constraint.ConstraintLayout>
+                <View
+                    android:id="@+id/monday_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="@id/weeklyChartLayout"
+                    app:layout_constraintTop_toTopOf="@id/weeklyChartLayout"
+                    app:layout_constraintBottom_toBottomOf="@id/weeklyChartLayout"
+                    app:layout_constraintEnd_toStartOf="@id/tuesday_view"
+                    app:layout_constraintHorizontal_weight="1"
+                    android:background="?attr/selectableItemBackground"/>
+                <View
+                    android:id="@+id/tuesday_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toEndOf="@id/monday_view"
+                    app:layout_constraintTop_toTopOf="@id/weeklyChartLayout"
+                    app:layout_constraintBottom_toBottomOf="@id/weeklyChartLayout"
+                    app:layout_constraintEnd_toStartOf="@id/wednesday_view"
+                    app:layout_constraintHorizontal_weight="1"
+                    android:background="?attr/selectableItemBackground"/>
+                <View
+                    android:id="@+id/wednesday_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toEndOf="@id/tuesday_view"
+                    app:layout_constraintEnd_toStartOf="@id/thursday_view"
+                    app:layout_constraintTop_toTopOf="@id/weeklyChartLayout"
+                    app:layout_constraintBottom_toBottomOf="@id/weeklyChartLayout"
+                    app:layout_constraintHorizontal_weight="1"
+                    android:background="?attr/selectableItemBackground"/>
+                <View
+                    android:id="@+id/thursday_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toEndOf="@id/wednesday_view"
+                    app:layout_constraintEnd_toStartOf="@id/friday_view"
+                    app:layout_constraintTop_toTopOf="@id/weeklyChartLayout"
+                    app:layout_constraintBottom_toBottomOf="@id/weeklyChartLayout"
+                    app:layout_constraintHorizontal_weight="1"
+                    android:background="?attr/selectableItemBackground"/>
+                <View
+                    android:id="@+id/friday_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toEndOf="@id/thursday_view"
+                    app:layout_constraintEnd_toStartOf="@id/saturday_view"
+                    app:layout_constraintTop_toTopOf="@id/weeklyChartLayout"
+                    app:layout_constraintBottom_toBottomOf="@id/weeklyChartLayout"
+                    app:layout_constraintHorizontal_weight="1"
+                    android:background="?attr/selectableItemBackground"/>
+                <View
+                    android:id="@+id/saturday_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toEndOf="@id/friday_view"
+                    app:layout_constraintEnd_toStartOf="@id/sunday_view"
+                    app:layout_constraintTop_toTopOf="@id/weeklyChartLayout"
+                    app:layout_constraintBottom_toBottomOf="@id/weeklyChartLayout"
+                    app:layout_constraintHorizontal_weight="1"
+                    android:background="?attr/selectableItemBackground"/>
+                <View
+                    android:id="@+id/sunday_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toEndOf="@id/saturday_view"
+                    app:layout_constraintEnd_toEndOf="@id/weeklyChartLayout"
+                    app:layout_constraintTop_toTopOf="@id/weeklyChartLayout"
+                    app:layout_constraintBottom_toBottomOf="@id/weeklyChartLayout"
+                    app:layout_constraintHorizontal_weight="1"
+                    android:background="?attr/selectableItemBackground"/>
             </android.support.constraint.ConstraintLayout>
+
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 
