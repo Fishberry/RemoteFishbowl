@@ -4,41 +4,21 @@ import com.example.shinj.navmain.BaseActivity;
 import com.example.shinj.navmain.IntentData;
 import com.example.shinj.navmain.R;
 import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import io.socket.client.Socket;
 
 
@@ -47,9 +27,11 @@ public class ChartActivity extends BaseActivity {
     private Socket socket;
     IntentData intentData;
 
-    int dailyValueCount = 0;
+    static int dailyValueCount = 0;
     int pageCount = 0;
+    int currentPage = 0;
     int thisWeekCount = 0;
+    public static int maxPage = 0;
 
     String today = DayOfWeek.getTodayDate();
     static TextView mondayDate, mondayMaxTemper, mondayMinTemper, mondayMaxPH, mondayMinPH, mondayFeed,
@@ -58,8 +40,10 @@ public class ChartActivity extends BaseActivity {
             thursdayDate, thursdayMaxTemper, thursdayMinTemper, thursdayMaxPH, thursdayMinPH, thursdayFeed,
             fridayDate, fridayMaxTemper, fridayMinTemper, fridayMaxPH, fridayMinPH, fridayFeed,
             saturdayDate, saturdayMaxTemper, saturdayMinTemper, saturdayMaxPH, saturdayMinPH, saturdayFeed,
-            sundayDate, sundayMaxTemper, sundayMinTemper, sundayMaxPH, sundayMinPH, sundayFeed;
+            sundayDate, sundayMaxTemper, sundayMinTemper, sundayMaxPH, sundayMinPH, sundayFeed,
+            dailyChartDate, weeklyChartPage;
     static ConstraintLayout weeklyChartLayout;
+    static LineChart lineChartTemper, lineChartPH;
 
     static View mondayView, tuesdayView, wednesdayView, thursdayView, fridayView, saturdayView, sundayView;
 
@@ -75,6 +59,16 @@ public class ChartActivity extends BaseActivity {
             getDailyValueCount(objects[0].toString());
         });
         weeklyChartLayout = findViewById(R.id.weeklyChartLayout);
+        dailyChartDate = findViewById(R.id.DailyChartDate);
+        weeklyChartPage = findViewById(R.id.WeeklyChartPage);
+        // 요일별 뷰
+        mondayView = findViewById(R.id.monday_view);
+        tuesdayView = findViewById(R.id.tuesday_view);
+        wednesdayView = findViewById(R.id.wednesday_view);
+        thursdayView = findViewById(R.id.thursday_view);
+        fridayView = findViewById(R.id.friday_view);
+        saturdayView = findViewById(R.id.saturday_view);
+        sundayView = findViewById(R.id.sunday_view);
         // 월
         mondayDate = findViewById(R.id.WeeklyChart_Monday_Date);
         mondayMaxTemper = findViewById(R.id.WeeklyChart_Monday_MaxTemper);
@@ -124,19 +118,14 @@ public class ChartActivity extends BaseActivity {
         sundayMaxPH = findViewById(R.id.WeeklyChart_Sunday_MaxPH);
         sundayMinPH = findViewById(R.id.WeeklyChart_Sunday_MinPH);
         sundayFeed = findViewById(R.id.WeeklyChart_Sunday_Feed);
+        // 꺾은선 그래프
+        lineChartTemper = (LineChart) findViewById(R.id.graph_temperature);
+        lineChartPH = (LineChart)findViewById(R.id.graph_ph);
 
         drawDate(today);
-        drawDailyChart();
         WeeklyChart weeklyChart = new WeeklyChart(today);
+        DailyChart dailyChart = new DailyChart(DayOfWeek.transformDateString(DayOfWeek.calculDate(today, 0)));
         thisWeekCount = WeeklyChart.getThisWeekCount();
-
-        mondayView = findViewById(R.id.monday_view);
-        tuesdayView = findViewById(R.id.tuesday_view);
-        wednesdayView = findViewById(R.id.wednesday_view);
-        thursdayView = findViewById(R.id.thursday_view);
-        fridayView = findViewById(R.id.friday_view);
-        saturdayView = findViewById(R.id.saturday_view);
-        sundayView = findViewById(R.id.sunday_view);
 
         //각 뷰를 위로 올려서 뷰가 먼저 닿도록 한다.
         mondayView.bringToFront();
@@ -151,49 +140,49 @@ public class ChartActivity extends BaseActivity {
         mondayView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ChartActivity.this, "월요일", Toast.LENGTH_SHORT).show();
+                DailyChart.getDailyData(mondayDate.getText().toString(), "월요일");
             }
         });
 
         tuesdayView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ChartActivity.this, "화요일", Toast.LENGTH_SHORT).show();
+                DailyChart.getDailyData(tuesdayDate.getText().toString(), "화요일");
             }
         });
 
         wednesdayView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ChartActivity.this, "수요일", Toast.LENGTH_SHORT).show();
+                DailyChart.getDailyData(wednesdayDate.getText().toString(), "수요일");
             }
         });
 
         thursdayView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ChartActivity.this, "목요일", Toast.LENGTH_SHORT).show();
+                DailyChart.getDailyData(thursdayDate.getText().toString(), "목요일");
             }
         });
 
         fridayView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ChartActivity.this, "금요일", Toast.LENGTH_SHORT).show();
+                DailyChart.getDailyData(fridayDate.getText().toString(), "금요일");
             }
         });
 
         saturdayView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ChartActivity.this, "토요일", Toast.LENGTH_SHORT).show();
+                DailyChart.getDailyData(saturdayDate.getText().toString(), "토요일");
             }
         });
 
         sundayView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ChartActivity.this, "일요일", Toast.LENGTH_SHORT).show();
+                DailyChart.getDailyData(sundayDate.getText().toString(), "일요일");
             }
         });
 
@@ -223,7 +212,7 @@ public class ChartActivity extends BaseActivity {
                 }
 
                 //터치를 했다면
-                if (intervalXAxis > -350 && intervalXAxis < 350)
+                if (intervalXAxis > -350 && intervalXAxis < 350 && !mondayMaxTemper.getText().toString().equals(""))
                     //return true로 해버리면 touch에서 그만둔다. 하지만, longclick과 click 리스너는 전부 touch에서 파생되며 false로 해야 다음으로 넘어가집니다.
                     //실제로 touch와 longclick과 click을 두고 log를 띄워본다면 touch -> click -> longclick순으로 메소드가 진행됩니다.
                     //이하의 것들도 전부 똑같으니 생략하도록 합니다.
@@ -250,7 +239,7 @@ public class ChartActivity extends BaseActivity {
                     isTurnWeeklyChart(intervalXAxis);
                 }
 
-                if (intervalXAxis > -350 && intervalXAxis < 350)
+                if (intervalXAxis > -350 && intervalXAxis < 350 && !tuesdayMaxTemper.getText().toString().equals(""))
                     return false;
 
                 return true;
@@ -274,7 +263,7 @@ public class ChartActivity extends BaseActivity {
                     isTurnWeeklyChart(intervalXAxis);
                 }
 
-                if (intervalXAxis > -350 && intervalXAxis < 350)
+                if (intervalXAxis > -350 && intervalXAxis < 350 && !wednesdayMaxTemper.getText().toString().equals(""))
                     return false;
 
                 return true;
@@ -298,7 +287,7 @@ public class ChartActivity extends BaseActivity {
                     isTurnWeeklyChart(intervalXAxis);
                 }
 
-                if (intervalXAxis > -350 && intervalXAxis < 350)
+                if (intervalXAxis > -350 && intervalXAxis < 350 && !thursdayMaxTemper.getText().toString().equals(""))
                     return false;
 
                 return true;
@@ -322,7 +311,7 @@ public class ChartActivity extends BaseActivity {
                     isTurnWeeklyChart(intervalXAxis);
                 }
 
-                if (intervalXAxis > -350 && intervalXAxis < 350)
+                if (intervalXAxis > -350 && intervalXAxis < 350 && !fridayMaxTemper.getText().toString().equals(""))
                     return false;
 
                 return true;
@@ -346,7 +335,7 @@ public class ChartActivity extends BaseActivity {
                     isTurnWeeklyChart(intervalXAxis);
                 }
 
-                if (intervalXAxis > -350 && intervalXAxis < 350)
+                if (intervalXAxis > -350 && intervalXAxis < 350 && !saturdayMaxTemper.getText().toString().equals(""))
                     return false;
 
                 return true;
@@ -370,7 +359,7 @@ public class ChartActivity extends BaseActivity {
                     isTurnWeeklyChart(intervalXAxis);
                 }
 
-                if (intervalXAxis > -350 && intervalXAxis < 350)
+                if (intervalXAxis > -350 && intervalXAxis < 350 && !sundayMaxTemper.getText().toString().equals(""))
                     return false;
 
                 return true;
@@ -443,48 +432,45 @@ public class ChartActivity extends BaseActivity {
 
     private void getDailyValueCount(String count){
         dailyValueCount = Integer.parseInt(count);
+        if( !DayOfWeek.getDayOfWeek(DayOfWeek.getTodayDate()).equals("일") || dailyValueCount < 7 ) {
+            maxPage = dailyValueCount / 7 + 1;
+        } else {
+            maxPage = dailyValueCount / 7;
+        }
+        currentPage = maxPage;
+        weeklyChartPage.setText(currentPage + "/" + maxPage);
     }
 
-    private void drawDailyChart() {
-
-        LineChart lineChartTemper, lineChartPH;
-        lineChartTemper = (LineChart) findViewById(R.id.graph_temperature);
-        lineChartPH = (LineChart)findViewById(R.id.graph_ph);
-        MyMarkerView marker = new MyMarkerView(this, R.layout.markerview);
-        marker.setChartView(lineChartTemper);
-        lineChartTemper.setMarker(marker);
-
+    public static void drawDailyChart(String targetDate, String targetDayOfWeek, String[] daily3hourValues, String[] rangeForTemper, String[] rangeForPH) {
+        Log.d("호출된 함수: ", new Object() {}.getClass().getEnclosingMethod().getName());
+        if(targetDate.equals((DayOfWeek.transformDateString(DayOfWeek.calculDate(DayOfWeek.getTodayDate(), 0))))) {
+            dailyChartDate.setText("오늘");
+        } else {
+            dailyChartDate.setText(targetDate + " " + targetDayOfWeek);
+        }
         // 온도 데이터
         ArrayList<Entry> temperatureValue = new ArrayList<>();
-        temperatureValue.add(new Entry(0, 22f));
-        temperatureValue.add(new Entry(3, 23f));
-        temperatureValue.add(new Entry(6, 24f));
-        temperatureValue.add(new Entry(9, 23f));
-        temperatureValue.add(new Entry(12, 21f));
-        temperatureValue.add(new Entry(15, 22f));
-        temperatureValue.add(new Entry(18, 24f));
-        temperatureValue.add(new Entry(21, 25f));
-        temperatureValue.add(new Entry(24, 24f));
+        int hourValue = 0;
+        for(int i=0; i<daily3hourValues.length/2; i++) {
+            temperatureValue.add(new Entry(hourValue, Float.parseFloat(daily3hourValues[i])));
+            hourValue += 3;
+        }
+        hourValue = 0;
 
         // pH 데이터
         ArrayList<Entry> phValue = new ArrayList<>();
-        phValue.add(new Entry(0, 8f));
-        phValue.add(new Entry(3, 7f));
-        phValue.add(new Entry(6, 7.5f));
-        phValue.add(new Entry(9, 7.35f));
-        phValue.add(new Entry(12, 7.65f));
-        phValue.add(new Entry(15, 7.9f));
-        phValue.add(new Entry(18, 8.3f));
-        phValue.add(new Entry(21, 7.85f));
-        phValue.add(new Entry(24, 7.61f));
+        for(int i=daily3hourValues.length/2; i<daily3hourValues.length; i++) {
+            phValue.add(new Entry(hourValue, Float.parseFloat(daily3hourValues[i])));
+            hourValue += 3;
+        }
 
         // 온도그래프부분
         LineDataSet lineDataSetTemper = new LineDataSet(temperatureValue, "온도");
         lineDataSetTemper.setLineWidth(2);
         lineDataSetTemper.setCircleRadius(4);
-        lineDataSetTemper.setCircleColor(Color.parseColor("#0431B4"));
-        lineDataSetTemper.setCircleColorHole(Color.BLUE);
-        lineDataSetTemper.setColor(Color.parseColor("#0431B4"));
+        lineDataSetTemper.setCircleColor(Color.parseColor("#FA0B0B"));
+        lineDataSetTemper.setCircleColorHole(Color.parseColor("#FA0B0B"));
+        lineDataSetTemper.setColor(Color.parseColor("#FA0B0B"));
         lineDataSetTemper.setDrawCircleHole(true);
         lineDataSetTemper.setDrawCircles(true);
         lineDataSetTemper.setDrawHorizontalHighlightIndicator(false);
@@ -501,8 +487,10 @@ public class ChartActivity extends BaseActivity {
         xAxisTemper.setLabelCount(9, true);
 
         YAxis yLAxisTemper = lineChartTemper.getAxisLeft();
-        yLAxisTemper.setTextColor(Color.BLACK);
-        yLAxisTemper.setLabelCount(10, true);
+        yLAxisTemper.setTextColor(Color.parseColor("#FA0B0B"));
+        yLAxisTemper.setLabelCount(8, true);
+        yLAxisTemper.setAxisMaximum(Float.parseFloat(rangeForTemper[0]));
+        yLAxisTemper.setAxisMinimum(Float.parseFloat(rangeForTemper[1]));
 
         YAxis yRAxisTemper = lineChartTemper.getAxisRight();
         yRAxisTemper.setDrawLabels(false);
@@ -520,9 +508,9 @@ public class ChartActivity extends BaseActivity {
         LineDataSet lineDataSetPH = new LineDataSet(phValue, "pH");
         lineDataSetPH.setLineWidth(2);
         lineDataSetPH.setCircleRadius(4);
-        lineDataSetPH.setCircleColor(Color.parseColor("#FFFF0000"));
-        lineDataSetPH.setCircleColorHole(Color.BLUE);
-        lineDataSetPH.setColor(Color.parseColor("#FFFF0000"));
+        lineDataSetPH.setCircleColor(Color.parseColor("#AB3DB5"));
+        lineDataSetPH.setCircleColorHole(Color.parseColor("#AB3DB5"));
+        lineDataSetPH.setColor(Color.parseColor("#AB3DB5"));
         lineDataSetPH.setDrawCircleHole(true);
         lineDataSetPH.setDrawCircles(true);
         lineDataSetPH.setDrawHorizontalHighlightIndicator(false);
@@ -539,13 +527,15 @@ public class ChartActivity extends BaseActivity {
         xAxisPH.setLabelCount(9, true);
 
         YAxis yLAxisPH = lineChartPH.getAxisLeft();
-        yLAxisPH.setTextColor(Color.BLACK);
         yLAxisPH.setDrawLabels(false);
         yLAxisPH.setDrawAxisLine(false);
         yLAxisPH.setDrawGridLines(false);
 
         YAxis yRAxisPH = lineChartPH.getAxisRight();
-        yRAxisPH.setLabelCount(10, true);
+        yRAxisPH.setTextColor(Color.parseColor("#AB3DB5"));
+        yRAxisPH.setLabelCount(8, true);
+        yRAxisPH.setAxisMaximum(Float.parseFloat(rangeForPH[0]));
+        yRAxisPH.setAxisMinimum(Float.parseFloat(rangeForPH[1]));
 
         lineChartPH.getLegend().setEnabled(false);
         lineChartPH.setDoubleTapToZoomEnabled(false);
@@ -744,11 +734,11 @@ public class ChartActivity extends BaseActivity {
                 public void run() {
                     drawDate(startDate);
                     WeeklyChart.getWeeklyData(startDate, DayOfWeek.calculDate(startDate, 6));
+                    weeklyChartPage.setText(--currentPage + "/" +maxPage);
                 }
             });
             if(pageCount == 1) {
                 dailyValueCount -= thisWeekCount;
-                Log.d("저번주에:", ""+dailyValueCount +"dddd" +thisWeekCount);
             } else {
                 dailyValueCount -= 7;
             }
@@ -760,6 +750,7 @@ public class ChartActivity extends BaseActivity {
                 public void run() {
                     drawDate(startDate);
                     WeeklyChart.getWeeklyData(startDate, DayOfWeek.calculDate(startDate, 6));
+                    weeklyChartPage.setText(++currentPage + "/" +maxPage);
                 }
             });
             dailyValueCount += 7;
@@ -771,6 +762,7 @@ public class ChartActivity extends BaseActivity {
                     int nullDateCount = 0;
                     drawDate(today);
                     WeeklyChart.getWeeklyData(WeeklyChart.getStartDate(today), today);
+                    weeklyChartPage.setText(++currentPage + "/" +maxPage);
                     if (thisWeekCount != 7) { // 이번주 데이터에서 아직 없는 요일(ex.오늘 목요일이면 금,토,일)은 WeeklyChart에 null로 표시
                         while (7 - nullDateCount > thisWeekCount) {
                             drawWeeklyChartINVISIBLE(DayOfWeek.getDayOfWeek(DayOfWeek.calculDate(today, ++nullDateCount)));
