@@ -41,8 +41,8 @@ module.exports = (server, app) => {
   let currentDate = '';
   let currentDay = '';
   let current12 = '';
-  let temperature = 0.0, phValue = 0.0;
-  let minTemper = 0.0, maxTemper = 0.0, minPH = 0.0, maxPH = 0.0;
+  let temperature = 24.0, phValue = 7.0;
+  let minTemper = 18.0, maxTemper = 24.0, minPH = 6.0, maxPH = 9.0;
   let minTemp_day = 0.0, maxTemp_day = 0.0, minPH_day = 0.0, maxPH_day = 0.0, feed_day=0;
   let Temp3 = 0.0, PH3 = 0.0, feed3 = 0;
 
@@ -89,22 +89,16 @@ module.exports = (server, app) => {
 
   // 3시간마다 온도, ph, 먹이지급여부 기록
   setInterval(() => {
-    //connection.query('insert into DataRepository values(' + currentDate + ',' + temperature + ',' + phValue + ',' + feed_day + ')', () => { });
-    connection.query('insert into Hour3Value values(' + currentDate2 + ',' + temperature + ',' + phValue + ',' + feed_day + ')', () => { });
-  }, 10800000);
+    var dt = new Date();
+    if(dt.getHours()==0||dt.getHours()==3||dt.getHours()==6||dt.getHours()==9||dt.getHours()==12||dt.getHours()==15||dt.getHours()==18||dt.getHours()==21) {
+	connection.query('insert into Hour3Value values(' + currentDate2 + ',' + temperature + ',' + phValue + ',' + feed_day + ')', () => { });
+    }
+  }, 3600000);
 
   // 1분마다 DailyValue DB에 최대온도 등의 값들을 update하고, 12시에 새로운 값 추가
   setInterval(() => {
-	  /*
-      connection.query('select EXISTS (select * from DailyValue where date="' + currentDay + '") as success', (error, results, fields) => {
-  	  if(results.success == '1') 
-    	    connection.query('insert into DailyValue values('+ currentDay + ',' + temperature + ',' + temperature + ',' + phValue + ',' + phValue + ',' + '1' + ')', () => { });   
-	  else
-	    console.log(results);
-      });
-	  */
       connection.query('select * from DailyValue', (error, results, fields) => {
-	if(current12=="\"0/0\"") connection.query('insert into DailyValue value (' + currentDay + ',' + temperature + ',' + temperature + ',' + phValue + ',' + phValue + ',' +'0' + ')');
+	if(current12=="\"0/0\"") connection.query('insert into DailyValue value (' + currentDay + ',' + temperature + ',' + temperature + ',' + phValue + ',' + phValue + ', 0, NULL)');
 	for(var i=0; i<results.length; i++) {
   	  if(("\"" + results[i].date + "\"" )== currentDay) {
 	    if(results[i].maxTemp < temperature) connection.query('update DailyValue set maxTemp='+temperature+' where date='+currentDay);
@@ -200,10 +194,20 @@ module.exports = (server, app) => {
 
     socket.on('reqDailyValue', (data, err) => {
       connection.query('select * from DailyValue where date=' + data, (error, results, fields) => {
-        if (error)
+        if (error) {
           console.log(error);
+          console.log("reqDailyValue에서 오류!");
+	}
         else {
           socket.emit('resDailyValue', results[0].maxTemp, results[0].minTemp, results[0].maxPH, results[0].minPH, results[0].feed, data);
+		/*
+	  console.log('app에서 받은 입력 : ', data); // data = StartServo1
+          console.log('app에서 받은 입력 : ', results[0].maxTemp); // data = StartServo1
+          console.log('app에서 받은 입력 : ', results[0].minTemp); // data = StartServo1
+          console.log('app에서 받은 입력 : ', results[0].maxPH); // data = StartServo1
+          console.log('app에서 받은 입력 : ', results[0].minPH); // data = StartServo1
+          console.log('app에서 받은 입력 : ', results[0].feed); // data = StartServo1
+	  */
         }
       });
       //socket.emit(minTemp_day, maxTemp_day, minPH_day, maxPH_day, feed_day);
@@ -219,16 +223,27 @@ module.exports = (server, app) => {
       });
     });
 
-    socket.on('reqHour3Value', (data, err) => {
-      connection.query('select * from Hour3Value where date=' + data, (error, results, fields) => {
-        if (error)
+    socket.on('reqDaily3HourValue', (data, err) => {
+      console.log('app에서 받은 입력(hour3) : ', data);
+      connection.query('select * from Hour3Value where date like "2019/' + data + '%"', (error, results, fields) => {
+      //connection.query('select * from Hour3Value where date like "2019/6/22%"', (error, results, fields) => {
+        if (error) {
           console.log(error);
+      	  console.log('app에서 받은 입력(hour3) : ', data);
+	}
         else {
-          socket.emit(results[0].Temp, results[0].PH, results[0].feed);
+	  var daily3HourValues = new Array();
+	  for(var i=0; i<results.length; i++) {
+		  daily3HourValues[i] = results[i].Temp;
+	  }
+	  for(var i=0; i<results.length; i++) {
+		  daily3HourValues[results.length + i] = results[i].PH;
+	  }
+          socket.emit('resDaily3HourValue', daily3HourValues, maxTemper, minTemper, maxPH, minPH); 
+          //socket.emit('resDaily3HourValue', results[0].Temp, results[1].Temp, results[2].Temp, results[3].Temp, results[4].Temp, results[5].Temp, results[6].Temp, results[7].Temp, results[8].Temp, results[0].PH, results[1].PH, results[2].PH, results[3].PH, results[4].PH, results[5].PH, results[6].PH, results[7].PH, results[8].PH); 
+          //console.log('보내는 입력(hour3) : ', data, results[0].Temp, results[1].Temp, results[2].Temp, results[3].Temp, results[4].Temp, results[5].Temp, results[6].Temp, results[7].Temp, results[8].Temp, results[0].PH, results[1].PH, results[2].PH, results[3].PH, results[4].PH, results[5].PH, results[6].PH, results[7].PH, results[8].PH);
         }
       });
-      //console.log('app에서 받은 입력 : ', data);
-      //socket.emit(Temp3, PH3, feed3);
     });
 
     // App에 먹이지급 타이머와 회전수를 전송
