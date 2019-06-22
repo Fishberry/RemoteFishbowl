@@ -438,7 +438,12 @@ public class ChartActivity extends BaseActivity {
             maxPage = dailyValueCount / 7;
         }
         currentPage = maxPage;
-        weeklyChartPage.setText(currentPage + "/" + maxPage);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                weeklyChartPage.setText(currentPage + "/" + maxPage);
+            }
+        });
     }
 
     public static void drawDailyChart(String targetDate, String targetDayOfWeek, String[] daily3hourValues, String[] rangeForTemper, String[] rangeForPH) {
@@ -493,6 +498,8 @@ public class ChartActivity extends BaseActivity {
         yLAxisTemper.setAxisMinimum(Float.parseFloat(rangeForTemper[1]));
 
         YAxis yRAxisTemper = lineChartTemper.getAxisRight();
+        yRAxisTemper.setAxisMaximum(Float.parseFloat(rangeForTemper[0]));
+        yRAxisTemper.setAxisMinimum(Float.parseFloat(rangeForTemper[1]));
         yRAxisTemper.setDrawLabels(false);
         yRAxisTemper.setDrawAxisLine(false);
         yRAxisTemper.setDrawGridLines(false);
@@ -527,6 +534,8 @@ public class ChartActivity extends BaseActivity {
         xAxisPH.setLabelCount(9, true);
 
         YAxis yLAxisPH = lineChartPH.getAxisLeft();
+        yLAxisPH.setAxisMaximum(Float.parseFloat(rangeForPH[0]));
+        yLAxisPH.setAxisMinimum(Float.parseFloat(rangeForPH[1]));
         yLAxisPH.setDrawLabels(false);
         yLAxisPH.setDrawAxisLine(false);
         yLAxisPH.setDrawGridLines(false);

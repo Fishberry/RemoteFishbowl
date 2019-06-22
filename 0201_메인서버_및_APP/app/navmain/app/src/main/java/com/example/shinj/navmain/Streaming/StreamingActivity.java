@@ -32,7 +32,7 @@ public class StreamingActivity extends BaseActivity implements StreamingPresente
     String progressTemp;
     IntentData intentData = IntentData.getInstance();
     boolean isConnectSensor;
-    public String minTempValue, maxTempValue, minPHValue, maxPHValue;
+    public static String minTempValue, maxTempValue, minPHValue, maxPHValue;
     StreamingPresenterImpl streamingPresenterimpl;
 
     private Handler handler = new Handler();
