@@ -68,6 +68,8 @@ public class WeeklyChart {
                 thisWeekCount++;
             }
             thisWeekCount = 7 - thisWeekCount;
+        } else{
+            thisWeekCount = 7;
         }
         return thisWeekCount;
     }

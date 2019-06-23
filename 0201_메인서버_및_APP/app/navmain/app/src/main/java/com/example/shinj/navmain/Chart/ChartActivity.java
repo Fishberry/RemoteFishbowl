@@ -5,11 +5,15 @@ import com.example.shinj.navmain.IntentData;
 import com.example.shinj.navmain.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -432,6 +436,7 @@ public class ChartActivity extends BaseActivity {
 
     private void getDailyValueCount(String count){
         dailyValueCount = Integer.parseInt(count);
+        Log.d("dailyValueCount",""+dailyValueCount);
         if( !DayOfWeek.getDayOfWeek(DayOfWeek.getTodayDate()).equals("일") || dailyValueCount < 7 ) {
             maxPage = dailyValueCount / 7 + 1;
         } else {
@@ -490,6 +495,8 @@ public class ChartActivity extends BaseActivity {
         xAxisTemper.setTextColor(Color.WHITE);
         xAxisTemper.enableGridDashedLine(8, 24, 0);
         xAxisTemper.setLabelCount(9, true);
+        xAxisTemper.setAxisMinimum(0f);
+        xAxisTemper.setAxisMaximum(24f);
 
         YAxis yLAxisTemper = lineChartTemper.getAxisLeft();
         yLAxisTemper.setTextColor(Color.parseColor("#FA0B0B"));
@@ -532,6 +539,8 @@ public class ChartActivity extends BaseActivity {
         xAxisPH.setTextColor(Color.BLACK);
         xAxisPH.enableGridDashedLine(8, 24, 0);
         xAxisPH.setLabelCount(9, true);
+        xAxisPH.setAxisMinimum(0f);
+        xAxisPH.setAxisMaximum(24f);
 
         YAxis yLAxisPH = lineChartPH.getAxisLeft();
         yLAxisPH.setAxisMaximum(Float.parseFloat(rangeForPH[0]));
@@ -735,7 +744,6 @@ public class ChartActivity extends BaseActivity {
 
     public void isTurnWeeklyChart(float intervalXAxis) {
         if( intervalXAxis < -350 && dailyValueCount > 7 ) { // 저번주 코드
-            Log.d("저번주코드:", "하하");
             pageCount++;
             String startDate = WeeklyChart.getStartDate(DayOfWeek.calculDate(today, -(7* pageCount) ));
             runOnUiThread(new Runnable() {
@@ -748,8 +756,10 @@ public class ChartActivity extends BaseActivity {
             });
             if(pageCount == 1) {
                 dailyValueCount -= thisWeekCount;
+                Log.d("저번주코드",""+dailyValueCount);
             } else {
                 dailyValueCount -= 7;
+                Log.d("저번주코드",""+dailyValueCount);
             }
         } else if(intervalXAxis > 350 && pageCount > 1) { // 다음주 코드
             pageCount--;
