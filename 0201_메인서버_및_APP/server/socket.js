@@ -385,7 +385,7 @@ module.exports = (server, app) => {
     socket.on('insertWater', (timerWater) => {
       console.log('timerWater : ' + timerWater);
 
-      db.insertExchange(22, 22, timerWater);
+      db.insertExchange(30, 30, timerWater);
     });
 
     // App에서 nodejs로의 연결 해제
